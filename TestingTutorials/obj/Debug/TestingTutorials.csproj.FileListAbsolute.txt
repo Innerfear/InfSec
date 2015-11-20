@@ -23,3 +23,16 @@ C:\Users\Ziggy\Documents\School\3EA\CloudApplications\Testing\DeviceList\Testing
 C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\bin\Debug\TestingTutorials.exe.config
 C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\obj\Debug\TestingTutorials.exe
 C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\obj\Debug\TestingTutorials.pdb
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\obj\Debug\TestingTutorials.csprojResolveAssemblyReference.cache
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\bin\Debug\TestingTutorials.exe
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\bin\Debug\TestingTutorials.pdb
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\bin\Debug\PacketDotNet.xml
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\bin\Debug\PcapDotNet.Base.pdb
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\bin\Debug\PcapDotNet.Base.xml
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\bin\Debug\PcapDotNet.Core.pdb
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\bin\Debug\PcapDotNet.Core.xml
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\bin\Debug\PcapDotNet.Core.Extensions.pdb
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\bin\Debug\PcapDotNet.Core.Extensions.xml
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\bin\Debug\PcapDotNet.Packets.pdb
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\bin\Debug\PcapDotNet.Packets.xml
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\TestingTutorials\bin\Debug\SharpPcap.xml

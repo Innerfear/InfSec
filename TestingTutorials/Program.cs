@@ -32,8 +32,11 @@ namespace TestingTutorials
             foreach(ICaptureDevice dev in devices)
                 Console.WriteLine("{0}\n", dev.ToString());
 
-            Console.WriteLine("Hit 'Enter' to exit...");
+            Console.WriteLine("Hit 'Enter' to exit to continue");
             Console.ReadLine();
+
+
+            
         }
     }
 }

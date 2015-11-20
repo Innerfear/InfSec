@@ -1,0 +1,10 @@
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\SelectDevice\bin\Debug\SelectDevice.exe.config
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\SelectDevice\obj\Debug\SelectDevice.csprojResolveAssemblyReference.cache
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\SelectDevice\bin\Debug\SelectDevice.exe
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\SelectDevice\bin\Debug\SelectDevice.pdb
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\SelectDevice\bin\Debug\PacketDotNet.dll
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\SelectDevice\bin\Debug\SharpPcap.dll
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\SelectDevice\bin\Debug\PacketDotNet.xml
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\SelectDevice\bin\Debug\SharpPcap.xml
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\SelectDevice\obj\Debug\SelectDevice.exe
+C:\Users\Ziggy\Documents\School\3EA\InfSec\InfSec\SelectDevice\obj\Debug\SelectDevice.pdb
