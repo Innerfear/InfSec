@@ -112,51 +112,54 @@ namespace PacketSniffer                     // ERROR: The calling thread must be
 
         private void ParseData(byte[] byteData, int nReceived)
         {
-            TreeViewItem rootItem = new TreeViewItem();
-            // Alle protocol packets zijn geëncapsuleerd in het IP datagram, we parsen dus de IP header om te zien welk protocol data zich hier bevindt.
-            IPHeader ipHeader = new IPHeader(byteData, nReceived);
-            TreeViewItem ipItem = MakeIPTreeViewItem(ipHeader);
-            rootItem.Items.Add(ipItem);
-            // Volgens het protocol dat meegedragen wordt door het IP datagram, parsen we het data field van het datagram.
-            switch (ipHeader.ProtocolType)
+            System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                case Protocol.TCP:
-                    // IPHeader.Data bezit de data die gedragen wordt via het IP datagram, lengte van de header. 
-                    TCPHeader tcpHeader = new TCPHeader(ipHeader.Data, ipHeader.MessageLength);                   
-                    TreeViewItem tcpItem = MakeTCPTreeViewItem(tcpHeader);
-                    rootItem.Items.Add(tcpItem);
-                    // Als de poort gelijk is aan 53, dan is het onderliggende protocol DNS.
-                    // Note: DNS kan enkel TCP of UDP gebruiken, daarom --> 2 keer controle.
-                    if (tcpHeader.DestinationPort == "53" || tcpHeader.SourcePort == "53")
-                    {
-                        TreeViewItem dnsItem = MakeDNSTreeViewItem(tcpHeader.Data, tcpHeader.MessageLength);
-                        rootItem.Items.Add(dnsItem);
-                    }
-                    break;
+                TreeViewItem rootItem = new TreeViewItem();
+                // Alle protocol packets zijn geëncapsuleerd in het IP datagram, we parsen dus de IP header om te zien welk protocol data zich hier bevindt.
+                IPHeader ipHeader = new IPHeader(byteData, nReceived);
+                TreeViewItem ipItem = MakeIPTreeViewItem(ipHeader);
+                rootItem.Items.Add(ipItem);
+                // Volgens het protocol dat meegedragen wordt door het IP datagram, parsen we het data field van het datagram.
+                switch (ipHeader.ProtocolType)
+                {
+                    case Protocol.TCP:
+                        // IPHeader.Data bezit de data die gedragen wordt via het IP datagram, lengte van de header. 
+                        TCPHeader tcpHeader = new TCPHeader(ipHeader.Data, ipHeader.MessageLength);
+                        TreeViewItem tcpItem = MakeTCPTreeViewItem(tcpHeader);
+                        rootItem.Items.Add(tcpItem);
+                        // Als de poort gelijk is aan 53, dan is het onderliggende protocol DNS.
+                        // Note: DNS kan enkel TCP of UDP gebruiken, daarom --> 2 keer controle.
+                        if (tcpHeader.DestinationPort == "53" || tcpHeader.SourcePort == "53")
+                        {
+                            TreeViewItem dnsItem = MakeDNSTreeViewItem(tcpHeader.Data, tcpHeader.MessageLength);
+                            rootItem.Items.Add(dnsItem);
+                        }
+                        break;
 
-                case Protocol.UDP:
-                    // IPHeader.Data bezit de data die gedragen wordt via het IP datagram, lengte van de header. 
-                    UDPHeader udpHeader = new UDPHeader(ipHeader.Data, ipHeader.MessageLength);                    
-                    TreeViewItem udpItem = MakeUDPTreeViewItem(udpHeader);
-                    rootItem.Items.Add(udpItem);
-                    // Als de poort gelijk is aan 53, dan is het onderliggende protocol DNS.
-                    // Note: DNS kan enkel TCP of UDP gebruiken, daarom --> 2 keer controle.
-                    if (udpHeader.DestinationPort == "53" || udpHeader.SourcePort == "53")
-                    {
-                        // Lengte van UDP header is altijd 8 bytes, dus we trekken deze af van totale lengte om eigenlijke lengte van de data te kennen.
-                        TreeViewItem dnsItem = MakeDNSTreeViewItem(udpHeader.Data, Convert.ToInt32(udpHeader.Length) - 8);
-                        rootItem.Items.Add(dnsItem);
-                    }
-                    break;
+                    case Protocol.UDP:
+                        // IPHeader.Data bezit de data die gedragen wordt via het IP datagram, lengte van de header. 
+                        UDPHeader udpHeader = new UDPHeader(ipHeader.Data, ipHeader.MessageLength);
+                        TreeViewItem udpItem = MakeUDPTreeViewItem(udpHeader);
+                        rootItem.Items.Add(udpItem);
+                        // Als de poort gelijk is aan 53, dan is het onderliggende protocol DNS.
+                        // Note: DNS kan enkel TCP of UDP gebruiken, daarom --> 2 keer controle.
+                        if (udpHeader.DestinationPort == "53" || udpHeader.SourcePort == "53")
+                        {
+                            // Lengte van UDP header is altijd 8 bytes, dus we trekken deze af van totale lengte om eigenlijke lengte van de data te kennen.
+                            TreeViewItem dnsItem = MakeDNSTreeViewItem(udpHeader.Data, Convert.ToInt32(udpHeader.Length) - 8);
+                            rootItem.Items.Add(dnsItem);
+                        }
+                        break;
 
-                case Protocol.Unknown:
-                    break;
+                    case Protocol.Unknown:
+                        break;
+                }
+                AddTreeItem addTreeViewItem = new AddTreeItem(OnAddTreeViewItem);
+                rootItem.Header = ipHeader.SourceAddress.ToString() + "-" + ipHeader.DestinationAddress.ToString(); //!!!!!!!!!!!!!!!!!
+                                                                                                                    // Thread: veilig toevoegen van de Items.
+                treeView.Dispatcher.Invoke(addTreeViewItem, new object[] { rootItem });
+            }));
             }
-            AddTreeItem addTreeViewItem = new AddTreeItem(OnAddTreeViewItem);
-            rootItem.Header = ipHeader.SourceAddress.ToString() + "-" + ipHeader.DestinationAddress.ToString(); //!!!!!!!!!!!!!!!!!
-            // Thread: veilig toevoegen van de Items.
-            treeView.Dispatcher.Invoke(addTreeViewItem, new object[] { rootItem });
-        }
 
         // Helper functie die informatie teruggeeft vanuit de IP header aan de tree node.
         private TreeViewItem MakeIPTreeViewItem(IPHeader ipHeader)

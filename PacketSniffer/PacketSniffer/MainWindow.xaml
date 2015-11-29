@@ -14,7 +14,10 @@
             <Setter Property="BorderBrush" Value="Black"/>
             <Setter Property="Margin" Value="4" />
         </Style>
-
+        <Style TargetType="TreeViewItem">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>            
+        </Style>
         <Style TargetType="Button">
             <Setter Property="Foreground" Value="Black" />
             <Setter Property="Background" Value="CadetBlue" />
@@ -42,10 +45,10 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal" Margin="0,0,10,-10" Grid.ColumnSpan="5" Grid.RowSpan="2" Panel.ZIndex="5">
-            <Button x:Name="ExitButton" Width="16" Content="X" Margin="0,0,1,0" Height="16" FontSize="8" Click="ExitButton_Click"/>
-            <Button x:Name="MinimizeButton" Width="16" Content="_" Margin="0,0,1,0" Height="16" FontSize="8" Click="MinimizeButton_Click"/>
-            <Button x:Name="HalfSizeButton" Width="16" Content="[" Margin="0,0,1,0" Height="16" FontSize="8" Click="HalfSizeButton_Click"/>
-            <Button x:Name="FullSizeButton" Width="16" Content="[]" Margin="0,0,1,0" Height="16" FontSize="8" Click="FullSizeButton_Click"/>
+            <Button x:Name="ExitButton" Width="16" Height="16" Content="X" Margin="0,0,1,0" FontSize="8" Click="ExitButton_Click"/>
+            <Button x:Name="MinimizeButton" Width="16" Height="16" Content="_" Margin="0,0,1,0" FontSize="8" Click="MinimizeButton_Click"/>
+            <Button x:Name="HalfSizeButton" Width="16" Height="16" Content="[" Margin="0,0,1,0" FontSize="8" Click="HalfSizeButton_Click"/>
+            <Button x:Name="FullSizeButton" Width="16" Height="16" Content="[]" Margin="0,0,1,0" FontSize="8" Click="FullSizeButton_Click"/>
         </StackPanel>
         <TabControl x:Name="Tabs" Grid.RowSpan="2" Grid.Column="1" Grid.Row="1" Background="white">
             <TabItem x:Name="Sniffing" Header="Sniffing">
@@ -69,8 +72,8 @@
                     <TreeView x:Name="treeView" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="1" Grid.Row="0" Margin="4" Background="DarkSlateGray" Foreground="White"/>
                     <ListBox x:Name="lbInterfaces" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="1" Grid.Row="2"/>
                     <StackPanel Grid.RowSpan="2" Grid.Column="3" Grid.Row="2">
-                    <Button x:Name="btnStart" Height="25" Width="70" Content="Start" Margin="2,4,0,0" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Top" Click="btnStart_Click"/>
-                    <Button x:Name="btnRefresh" Height="25" Width="70" Content="Refresh" Margin="2,4,0,0" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Top" Click="btnRefresh_Click"/>
+                        <Button x:Name="btnStart" Height="25" Width="80" Content="Start" Margin="2,4,0,0" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Top" Click="btnStart_Click"/>
+                        <Button x:Name="btnRefresh" Height="25" Width="80" Content="Refresh" Margin="2,4,0,0" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Top" Click="btnRefresh_Click"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
