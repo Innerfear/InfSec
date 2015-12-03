@@ -4,12 +4,14 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Net;
 using System.Windows.Controls;
+using System.Diagnostics;
 
-namespace PacketSniffer                     // ERROR: The calling thread must be STA, because many UI components require this --> 'dispatcher' in ParseData method???
+namespace PacketSniffer
 {
     // Enum om Protocol te definiëren.
     public enum Protocol                                    
     {
+        ICMP = 1,
         TCP = 6,
         UDP = 17,
         Unknown = -1
@@ -122,6 +124,13 @@ namespace PacketSniffer                     // ERROR: The calling thread must be
                 // Volgens het protocol dat meegedragen wordt door het IP datagram, parsen we het data field van het datagram.
                 switch (ipHeader.ProtocolType)
                 {
+                    case Protocol.ICMP:
+                        //IPHeader.Data bezit de data die gedragen wordt via het IP datagram, lengte van de header.
+                        Debug.WriteLine("ICMP test");
+                        // HIER MOET NOG HEEL WAT CODE
+                        break;
+
+
                     case Protocol.TCP:
                         // IPHeader.Data bezit de data die gedragen wordt via het IP datagram, lengte van de header. 
                         TCPHeader tcpHeader = new TCPHeader(ipHeader.Data, ipHeader.MessageLength);
@@ -176,6 +185,9 @@ namespace PacketSniffer                     // ERROR: The calling thread must be
             ipItem.Items.Add("Time to live: " + ipHeader.TTL);
             switch (ipHeader.ProtocolType)
             {
+                case Protocol.ICMP:
+                    ipItem.Items.Add("Protocol: " + "ICMP");
+                    break;
                 case Protocol.TCP:
                     ipItem.Items.Add("Protocol: " + "TCP");
                     break;

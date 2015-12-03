@@ -26,3 +26,17 @@ C:\Users\Jasper\Documents\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\Ma
 C:\Users\Jasper\Documents\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\PacketSniffer.g.resources
 C:\Users\Jasper\Documents\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\PacketSniffer.Properties.Resources.resources
 C:\Users\Jasper\Documents\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\PacketSniffer.csproj.GenerateResource.Cache
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\bin\Debug\PacketSniffer.exe.config
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\PacketSniffer.exe
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\PacketSniffer.pdb
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\bin\Debug\PacketSniffer.exe
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\bin\Debug\PacketSniffer.pdb
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\PacketSniffer.csprojResolveAssemblyReference.cache
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\MainWindow.g.cs
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\App.g.cs
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\PacketSniffer_MarkupCompile.cache
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\PacketSniffer_MarkupCompile.lref
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\MainWindow.baml
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\PacketSniffer.g.resources
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\PacketSniffer.Properties.Resources.resources
+C:\GitHub\InfSec\PacketSniffer\PacketSniffer\obj\Debug\PacketSniffer.csproj.GenerateResource.Cache

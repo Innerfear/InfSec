@@ -161,15 +161,20 @@ namespace PacketSniffer
 
         public Protocol ProtocolType
         {
+            //The protocol field represents the protocol in the data portion of the datagram
             get
             {
-                //The protocol field represents the protocol in the data portion of the datagram
+                //A value of one represents the ICMP protocol
+                if (byProtocol == 1)
+                {
+                    return Protocol.ICMP;
+                }         
                 //A value of six represents the TCP protocol
                 if (byProtocol == 6)
                 {
                     return Protocol.TCP;
                 }
-                //Seventeen for UDP
+                //A value of seventeen represents the UDP protocol
                 else if (byProtocol == 17)
                 {
                     return Protocol.UDP;
