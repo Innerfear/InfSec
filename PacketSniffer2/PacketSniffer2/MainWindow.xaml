@@ -1,0 +1,108 @@
+﻿<Window x:Class="PacketSniffer2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PacketSniffer2"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        ResizeMode="NoResize"
+        Background="DarkSlateGray"
+        WindowStyle="None"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style TargetType="ListBox">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Background" Value="CadetBlue"/>
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="4" />
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Background" Value="CadetBlue" />
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="FontWeight" Value="ExtraBold" />
+        </Style>
+        <Style TargetType="TabItem">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Background" Value="CadetBlue" />
+            <Setter Property="BorderBrush" Value="Black" />
+        </Style>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal" Margin="0,0,10,-10" Grid.ColumnSpan="5" Grid.RowSpan="2" Panel.ZIndex="5">
+            <Button x:Name="ExitButton" Width="16" Content="X" Margin="0,0,1,0" Height="16" FontSize="8" Click="ExitButton_Click"/>
+            <Button x:Name="MinimizeButton" Width="16" Content="_" Margin="0,0,1,0" Height="16" FontSize="8" Click="MinimizeButton_Click"/>
+            <Button x:Name="HalfSizeButton" Width="16" Content="[" Margin="0,0,1,0" Height="16" FontSize="8" Click="HalfSizeButton_Click"/>
+            <Button x:Name="FullSizeButton" Width="16" Content="[]" Margin="0,0,1,0" Height="16" FontSize="8" Click="FullSizeButton_Click"/>
+        </StackPanel>
+        <TabControl x:Name="Tabs" Grid.RowSpan="2" Grid.Column="1" Grid.Row="1" Background="white">
+            <TabItem x:Name="Sniffing" Header="Sniffing">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Margin="4,0,0,0">
+                        <Button x:Name="StartCap" Height="25" Width="80" Content="Capture" Margin="2,4,0,0" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Top" Click="StartCap_Click" />
+                        <Button x:Name="StopCap" Height="25" Width="80" Content="Stop" Margin="2,4,0,0" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Top" Click="StopCap_Click" />
+                    </StackPanel>
+                    <ListBox x:Name="PacketList" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="1" Grid.Row="0"/>
+                    <ListBox x:Name="DeviceListBox" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="1" Grid.Row="2" SelectionChanged="DeviceListBox_SelectionChanged"/>
+                    <Button x:Name="DeviceSelect" Grid.Column="3" Grid.Row="2" Height="25" Width="80" Content="Refresh" Margin="2,4,0,0" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Top" Click="DeviceRefresh_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="Editing" Header="Editing">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="Injecting" Header="Injecting">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
