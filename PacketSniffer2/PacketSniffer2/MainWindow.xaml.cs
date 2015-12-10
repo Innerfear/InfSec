@@ -14,6 +14,7 @@ namespace PacketSniffer2
         bool boolFullScreen = true;
 
         PacketDevice miscSelectedDevice;
+        PacketCommunicator miscCommunicator;
 
         // Retrieve the device list from the local machine
         IList<LivePacketDevice> listAllDevices = LivePacketDevice.AllLocalMachine;
@@ -163,7 +164,35 @@ namespace PacketSniffer2
 
         private void btnSendPacket_Click(object sender, RoutedEventArgs e)
         {
-
+            // Open the output device
+            using (miscCommunicator = miscSelectedDevice.Open(100, PacketDeviceOpenAttributes.Promiscuous, 1000))
+            {
+                string stringProtocol = ProtType.SelectedItem.ToString();
+                switch (stringProtocol)
+                {
+                    case "IPV4":
+                        //miscCommunicator.SendPacket(BuildIpV4Packet());
+                        break;
+                    case "ICMP":
+                        //miscCommunicator.SendPacket(BuildIcmpPacket());
+                        break;
+                    case "UDP":
+                        //miscCommunicator.SendPacket(BuildUdpPacket());
+                        break;
+                    case "TCP":
+                        //miscCommunicator.SendPacket(BuildTcpPacket());
+                        break;
+                    case "DNS":
+                        //miscCommunicator.SendPacket(BuildDnsPacket());
+                        break;
+                    case "HTTP":
+                        //miscCommunicator.SendPacket(BuildHttpPacket());
+                        break;
+                    default:
+                        MessageBox.Show("Select a protocol");
+                        break;        
+                }
+            }
         }
     }
 }

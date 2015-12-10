@@ -71,6 +71,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DNSSendPacket.cs" />
+    <Compile Include="HTTPSendPacket.cs" />
+    <Compile Include="TCPSendPacket.cs" />
+    <Compile Include="UDPSendPacket.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -80,6 +84,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BaseSendPacket.cs" />
+    <Compile Include="ICMPSendPacket.cs" />
+    <Compile Include="IPV4SendPacket.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

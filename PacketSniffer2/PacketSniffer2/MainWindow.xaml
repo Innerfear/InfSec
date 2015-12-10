@@ -145,6 +145,12 @@
                             <Label x:Name="lblTTLMax" Grid.Column="2" Grid.Row="5" Content="255" Margin="8,0,0,0"/>
                             <Label x:Name="lblProtType" Grid.Column="0" Grid.Row="6" Content="Protocol Type" Margin="8,0,0,0"/>
                             <ComboBox x:Name="ProtType" Grid.Column="1" Grid.Row="6">
+                                <ComboBoxItem x:Name="ProtIPV4" Content="IPV4"/>
+                                <ComboBoxItem x:Name="ProtICMP" Content="ICMP"/>
+                                <ComboBoxItem x:Name="ProtUDP" Content="UDP"/>
+                                <ComboBoxItem x:Name="ProtTCP" Content="TCP"/>
+                                <ComboBoxItem x:Name="ProtDNS" Content="DNS"/>
+                                <ComboBoxItem x:Name="ProtHTTP" Content="HTTP"/>
                             </ComboBox>
                         </Grid>
                     </StackPanel>
