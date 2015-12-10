@@ -66,13 +66,13 @@
                         <RowDefinition Height="2*"/>
                         <RowDefinition Height="3*"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Margin="4,0,0,0">
-                        <Button x:Name="StartCap" Height="25" Width="80" Content="Capture" Margin="2,4,0,0" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Top" Click="StartCap_Click" />
-                        <Button x:Name="StopCap" Height="25" Width="80" Content="Stop" Margin="2,4,0,0" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Top" Click="StopCap_Click" />
-                    </StackPanel>
                     <ListBox x:Name="PacketList" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="1" Grid.Row="0"/>
                     <ListBox x:Name="DeviceListBox" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="1" Grid.Row="2" SelectionChanged="DeviceListBox_SelectionChanged"/>
-                    <Button x:Name="DeviceSelect" Grid.Column="3" Grid.Row="2" Height="25" Width="80" Content="Refresh" Margin="2,4,0,0" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Top" Click="DeviceRefresh_Click"/>
+                    <StackPanel Grid.RowSpan="2" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Button x:Name="DeviceRefresh" Height="25" Width="80" Content="Refresh" Margin="2,4,0,0" FontSize="10" Click="DeviceRefresh_Click"/>
+                        <Button x:Name="StartCap" Height="25" Width="80" Content="Capture" Margin="2,8,0,0" FontSize="10" Click="StartCap_Click" />
+                        <Button x:Name="StopCap" Height="25" Width="80" Content="Stop" Margin="2,8,0,0" FontSize="10" Click="StopCap_Click" />
+                    </StackPanel>
                 </Grid>
             </TabItem>
             <TabItem x:Name="Editing" Header="Editing">
@@ -92,15 +92,62 @@
             <TabItem x:Name="Injecting" Header="Injecting">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="4*"/>
                         <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
-                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="3*"/>
                         <RowDefinition Height="2*"/>
+                        <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
+                    <StackPanel x:Name="NavigationPanel_3" Grid.ColumnSpan="1" Grid.RowSpan="5" Grid.Column="0" Grid.Row="0" Background="LightBlue">
+                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <Label x:Name="lblInjecting" Content="Injecting" Height="25" Margin="8,8,0,0" Background="CadetBlue" FontWeight="ExtraBold"/>
+                            <Button x:Name="btnSendPacket" Width="80" Height="25" Margin="8,8,0,0" FontSize="10" Content="Send" Click="btnSendPacket_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel x:Name="UserInput" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="2" Grid.Row="1" Background="CadetBlue">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                            </Grid.RowDefinitions>
+                            <Label x:Name="lblMACsrc" Grid.Column="0" Grid.Row="1" Content="Source MAC Address" Margin="8,0,0,0"/>
+                            <TextBox x:Name="MACsrc" Grid.Column="1" Grid.Row="1"/>
+                            <Label x:Name="lblMACsrcMax" Grid.Column="2" Grid.Row="1" Content="FF:FF:FF:FF:FF:FF" Margin="8,0,0,0"/>
+                            <Label x:Name="lblMACdst" Grid.Column="0" Grid.Row="2" Content="Destination MAC Address" Margin="8,0,0,0"/>
+                            <TextBox x:Name="MACdst" Grid.Column="1" Grid.Row="2"/>
+                            <Label x:Name="lblMACdstMAx" Grid.Column="2" Grid.Row="2" Content="FF:FF:FF:FF:FF:FF" Margin="8,0,0,0"/>
+                            <Label x:Name="lblIPsrc" Grid.Column="0" Grid.Row="3" Content="Source IP Address" Margin="8,0,0,0"/>
+                            <TextBox x:Name="IPsrc" Grid.Column="1" Grid.Row="3"/>
+                            <Label x:Name="lblIPsrcMAx" Grid.Column="2" Grid.Row="3" Content="255.255.255.255" Margin="8,0,0,0"/>
+                            <Label x:Name="lblIPdst" Grid.Column="0" Grid.Row="4" Content="Destination MAC Address" Margin="8,0,0,0"/>
+                            <TextBox x:Name="IPdst" Grid.Column="1" Grid.Row="4"/>
+                            <Label x:Name="lblIPdstMax" Grid.Column="2" Grid.Row="4" Content="255.255.255.0" Margin="8,0,0,0"/>
+                            <Label x:Name="lblTTL" Grid.Column="0" Grid.Row="5" Content="Time To Live (TTL)" Margin="8,0,0,0"/>
+                            <TextBox x:Name="TTL" Grid.Column="1" Grid.Row="5"/>
+                            <Label x:Name="lblTTLMax" Grid.Column="2" Grid.Row="5" Content="255" Margin="8,0,0,0"/>
+                            <Label x:Name="lblProtType" Grid.Column="0" Grid.Row="6" Content="Protocol Type" Margin="8,0,0,0"/>
+                            <ComboBox x:Name="ProtType" Grid.Column="1" Grid.Row="6">
+                            </ComboBox>
+                        </Grid>
+                    </StackPanel>
                 </Grid>
             </TabItem>
         </TabControl>

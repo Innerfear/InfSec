@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PacketSniffer2
 {
@@ -10,10 +11,13 @@ namespace PacketSniffer2
     /// </summary>
     public partial class MainWindow : Window
     {
-        bool FullScreen = true;
+        bool boolFullScreen = true;
+
+        PacketDevice miscSelectedDevice;
 
         // Retrieve the device list from the local machine
-        IList<LivePacketDevice> allDevices = LivePacketDevice.AllLocalMachine;
+        IList<LivePacketDevice> listAllDevices = LivePacketDevice.AllLocalMachine;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -37,16 +41,16 @@ namespace PacketSniffer2
 
         private void GetDevices()
         {
-            if (allDevices.Count == 0)
+            if (listAllDevices.Count == 0)
             {
                 DeviceListBox.Items.Add("No interfaces found! Make sure WinPcap is installed.");
                 return;
             }
 
             // Print the list
-            for (int i = 0; i != allDevices.Count; ++i)
+            for (int i = 0; i != listAllDevices.Count; ++i)
             {
-                LivePacketDevice device = allDevices[i];
+                LivePacketDevice device = listAllDevices[i];
                 if (device.Description != null)
                     DeviceListBox.Items.Add((i + 1) + ". " + device.Name + " (" + device.Description+ ")");
                 else
@@ -62,10 +66,10 @@ namespace PacketSniffer2
 
             // Description
             if (device.Description != null)
-                PacketList.Items.Add("\tDescription: " + device.Description);
+                PacketList.Items.Add("     Description: " + device.Description);
 
             // Loopback Address
-            PacketList.Items.Add("\tLoopback: " +
+            PacketList.Items.Add("     Loopback: " +
                               (((device.Attributes & DeviceAttributes.Loopback) == DeviceAttributes.Loopback)
                                    ? "yes"
                                    : "no"));
@@ -73,7 +77,7 @@ namespace PacketSniffer2
             // IP addresses
             foreach (DeviceAddress address in device.Addresses)
             {
-                PacketList.Items.Add("\tAddress Family: " + address.Address.Family);
+                PacketList.Items.Add("     Address Family: " + address.Address.Family);
 
                 if (address.Address != null)
                     PacketList.Items.Add(("\tAddress: " + address.Address));
@@ -85,6 +89,22 @@ namespace PacketSniffer2
                     PacketList.Items.Add(("\tDestination Address: " + address.Destination));
             }
         }
+
+        private void GetSelectedDevice()
+        {
+            for (int i = 0; i != listAllDevices.Count; ++i)
+            {
+                LivePacketDevice device = listAllDevices[i];
+                if (DeviceListBox.SelectedItem.ToString() != null)
+                {
+                    if (DeviceListBox.SelectedItem.ToString().Contains(device.Name))
+                    {
+                        miscSelectedDevice = device;
+                    }
+                }     
+            }
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             GetDevices();
@@ -102,25 +122,25 @@ namespace PacketSniffer2
 
         private void HalfSizeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (FullScreen)
+            if (boolFullScreen)
                 Width = SystemParameters.WorkArea.Width / 2;
-            FullScreen = false;
+            boolFullScreen = false;
             HalfSizeButton.IsEnabled = false;
             FullSizeButton.IsEnabled = true;
         }
 
         private void FullSizeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!FullScreen)
+            if (!boolFullScreen)
                 Width = SystemParameters.WorkArea.Width;
-            FullScreen = true;
+            boolFullScreen = true;
             FullSizeButton.IsEnabled = false;
             HalfSizeButton.IsEnabled = true;
         }
 
         private void StartCap_Click(object sender, RoutedEventArgs e)
         {
-
+            PacketList.Items.Clear();
         }
 
         private void StopCap_Click(object sender, RoutedEventArgs e)
@@ -134,9 +154,16 @@ namespace PacketSniffer2
             GetDevices();
         }
 
-        private void DeviceListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void DeviceListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DevicePrint(); // FIXEN!!!!!!!!!!!!!!!!!!
+            PacketList.Items.Clear();
+            GetSelectedDevice();
+            DevicePrint(miscSelectedDevice);
+        }
+
+        private void btnSendPacket_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
