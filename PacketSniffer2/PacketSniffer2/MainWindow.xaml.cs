@@ -213,5 +213,81 @@ namespace PacketSniffer2
                 }
             }
         }
+
+        private void ProtType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string stringProtocol = ProtType.SelectedItem.ToString();
+            switch (stringProtocol)
+            {
+                case "Standard":
+                    MACsrc.IsEnabled = true;
+                    MACdst.IsEnabled = true;
+                    IPsrc.IsEnabled = true;
+                    IPdst.IsEnabled = true;
+                    IpId.IsEnabled = true;
+                    TTL.IsEnabled = true;
+                    break;
+                case "IPV4":
+                    Data.IsEnabled = true;
+                    Identifier.IsEnabled = false;
+                    PORTsrc.IsEnabled = false;
+                    PORTdst.IsEnabled = false;
+                    SQN.IsEnabled = false;
+                    ACK.IsEnabled = false;
+                    WIN.IsEnabled = false;
+                    Domain.IsEnabled = false;
+                    goto case "Standard";
+                case "ICMP":
+                    Data.IsEnabled = false;
+                    Identifier.IsEnabled = true;
+                    PORTsrc.IsEnabled = false;
+                    PORTdst.IsEnabled = false;
+                    SQN.IsEnabled = true;
+                    ACK.IsEnabled = false;
+                    WIN.IsEnabled = false;
+                    Domain.IsEnabled = false;
+                    goto case "Standard";
+                case "UDP":
+                    Data.IsEnabled = true;
+                    Identifier.IsEnabled = false;
+                    PORTsrc.IsEnabled = true;
+                    PORTdst.IsEnabled = true;
+                    SQN.IsEnabled = false;
+                    ACK.IsEnabled = false;
+                    WIN.IsEnabled = false;
+                    Domain.IsEnabled = false;
+                    goto case "Standard";
+                case "TCP":
+                    Data.IsEnabled = true;
+                    Identifier.IsEnabled = false;
+                    PORTsrc.IsEnabled = true;
+                    PORTdst.IsEnabled = true;
+                    SQN.IsEnabled = true;
+                    ACK.IsEnabled = true;
+                    WIN.IsEnabled = true;
+                    Domain.IsEnabled = false;
+                    goto case "Standard";
+                case "DNS":
+                    Data.IsEnabled = false;
+                    Identifier.IsEnabled = true;
+                    PORTsrc.IsEnabled = true;
+                    PORTdst.IsEnabled = true;
+                    SQN.IsEnabled = false;
+                    ACK.IsEnabled = false;
+                    WIN.IsEnabled = false;
+                    Domain.IsEnabled = true;
+                    goto case "Standard";
+                case "HTTP":
+                    Data.IsEnabled = true;
+                    Identifier.IsEnabled = false;
+                    PORTsrc.IsEnabled = true;
+                    PORTdst.IsEnabled = true;
+                    SQN.IsEnabled = true;
+                    ACK.IsEnabled = true;
+                    WIN.IsEnabled = true;
+                    Domain.IsEnabled = true;
+                    goto case "Standard";
+            }
+        }
     }
 }
