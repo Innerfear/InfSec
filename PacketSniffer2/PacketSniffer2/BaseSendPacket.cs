@@ -1,20 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PcapDotNet.Base;
-using PcapDotNet.Core;
+﻿using System.Collections.Generic;
 using PcapDotNet.Packets;
-using PcapDotNet.Packets.Arp;
-using PcapDotNet.Packets.Dns;
 using PcapDotNet.Packets.Ethernet;
-using PcapDotNet.Packets.Gre;
-using PcapDotNet.Packets.Http;
-using PcapDotNet.Packets.Icmp;
-using PcapDotNet.Packets.Igmp;
-using PcapDotNet.Packets.IpV4;
-using PcapDotNet.Packets.IpV6;
-using PcapDotNet.Packets.Transport;
+using System.Collections;
 
 namespace PacketSniffer2
 {
@@ -22,18 +9,21 @@ namespace PacketSniffer2
     {
         protected EthernetLayer ethernetLayer;
         protected PacketBuilder builder;
+        protected IList<ILayer> listLayers;
         /// <summary>
         /// Will hold all layers that are needed as input for the packet builder
         /// </summary>
-        protected IList<ILayer> layers;
 
-        public virtual void GetAdresses(string MACsrc, string MACdst)
+        public virtual void GetBase(string MACsrc, string MACdst)
         {
             // Supposing to be on ethernet, set mac source
             MacAddress source = new MacAddress(MACsrc);
 
             // Set mac destination
             MacAddress destination = new MacAddress(MACdst);
+
+            // Set ethernet type
+            ethernetLayer.EtherType = EthernetType.None;
 
             // Create the packets layers
 
@@ -44,15 +34,15 @@ namespace PacketSniffer2
                 Destination = destination
                 // The rest of the important parameters will be set for each packet
             };
-
-            // Create the builder that will build our packets
-            builder = new PacketBuilder(layers);
-
         }
         /// <summary>
         /// Add layers for builder
         /// </summary>
-        public abstract void AddLayers();
+        public void AddLayers(IList<ILayer> layers)
+        {
+            // Create the builder that will build our packets
+            builder = new PacketBuilder(layers);
+        }
 
         public byte StringToByte(string sString)
         {
@@ -87,14 +77,14 @@ namespace PacketSniffer2
     class Packet : BaseSendPacket
     {
 
-        public override void GetAdresses(string MACsrc, string MACdst)
+        public override void GetBase(string MACsrc, string MACdst, ...)
         {
-            base.GetAdresses(string MACsrc, string MACdst);
+            base.GetAdresses(string MACsrc, string MACdst, ...);
         }
 
         public override void AddLayers()
         {
-            layers.Add(ethernetLayer);
+            layers.Add(ethernetLayer, ...);
         }
     }
     */

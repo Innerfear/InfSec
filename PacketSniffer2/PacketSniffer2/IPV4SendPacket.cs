@@ -1,4 +1,5 @@
-﻿using PcapDotNet.Packets.Ethernet;
+﻿using PcapDotNet.Packets;
+using PcapDotNet.Packets.Ethernet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,25 +8,27 @@ using System.Threading.Tasks;
 
 namespace PacketSniffer2
 {
+    /// <summary>
+    /// This class builds an IPv4 over Ethernet with payload packet.
+    /// </summary>
     class IPV4SendPacket : BaseSendPacket
     {
-        /// <summary>
-        /// This class builds an IPv4 over Ethernet with payload packet.
-        /// </summary>
+        public Packet IPV4packet;
         public IPV4SendPacket(string MACsrc, string MACdst)
         {
-            GetAdresses(MACsrc, MACdst);
+            GetBase(MACsrc, MACdst);
 
             //CODE HIER
         }
-        public override void GetAdresses(string MACsrc, string MACdst)
+        public override void GetBase(string MACsrc, string MACdst)
         {
-            base.GetAdresses(MACsrc, MACdst);
-            ethernetLayer.EtherType = EthernetType.None;
+            base.GetBase(MACsrc, MACdst);
         }
-        public override void AddLayers()
+        public void GetBuilder()
         {
-            layers.Add();
+            listLayers.Add(ethernetLayer);
+            AddLayers(listLayers);
+            IPV4packet = builder.Build(DateTime.Now);
         }
     }
 }

@@ -16,6 +16,13 @@ namespace PacketSniffer2
         PacketDevice miscSelectedDevice;
         PacketCommunicator miscCommunicator;
 
+        DNSSendPacket BuildDnsPacket;
+        TCPSendPacket BuildTcpPacket;
+        UDPSendPacket BuildUdpPacket;
+        ICMPSendPacket BuildIcmpPacket;
+        IPV4SendPacket BuildIpV4Packet;
+        HTTPSendPacket BuildHttpPacket;
+
         // Retrieve the device list from the local machine
         IList<LivePacketDevice> listAllDevices = LivePacketDevice.AllLocalMachine;
 
@@ -171,22 +178,34 @@ namespace PacketSniffer2
                 switch (stringProtocol)
                 {
                     case "IPV4":
-                        //miscCommunicator.SendPacket(BuildIpV4Packet());
+                        BuildIpV4Packet = new IPV4SendPacket(MACsrc.ToString(), MACdst.ToString());
+                        BuildIpV4Packet.GetBuilder();
+                        miscCommunicator.SendPacket(BuildIpV4Packet.IPV4packet);
                         break;
                     case "ICMP":
-                        //miscCommunicator.SendPacket(BuildIcmpPacket());
+                        BuildIcmpPacket = new ICMPSendPacket(MACsrc.ToString(), MACdst.ToString());
+                        BuildIcmpPacket.GetBuilder();
+                        miscCommunicator.SendPacket(BuildIcmpPacket.ICMPpacket);
                         break;
                     case "UDP":
-                        //miscCommunicator.SendPacket(BuildUdpPacket());
+                        BuildUdpPacket = new UDPSendPacket(MACsrc.ToString(), MACdst.ToString());
+                        BuildUdpPacket.GetBuilder();
+                        miscCommunicator.SendPacket(BuildUdpPacket.UPDpacket);
                         break;
                     case "TCP":
-                        //miscCommunicator.SendPacket(BuildTcpPacket());
+                        BuildTcpPacket = new TCPSendPacket(MACsrc.ToString(), MACdst.ToString());
+                        BuildTcpPacket.GetBuilder();
+                        miscCommunicator.SendPacket(BuildTcpPacket.TCPpacket);
                         break;
                     case "DNS":
-                        //miscCommunicator.SendPacket(BuildDnsPacket());
+                        BuildDnsPacket = new DNSSendPacket(MACsrc.ToString(), MACdst.ToString());
+                        BuildDnsPacket.GetBuilder();
+                        miscCommunicator.SendPacket(BuildDnsPacket.DNSpacket);
                         break;
                     case "HTTP":
-                        //miscCommunicator.SendPacket(BuildHttpPacket());
+                        BuildHttpPacket = new HTTPSendPacket(MACsrc.ToString(), MACdst.ToString());
+                        BuildHttpPacket.GetBuilder();
+                        miscCommunicator.SendPacket(BuildHttpPacket.HTTPpacket);
                         break;
                     default:
                         MessageBox.Show("Select a protocol");

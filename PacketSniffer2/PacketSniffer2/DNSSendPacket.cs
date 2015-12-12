@@ -1,4 +1,5 @@
-﻿using PcapDotNet.Packets.Ethernet;
+﻿using PcapDotNet.Packets;
+using PcapDotNet.Packets.Ethernet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +13,23 @@ namespace PacketSniffer2
     /// </summary>
     class DNSSendPacket : BaseSendPacket
     {
+        public Packet DNSpacket;
         public DNSSendPacket(string MACsrc, string MACdst)
         {
-            GetAdresses(MACsrc, MACdst);
+            GetBase(MACsrc, MACdst);
 
             //CODE HIER
         }
-        public override void GetAdresses(string MACsrc, string MACdst)
+        public override void GetBase(string MACsrc, string MACdst)
         {
-            base.GetAdresses(MACsrc, MACdst);
-            ethernetLayer.EtherType = EthernetType.None;
+            base.GetBase(MACsrc, MACdst);
         }
-        public override void AddLayers()
+
+        public void GetBuilder()
         {
-            layers.Add();
+            listLayers.Add(ethernetLayer);
+            AddLayers(listLayers);
+            DNSpacket = builder.Build(DateTime.Now);
         }
     }
 }
