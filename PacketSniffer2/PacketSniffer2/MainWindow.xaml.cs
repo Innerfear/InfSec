@@ -183,7 +183,7 @@ namespace PacketSniffer2
                         miscCommunicator.SendPacket(BuildIpV4Packet.GetBuilder());
                         break;
                     case 1:
-                        BuildIcmpPacket = new ICMPSendPacket(MACsrc.Text, MACdst.Text);
+                        BuildIcmpPacket = new ICMPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, Identifier.Text, SQN.Text);
                         //miscCommunicator.SendPacket(BuildIcmpPacket.GetBuilder());
                         break;
                     case 2:
