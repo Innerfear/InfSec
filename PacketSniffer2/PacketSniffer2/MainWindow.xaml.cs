@@ -199,7 +199,7 @@ namespace PacketSniffer2
                         //miscCommunicator.SendPacket(BuildDnsPacket.GetBuilder());
                         break;
                     case 5:
-                        BuildHttpPacket = new HTTPSendPacket(MACsrc.Text, MACdst.Text);
+                        BuildHttpPacket = new HTTPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, PORTdst.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text, Domain.Text);
                         //miscCommunicator.SendPacket(BuildHttpPacket.GetBuilder());
                         break;
                     default:
