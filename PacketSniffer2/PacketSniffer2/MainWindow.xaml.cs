@@ -187,7 +187,7 @@ namespace PacketSniffer2
                         //miscCommunicator.SendPacket(BuildIcmpPacket.GetBuilder());
                         break;
                     case 2:
-                        BuildUdpPacket = new UDPSendPacket(MACsrc.Text, MACdst.Text);
+                        BuildUdpPacket = new UDPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, PORTdst.Text, Data.Text);
                         //miscCommunicator.SendPacket(BuildUdpPacket.GetBuilder());
                         break;
                     case 3:
