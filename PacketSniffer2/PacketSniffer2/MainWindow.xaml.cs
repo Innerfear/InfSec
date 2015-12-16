@@ -191,7 +191,7 @@ namespace PacketSniffer2
                         //miscCommunicator.SendPacket(BuildUdpPacket.GetBuilder());
                         break;
                     case 3:
-                        BuildTcpPacket = new TCPSendPacket(MACsrc.Text, MACdst.Text);
+                        BuildTcpPacket = new TCPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, PORTdst.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text);
                         //miscCommunicator.SendPacket(BuildTcpPacket.GetBuilder());
                         break;
                     case 4:
