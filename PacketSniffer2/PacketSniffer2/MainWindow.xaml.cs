@@ -195,7 +195,7 @@ namespace PacketSniffer2
                         //miscCommunicator.SendPacket(BuildTcpPacket.GetBuilder());
                         break;
                     case 4:
-                        BuildDnsPacket = new DNSSendPacket(MACsrc.Text, MACdst.Text);
+                        BuildDnsPacket = new DNSSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, PORTdst.Text, Identifier.Text, Domain.Text);
                         //miscCommunicator.SendPacket(BuildDnsPacket.GetBuilder());
                         break;
                     case 5:
