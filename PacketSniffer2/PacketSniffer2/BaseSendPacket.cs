@@ -22,18 +22,17 @@ namespace PacketSniffer2
             // Set mac destination
             MacAddress destination = new MacAddress(MACdst);
 
-            // Set ethernet type
-            ethernetLayer.EtherType = EthernetType.None;
-
             // Create the packets layers
 
             // Ethernet Layer
             ethernetLayer = new EthernetLayer
             {
                 Source = source,
-                Destination = destination
-                // The rest of the important parameters will be set for each packet
-            };
+                Destination = destination,
+                // Set ethernet type
+                EtherType = EthernetType.None
+            // The rest of the important parameters will be set for each packet
+        };
         }
         /// <summary>
         /// Add layers for builder
@@ -69,6 +68,19 @@ namespace PacketSniffer2
             else
             {
                 return newInt = 1;
+            }
+        }
+        public ushort StringToUShort (string sString)
+        {
+            ushort newUShort;
+            if (sString != null)
+            {
+                newUShort = ushort.Parse(sString);
+                return newUShort;
+            }
+            else
+            {
+                return newUShort = 1;
             }
         }
     }

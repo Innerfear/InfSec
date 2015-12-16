@@ -174,38 +174,33 @@ namespace PacketSniffer2
             // Open the output device
             using (miscCommunicator = miscSelectedDevice.Open(100, PacketDeviceOpenAttributes.Promiscuous, 1000))
             {
-                string stringProtocol = ProtType.SelectedItem.ToString();
+                int stringProtocol = ProtType.SelectedIndex;
                 switch (stringProtocol)
                 {
-                    case "System.Windows.Controls.ComboBoxItem: IPV4":
-                        BuildIpV4Packet = new IPV4SendPacket(MACsrc.ToString(), MACdst.ToString());
-                        BuildIpV4Packet.GetBuilder();
-                        miscCommunicator.SendPacket(BuildIpV4Packet.IPV4packet);
+                    case 0:
+                        BuildIpV4Packet = new IPV4SendPacket(MACsrc.Text, MACdst.Text,
+                            IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, Data.Text);
+                        miscCommunicator.SendPacket(BuildIpV4Packet.GetBuilder());
                         break;
-                    case "System.Windows.Controls.ComboBoxItem: ICMP":
-                        BuildIcmpPacket = new ICMPSendPacket(MACsrc.ToString(), MACdst.ToString());
-                        BuildIcmpPacket.GetBuilder();
-                        miscCommunicator.SendPacket(BuildIcmpPacket.ICMPpacket);
+                    case 1:
+                        BuildIcmpPacket = new ICMPSendPacket(MACsrc.Text, MACdst.Text);
+                        //miscCommunicator.SendPacket(BuildIcmpPacket.GetBuilder());
                         break;
-                    case "System.Windows.Controls.ComboBoxItem: UDP":
-                        BuildUdpPacket = new UDPSendPacket(MACsrc.ToString(), MACdst.ToString());
-                        BuildUdpPacket.GetBuilder();
-                        miscCommunicator.SendPacket(BuildUdpPacket.UPDpacket);
+                    case 2:
+                        BuildUdpPacket = new UDPSendPacket(MACsrc.Text, MACdst.Text);
+                        //miscCommunicator.SendPacket(BuildUdpPacket.GetBuilder());
                         break;
-                    case "System.Windows.Controls.ComboBoxItem: TCP":
-                        BuildTcpPacket = new TCPSendPacket(MACsrc.ToString(), MACdst.ToString());
-                        BuildTcpPacket.GetBuilder();
-                        miscCommunicator.SendPacket(BuildTcpPacket.TCPpacket);
+                    case 3:
+                        BuildTcpPacket = new TCPSendPacket(MACsrc.Text, MACdst.Text);
+                        //miscCommunicator.SendPacket(BuildTcpPacket.GetBuilder());
                         break;
-                    case "System.Windows.Controls.ComboBoxItem: DNS":
-                        BuildDnsPacket = new DNSSendPacket(MACsrc.ToString(), MACdst.ToString());
-                        BuildDnsPacket.GetBuilder();
-                        miscCommunicator.SendPacket(BuildDnsPacket.DNSpacket);
+                    case 4:
+                        BuildDnsPacket = new DNSSendPacket(MACsrc.Text, MACdst.Text);
+                        //miscCommunicator.SendPacket(BuildDnsPacket.GetBuilder());
                         break;
-                    case "System.Windows.Controls.ComboBoxItem: HTTP":
-                        BuildHttpPacket = new HTTPSendPacket(MACsrc.ToString(), MACdst.ToString());
-                        BuildHttpPacket.GetBuilder();
-                        miscCommunicator.SendPacket(BuildHttpPacket.HTTPpacket);
+                    case 5:
+                        BuildHttpPacket = new HTTPSendPacket(MACsrc.Text, MACdst.Text);
+                        //miscCommunicator.SendPacket(BuildHttpPacket.GetBuilder());
                         break;
                     default:
                         MessageBox.Show("Select a protocol");
@@ -216,18 +211,19 @@ namespace PacketSniffer2
 
         private void ProtType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string stringProtocol = ProtType.SelectedItem.ToString();
+            int stringProtocol = ProtType.SelectedIndex;
             switch (stringProtocol)
             {
-                case "Standard":
+                case 100:
                     MACsrc.IsEnabled = true;
                     MACdst.IsEnabled = true;
                     IPsrc.IsEnabled = true;
                     IPdst.IsEnabled = true;
                     IpId.IsEnabled = true;
                     TTL.IsEnabled = true;
+                    btnSendPacket.IsEnabled = true;
                     break;
-                case "System.Windows.Controls.ComboBoxItem: IPV4":
+                case 0:
                     Data.IsEnabled = true;
                     Identifier.IsEnabled = false;
                     PORTsrc.IsEnabled = false;
@@ -236,8 +232,8 @@ namespace PacketSniffer2
                     ACK.IsEnabled = false;
                     WIN.IsEnabled = false;
                     Domain.IsEnabled = false;
-                    goto case "Standard";
-                case "System.Windows.Controls.ComboBoxItem: ICMP":
+                    goto case 100;
+                case 1:
                     Data.IsEnabled = false;
                     Identifier.IsEnabled = true;
                     PORTsrc.IsEnabled = false;
@@ -246,8 +242,8 @@ namespace PacketSniffer2
                     ACK.IsEnabled = false;
                     WIN.IsEnabled = false;
                     Domain.IsEnabled = false;
-                    goto case "Standard";
-                case "System.Windows.Controls.ComboBoxItem: UDP":
+                    goto case 100;
+                case 2:
                     Data.IsEnabled = true;
                     Identifier.IsEnabled = false;
                     PORTsrc.IsEnabled = true;
@@ -256,8 +252,8 @@ namespace PacketSniffer2
                     ACK.IsEnabled = false;
                     WIN.IsEnabled = false;
                     Domain.IsEnabled = false;
-                    goto case "Standard";
-                case "System.Windows.Controls.ComboBoxItem: TCP":
+                    goto case 100;
+                case 3:
                     Data.IsEnabled = true;
                     Identifier.IsEnabled = false;
                     PORTsrc.IsEnabled = true;
@@ -266,8 +262,8 @@ namespace PacketSniffer2
                     ACK.IsEnabled = true;
                     WIN.IsEnabled = true;
                     Domain.IsEnabled = false;
-                    goto case "Standard";
-                case "System.Windows.Controls.ComboBoxItem: DNS":
+                    goto case 100;
+                case 4:
                     Data.IsEnabled = false;
                     Identifier.IsEnabled = true;
                     PORTsrc.IsEnabled = true;
@@ -276,8 +272,8 @@ namespace PacketSniffer2
                     ACK.IsEnabled = false;
                     WIN.IsEnabled = false;
                     Domain.IsEnabled = true;
-                    goto case "Standard";
-                case "System.Windows.Controls.ComboBoxItem: HTTP":
+                    goto case 100;
+                case 5:
                     Data.IsEnabled = true;
                     Identifier.IsEnabled = false;
                     PORTsrc.IsEnabled = true;
@@ -286,7 +282,7 @@ namespace PacketSniffer2
                     ACK.IsEnabled = true;
                     WIN.IsEnabled = true;
                     Domain.IsEnabled = true;
-                    goto case "Standard";
+                    goto case 100;
             }
         }
     }
