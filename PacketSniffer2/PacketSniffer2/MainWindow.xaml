@@ -142,6 +142,7 @@
                             </Grid.RowDefinitions>
                             <Label x:Name="lblProtType" Grid.Column="0" Grid.Row="0" Content="Protocol Type" Margin="8,0,0,0"/>
                             <ComboBox x:Name="ProtType" Grid.Column="1" Grid.Row="0" SelectionChanged="ProtType_SelectionChanged">
+                                <ComboBoxItem x:Name="ProtNone" Content="None" IsSelected="true"/>
                                 <ComboBoxItem x:Name="ProtIPV4" Content="IPV4"/>
                                 <ComboBoxItem x:Name="ProtICMP" Content="ICMP"/>
                                 <ComboBoxItem x:Name="ProtUDP" Content="UDP"/>
@@ -160,7 +161,7 @@
                             <Label x:Name="lblIPsrcMAx" Grid.Column="2" Grid.Row="3" Content="255.255.255.255" Margin="8,0,0,0"/>
                             <Label x:Name="lblIPdst" Grid.Column="0" Grid.Row="4" Content="Destination IP Address" Margin="8,0,0,0"/>
                             <TextBox x:Name="IPdst" Grid.Column="1" Grid.Row="4" IsEnabled="False"/>
-                            <Label x:Name="lblIPdstMax" Grid.Column="2" Grid.Row="4" Content="255.255.255.0" Margin="8,0,0,0"/>
+                            <Label x:Name="lblIPdstMax" Grid.Column="2" Grid.Row="4" Content="255.255.255.1" Margin="8,0,0,0"/>
                             <Label x:Name="lblIpId" Grid.Column="0" Grid.Row="6" Content="Identification" Margin="8,0,0,0"/>
                             <TextBox x:Name="IpId" Grid.Column="1" Grid.Row="6" IsEnabled="False"/>
                             <Label x:Name="lblIpIdMax" Grid.Column="2" Grid.Row="6" Content="255" Margin="8,0,0,0"/>

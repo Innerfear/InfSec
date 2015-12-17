@@ -109,6 +109,10 @@ namespace PacketSniffer2
                     {
                         miscSelectedDevice = device;
                     }
+                }
+                else
+                {
+                    MessageBox.Show("Select a device and press 'capture' to start.");
                 }     
             }
         }
@@ -178,29 +182,82 @@ namespace PacketSniffer2
                 switch (stringProtocol)
                 {
                     case 0:
-                        BuildIpV4Packet = new IPV4SendPacket(MACsrc.Text, MACdst.Text,
-                            IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, Data.Text);
-                        miscCommunicator.SendPacket(BuildIpV4Packet.GetBuilder());
+                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
+                            && TTL.Text != "" && Data.Text != "")
+                        {
+                            BuildIpV4Packet = new IPV4SendPacket(MACsrc.Text, MACdst.Text,
+                                IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, Data.Text);
+                            miscCommunicator.SendPacket(BuildIpV4Packet.GetBuilder());
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please fill in all required (open) fields");
+                        }
                         break;
                     case 1:
-                        BuildIcmpPacket = new ICMPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, Identifier.Text, SQN.Text);
-                        //miscCommunicator.SendPacket(BuildIcmpPacket.GetBuilder());
+                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
+                            && TTL.Text != "" && Identifier.Text != "" && SQN.Text != "")
+                        {
+                            BuildIcmpPacket = new ICMPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
+                            IPdst.Text, IpId.Text, TTL.Text, Identifier.Text, SQN.Text);
+                            miscCommunicator.SendPacket(BuildIcmpPacket.GetBuilder());
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please fill in all required (open) fields");
+                        }
                         break;
                     case 2:
-                        BuildUdpPacket = new UDPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, PORTdst.Text, Data.Text);
-                        //miscCommunicator.SendPacket(BuildUdpPacket.GetBuilder());
+                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
+                            && TTL.Text != "" && PORTsrc.Text != "" && PORTdst.Text != "" && Data.Text != "")
+                        {
+                            BuildUdpPacket = new UDPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
+                            IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, PORTdst.Text, Data.Text);
+                            miscCommunicator.SendPacket(BuildUdpPacket.GetBuilder());
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please fill in all required (open) fields");
+                        }
                         break;
                     case 3:
-                        BuildTcpPacket = new TCPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, PORTdst.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text);
-                        //miscCommunicator.SendPacket(BuildTcpPacket.GetBuilder());
+                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != "" 
+                            && PORTsrc.Text != "" && PORTdst.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "")
+                        {
+                            BuildTcpPacket = new TCPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
+                            IpId.Text, TTL.Text, PORTsrc.Text, PORTdst.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text);
+                            miscCommunicator.SendPacket(BuildTcpPacket.GetBuilder());
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please fill in all required (open) fields");
+                        }
                         break;
                     case 4:
-                        BuildDnsPacket = new DNSSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, PORTdst.Text, Identifier.Text, Domain.Text);
-                        //miscCommunicator.SendPacket(BuildDnsPacket.GetBuilder());
+                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
+                            && PORTsrc.Text != "" && PORTdst.Text != "" && Identifier.Text != "" && Domain.Text != "")
+                        {
+                            BuildDnsPacket = new DNSSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
+                            IpId.Text, TTL.Text, PORTsrc.Text, PORTdst.Text, Identifier.Text, Domain.Text);
+                            miscCommunicator.SendPacket(BuildDnsPacket.GetBuilder());
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please fill in all required (open) fields");
+                        }
                         break;
                     case 5:
-                        BuildHttpPacket = new HTTPSendPacket(MACsrc.Text, MACdst.Text);
-                        //miscCommunicator.SendPacket(BuildHttpPacket.GetBuilder());
+                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
+                            && PORTsrc.Text != "" && PORTdst.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "" && Domain.Text != "")
+                        {
+                            BuildHttpPacket = new HTTPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text,
+                            TTL.Text, PORTsrc.Text, PORTdst.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text, Domain.Text);
+                            miscCommunicator.SendPacket(BuildHttpPacket.GetBuilder());
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please fill in all required (open) fields");
+                        }
                         break;
                     default:
                         MessageBox.Show("Select a protocol");
@@ -214,6 +271,126 @@ namespace PacketSniffer2
             int stringProtocol = ProtType.SelectedIndex;
             switch (stringProtocol)
             {
+                case 0:
+                    if (MACsrc != null)
+                    {
+                        btnSendPacket.IsEnabled = false;
+                        MACsrc.IsEnabled = false;
+                        MACsrc.Text = "";
+                        MACdst.IsEnabled = false;
+                        MACdst.Text = "";
+                        IPsrc.IsEnabled = false;
+                        IPsrc.Text = "";
+                        IPdst.IsEnabled = false;
+                        IPdst.Text = "";
+                        IpId.IsEnabled = false;
+                        IpId.Text = "";
+                        TTL.IsEnabled = false;
+                        TTL.Text = "";
+                        Data.IsEnabled = false;
+                        Data.Text = "";
+                        Identifier.IsEnabled = false;
+                        Identifier.Text = "";
+                        PORTsrc.IsEnabled = false;
+                        PORTsrc.Text = "";
+                        PORTdst.IsEnabled = false;
+                        PORTdst.Text = "";
+                        SQN.IsEnabled = false;
+                        SQN.Text = "";
+                        ACK.IsEnabled = false;
+                        ACK.Text = "";
+                        WIN.IsEnabled = false;
+                        WIN.Text = "";
+                        Domain.IsEnabled = false;
+                        Domain.Text = "";
+                    }
+                    break;
+                case 1:
+                    Data.IsEnabled = true;
+                    Identifier.IsEnabled = false;
+                    Identifier.Text = "";
+                    PORTsrc.IsEnabled = false;
+                    PORTsrc.Text = "";
+                    PORTdst.IsEnabled = false;
+                    PORTdst.Text = "";
+                    SQN.IsEnabled = false;
+                    SQN.Text = "";
+                    ACK.IsEnabled = false;
+                    ACK.Text = "";
+                    WIN.IsEnabled = false;
+                    WIN.Text = "";
+                    Domain.IsEnabled = false;
+                    Domain.Text = "";
+                    goto case 100;
+                case 2:
+                    Data.IsEnabled = false;
+                    Data.Text = "";
+                    Identifier.IsEnabled = true;
+                    PORTsrc.IsEnabled = false;
+                    PORTsrc.Text = "";
+                    PORTdst.IsEnabled = false;
+                    PORTdst.Text = "";
+                    SQN.IsEnabled = false;
+                    SQN.Text = "";
+                    ACK.IsEnabled = false;
+                    ACK.Text = "";
+                    WIN.IsEnabled = false;
+                    WIN.Text = "";
+                    Domain.IsEnabled = false;
+                    Domain.Text = "";
+                    goto case 100;
+                case 3:
+                    Data.IsEnabled = true;
+                    Identifier.IsEnabled = false;
+                    Identifier.Text = "";
+                    PORTsrc.IsEnabled = true;
+                    PORTdst.IsEnabled = true;
+                    SQN.IsEnabled = false;
+                    SQN.Text = "";
+                    ACK.IsEnabled = false;
+                    ACK.Text = "";
+                    WIN.IsEnabled = false;
+                    WIN.Text = "";
+                    Domain.IsEnabled = false;
+                    Domain.Text = "";
+                    goto case 100;
+                case 4:
+                    Data.IsEnabled = true;
+                    Identifier.IsEnabled = false;
+                    Identifier.Text = "";
+                    PORTsrc.IsEnabled = true;
+                    PORTdst.IsEnabled = true;
+                    SQN.IsEnabled = true;
+                    ACK.IsEnabled = true;
+                    WIN.IsEnabled = true;
+                    Domain.IsEnabled = false;
+                    Domain.Text = "";
+                    goto case 100;
+                case 5:
+                    Data.IsEnabled = false;
+                    Data.Text = "";
+                    Identifier.IsEnabled = true;
+                    PORTsrc.IsEnabled = true;
+                    PORTdst.IsEnabled = true;
+                    SQN.IsEnabled = false;
+                    SQN.Text = "";
+                    ACK.IsEnabled = false;
+                    ACK.Text = "";
+                    WIN.IsEnabled = false;
+                    WIN.Text = "";
+                    Domain.IsEnabled = true;
+                    goto case 100;
+                case 6:
+                    Data.IsEnabled = true;
+                    Identifier.IsEnabled = false;
+                    Identifier.Text = "";
+                    PORTsrc.IsEnabled = true;
+                    PORTdst.IsEnabled = true;
+                    SQN.IsEnabled = true;
+                    ACK.IsEnabled = true;
+                    WIN.IsEnabled = true;
+                    Domain.IsEnabled = true;
+                    goto case 100;
                 case 100:
                     MACsrc.IsEnabled = true;
                     MACdst.IsEnabled = true;
@@ -223,66 +400,6 @@ namespace PacketSniffer2
                     TTL.IsEnabled = true;
                     btnSendPacket.IsEnabled = true;
                     break;
-                case 0:
-                    Data.IsEnabled = true;
-                    Identifier.IsEnabled = false;
-                    PORTsrc.IsEnabled = false;
-                    PORTdst.IsEnabled = false;
-                    SQN.IsEnabled = false;
-                    ACK.IsEnabled = false;
-                    WIN.IsEnabled = false;
-                    Domain.IsEnabled = false;
-                    goto case 100;
-                case 1:
-                    Data.IsEnabled = false;
-                    Identifier.IsEnabled = true;
-                    PORTsrc.IsEnabled = false;
-                    PORTdst.IsEnabled = false;
-                    SQN.IsEnabled = true;
-                    ACK.IsEnabled = false;
-                    WIN.IsEnabled = false;
-                    Domain.IsEnabled = false;
-                    goto case 100;
-                case 2:
-                    Data.IsEnabled = true;
-                    Identifier.IsEnabled = false;
-                    PORTsrc.IsEnabled = true;
-                    PORTdst.IsEnabled = true;
-                    SQN.IsEnabled = false;
-                    ACK.IsEnabled = false;
-                    WIN.IsEnabled = false;
-                    Domain.IsEnabled = false;
-                    goto case 100;
-                case 3:
-                    Data.IsEnabled = true;
-                    Identifier.IsEnabled = false;
-                    PORTsrc.IsEnabled = true;
-                    PORTdst.IsEnabled = true;
-                    SQN.IsEnabled = true;
-                    ACK.IsEnabled = true;
-                    WIN.IsEnabled = true;
-                    Domain.IsEnabled = false;
-                    goto case 100;
-                case 4:
-                    Data.IsEnabled = false;
-                    Identifier.IsEnabled = true;
-                    PORTsrc.IsEnabled = true;
-                    PORTdst.IsEnabled = true;
-                    SQN.IsEnabled = false;
-                    ACK.IsEnabled = false;
-                    WIN.IsEnabled = false;
-                    Domain.IsEnabled = true;
-                    goto case 100;
-                case 5:
-                    Data.IsEnabled = true;
-                    Identifier.IsEnabled = false;
-                    PORTsrc.IsEnabled = true;
-                    PORTdst.IsEnabled = true;
-                    SQN.IsEnabled = true;
-                    ACK.IsEnabled = true;
-                    WIN.IsEnabled = true;
-                    Domain.IsEnabled = true;
-                    goto case 100;
             }
         }
     }

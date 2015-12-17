@@ -1,12 +1,8 @@
 ﻿using PcapDotNet.Packets;
-using PcapDotNet.Packets.Ethernet;
 using PcapDotNet.Packets.IpV4;
 using PcapDotNet.Packets.Transport;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PacketSniffer2
 {
@@ -16,16 +12,15 @@ namespace PacketSniffer2
     class UDPSendPacket : BaseSendPacket
     {
         public Packet UPDpacket;
-        protected IpV4Layer ipv4Layer;
-        protected UdpLayer udpLayer;
-        protected PayloadLayer payloadLayer;
-        public UDPSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst, string IpId, string TTL, string PORTsrc, string PORTdst, string data)
+        private IpV4Layer ipV4Layer;
+        private UdpLayer udpLayer;
+        private PayloadLayer payloadLayer;
+        public UDPSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst,
+            string IpId, string TTL, string PORTsrc, string PORTdst, string data)
         {
             GetBase(MACsrc, MACdst);
 
-            //CODE HIER
-            ipv4Layer =
-            new IpV4Layer
+            ipV4Layer = new IpV4Layer
             {
                 Source = new IpV4Address(IPsrc),
                 CurrentDestination = new IpV4Address(IPdst),
@@ -38,8 +33,7 @@ namespace PacketSniffer2
                 TypeOfService = 0,
             };
 
-           udpLayer =
-           new UdpLayer
+           udpLayer = new UdpLayer
            {
                SourcePort = StringToUShort(PORTsrc),
                DestinationPort = StringToUShort(PORTdst),
@@ -47,8 +41,7 @@ namespace PacketSniffer2
                CalculateChecksumValue = true,
            };
 
-             payloadLayer =
-             new PayloadLayer
+             payloadLayer = new PayloadLayer
              {
                  Data = new Datagram(Encoding.ASCII.GetBytes(data)),
              };
@@ -57,14 +50,10 @@ namespace PacketSniffer2
         {
             base.GetBase(MACsrc, MACdst);
         }
-        public void GetBuilder()
+        public Packet GetBuilder()
         {
-            listLayers.Add(ethernetLayer);
-            listLayers.Add(ipv4Layer);
-            listLayers.Add(udpLayer);
-            listLayers.Add(payloadLayer);
-            AddLayers(listLayers);
-            UPDpacket = builder.Build(DateTime.Now);
+            builder = new PacketBuilder(ethernetLayer, ipV4Layer, udpLayer, payloadLayer);
+            return UPDpacket = builder.Build(DateTime.Now);
         }
     }
 }

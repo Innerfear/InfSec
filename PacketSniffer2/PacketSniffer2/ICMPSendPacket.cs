@@ -1,12 +1,7 @@
 ﻿using PcapDotNet.Packets;
-using PcapDotNet.Packets.Ethernet;
 using PcapDotNet.Packets.Icmp;
 using PcapDotNet.Packets.IpV4;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PacketSniffer2
 {
@@ -16,13 +11,13 @@ namespace PacketSniffer2
     class ICMPSendPacket : BaseSendPacket
     {
         public Packet ICMPpacket;
-        protected IpV4Layer ipv4Layer;
-        protected IcmpEchoLayer icmplayer;
+        private IpV4Layer ipV4Layer;
+        private IcmpEchoLayer icmpLayer;
         public ICMPSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst, string IpId, string TTL, string Identifier, string SQN)
         {
             GetBase(MACsrc, MACdst);
 
-           ipv4Layer =
+           ipV4Layer =
            new IpV4Layer
            {
                Source = new IpV4Address(IPsrc),
@@ -36,7 +31,7 @@ namespace PacketSniffer2
                TypeOfService = 0,
            };
 
-            icmplayer =
+            icmpLayer =
             new IcmpEchoLayer
             {
                 Checksum = null, // Will be filled automatically.
@@ -48,13 +43,10 @@ namespace PacketSniffer2
         {
             base.GetBase(MACsrc, MACdst);
         }
-        public void GetBuilder()
+        public Packet GetBuilder()
         {
-            listLayers.Add(ethernetLayer);
-            listLayers.Add(ipv4Layer);
-            listLayers.Add(icmplayer);
-            AddLayers(listLayers);
-            ICMPpacket = builder.Build(DateTime.Now);
+            builder = new PacketBuilder(ethernetLayer, ipV4Layer, icmpLayer);
+            return ICMPpacket = builder.Build(DateTime.Now);
         }
     }
 }

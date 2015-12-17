@@ -1,11 +1,7 @@
 ﻿using PcapDotNet.Packets;
-using PcapDotNet.Packets.Ethernet;
 using PcapDotNet.Packets.IpV4;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PacketSniffer2
 {
@@ -15,13 +11,13 @@ namespace PacketSniffer2
     class IPV4SendPacket : BaseSendPacket
     {
         public Packet IPV4packet;
-        protected IpV4Layer ipv4Layer;
-        protected PayloadLayer payloadLayer;
+        private IpV4Layer ipV4Layer;
+        private PayloadLayer payloadLayer;
         public IPV4SendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst, string IpId, string TTL, string data)
         {
             GetBase(MACsrc, MACdst);
 
-            ipv4Layer = new IpV4Layer
+            ipV4Layer = new IpV4Layer
             {
                 Source = new IpV4Address(IPsrc),
                 CurrentDestination = new IpV4Address(IPdst),
@@ -45,10 +41,7 @@ namespace PacketSniffer2
         }
         public Packet GetBuilder()
         {
-            listLayers.Add(ethernetLayer);
-            listLayers.Add(ipv4Layer);
-            listLayers.Add(payloadLayer);
-            AddLayers(listLayers);
+            builder = new PacketBuilder(ethernetLayer, ipV4Layer, payloadLayer);
             return IPV4packet = builder.Build(DateTime.Now);
         }
     }

@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using PcapDotNet.Packets;
+﻿using PcapDotNet.Packets;
 using PcapDotNet.Packets.Ethernet;
-using System.Collections;
 
 namespace PacketSniffer2
 {
@@ -9,7 +7,6 @@ namespace PacketSniffer2
     {
         protected EthernetLayer ethernetLayer;
         protected PacketBuilder builder;
-        protected IList<ILayer> listLayers;
         /// <summary>
         /// Will hold all layers that are needed as input for the packet builder
         /// </summary>
@@ -33,14 +30,6 @@ namespace PacketSniffer2
                 EtherType = EthernetType.None
             // The rest of the important parameters will be set for each packet
         };
-        }
-        /// <summary>
-        /// Add layers for builder
-        /// </summary>
-        public void AddLayers(IList<ILayer> layers)
-        {
-            // Create the builder that will build our packets
-            builder = new PacketBuilder(layers);
         }
 
         public byte StringToByte(string sString)

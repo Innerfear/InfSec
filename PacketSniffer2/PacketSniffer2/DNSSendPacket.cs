@@ -1,13 +1,8 @@
 ﻿using PcapDotNet.Packets;
 using PcapDotNet.Packets.Dns;
-using PcapDotNet.Packets.Ethernet;
 using PcapDotNet.Packets.IpV4;
 using PcapDotNet.Packets.Transport;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PacketSniffer2
 {
@@ -17,15 +12,15 @@ namespace PacketSniffer2
     class DNSSendPacket : BaseSendPacket
     {
         public Packet DNSpacket;
-        protected IpV4Layer ipv4Layer;
-        protected UdpLayer udpLayer;
-        protected DnsLayer dnsLayer;
-        public DNSSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst, string IpId, string TTL, string PORTsrc, string PORTdst, string Identifier, string Domain)
+        private IpV4Layer ipV4Layer;
+        private UdpLayer udpLayer;
+        private DnsLayer dnsLayer;
+        public DNSSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst,
+            string IpId, string TTL, string PORTsrc, string PORTdst, string Identifier, string Domain)
         {
             GetBase(MACsrc, MACdst);
 
-           ipv4Layer =
-           new IpV4Layer
+           ipV4Layer = new IpV4Layer
            {
                Source = new IpV4Address(IPsrc),
                CurrentDestination = new IpV4Address(IPdst),
@@ -38,8 +33,7 @@ namespace PacketSniffer2
                TypeOfService = 0,
            };
 
-            UdpLayer udpLayer =
-            new UdpLayer
+            udpLayer = new UdpLayer
             {
                 SourcePort = StringToUShort(PORTsrc),
                 DestinationPort = StringToUShort(PORTdst),
@@ -47,8 +41,7 @@ namespace PacketSniffer2
                 CalculateChecksumValue = true,
             };
 
-            dnsLayer =
-                new DnsLayer
+            dnsLayer = new DnsLayer
                 {
                     Id = StringToUShort(Identifier),
                     IsResponse = false,
@@ -79,14 +72,10 @@ namespace PacketSniffer2
             base.GetBase(MACsrc, MACdst);
         }
 
-        public void GetBuilder()
+        public Packet GetBuilder()
         {
-            listLayers.Add(ethernetLayer);
-            listLayers.Add(ipv4Layer);
-            listLayers.Add(udpLayer);
-            listLayers.Add(dnsLayer);
-            AddLayers(listLayers);
-            DNSpacket = builder.Build(DateTime.Now);
+            builder = new PacketBuilder(ethernetLayer, ipV4Layer, udpLayer, dnsLayer);
+            return DNSpacket = builder.Build(DateTime.Now);
         }
     }
 }
