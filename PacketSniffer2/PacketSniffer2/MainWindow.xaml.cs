@@ -181,7 +181,7 @@ namespace PacketSniffer2
                 int stringProtocol = ProtType.SelectedIndex;
                 switch (stringProtocol)
                 {
-                    case 0:
+                    case 1:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
                             && TTL.Text != "" && Data.Text != "")
                         {
@@ -194,7 +194,7 @@ namespace PacketSniffer2
                             MessageBox.Show("Please fill in all required (open) fields");
                         }
                         break;
-                    case 1:
+                    case 2:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
                             && TTL.Text != "" && Identifier.Text != "" && SQN.Text != "")
                         {
@@ -207,7 +207,7 @@ namespace PacketSniffer2
                             MessageBox.Show("Please fill in all required (open) fields");
                         }
                         break;
-                    case 2:
+                    case 3:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
                             && TTL.Text != "" && PORTsrc.Text != "" && Data.Text != "")
                         {
@@ -220,7 +220,7 @@ namespace PacketSniffer2
                             MessageBox.Show("Please fill in all required (open) fields");
                         }
                         break;
-                    case 3:
+                    case 4:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != "" 
                             && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "")
                         {
@@ -233,7 +233,7 @@ namespace PacketSniffer2
                             MessageBox.Show("Please fill in all required (open) fields");
                         }
                         break;
-                    case 4:
+                    case 5:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
                             && PORTsrc.Text != "" && Identifier.Text != "" && Domain.Text != "")
                         {
@@ -246,7 +246,7 @@ namespace PacketSniffer2
                             MessageBox.Show("Please fill in all required (open) fields");
                         }
                         break;
-                    case 5:
+                    case 6:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
                             && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "" && Domain.Text != "")
                         {
