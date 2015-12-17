@@ -209,10 +209,10 @@ namespace PacketSniffer2
                         break;
                     case 2:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
-                            && TTL.Text != "" && PORTsrc.Text != "" && PORTdst.Text != "" && Data.Text != "")
+                            && TTL.Text != "" && PORTsrc.Text != "" && Data.Text != "")
                         {
                             BuildUdpPacket = new UDPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
-                            IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, PORTdst.Text, Data.Text);
+                            IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, Data.Text);
                             miscCommunicator.SendPacket(BuildUdpPacket.GetBuilder());
                         }
                         else
@@ -222,10 +222,10 @@ namespace PacketSniffer2
                         break;
                     case 3:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != "" 
-                            && PORTsrc.Text != "" && PORTdst.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "")
+                            && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "")
                         {
                             BuildTcpPacket = new TCPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
-                            IpId.Text, TTL.Text, PORTsrc.Text, PORTdst.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text);
+                            IpId.Text, TTL.Text, PORTsrc.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text);
                             miscCommunicator.SendPacket(BuildTcpPacket.GetBuilder());
                         }
                         else
@@ -235,10 +235,10 @@ namespace PacketSniffer2
                         break;
                     case 4:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
-                            && PORTsrc.Text != "" && PORTdst.Text != "" && Identifier.Text != "" && Domain.Text != "")
+                            && PORTsrc.Text != "" && Identifier.Text != "" && Domain.Text != "")
                         {
                             BuildDnsPacket = new DNSSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
-                            IpId.Text, TTL.Text, PORTsrc.Text, PORTdst.Text, Identifier.Text, Domain.Text);
+                            IpId.Text, TTL.Text, PORTsrc.Text, Identifier.Text, Domain.Text);
                             miscCommunicator.SendPacket(BuildDnsPacket.GetBuilder());
                         }
                         else
@@ -248,10 +248,10 @@ namespace PacketSniffer2
                         break;
                     case 5:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
-                            && PORTsrc.Text != "" && PORTdst.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "" && Domain.Text != "")
+                            && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "" && Domain.Text != "")
                         {
                             BuildHttpPacket = new HTTPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text,
-                            TTL.Text, PORTsrc.Text, PORTdst.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text, Domain.Text);
+                            TTL.Text, PORTsrc.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text, Domain.Text);
                             miscCommunicator.SendPacket(BuildHttpPacket.GetBuilder());
                         }
                         else
@@ -293,8 +293,6 @@ namespace PacketSniffer2
                         Identifier.Text = "";
                         PORTsrc.IsEnabled = false;
                         PORTsrc.Text = "";
-                        PORTdst.IsEnabled = false;
-                        PORTdst.Text = "";
                         SQN.IsEnabled = false;
                         SQN.Text = "";
                         ACK.IsEnabled = false;
@@ -311,8 +309,6 @@ namespace PacketSniffer2
                     Identifier.Text = "";
                     PORTsrc.IsEnabled = false;
                     PORTsrc.Text = "";
-                    PORTdst.IsEnabled = false;
-                    PORTdst.Text = "";
                     SQN.IsEnabled = false;
                     SQN.Text = "";
                     ACK.IsEnabled = false;
@@ -328,8 +324,6 @@ namespace PacketSniffer2
                     Identifier.IsEnabled = true;
                     PORTsrc.IsEnabled = false;
                     PORTsrc.Text = "";
-                    PORTdst.IsEnabled = false;
-                    PORTdst.Text = "";
                     SQN.IsEnabled = false;
                     SQN.Text = "";
                     ACK.IsEnabled = false;
@@ -344,7 +338,6 @@ namespace PacketSniffer2
                     Identifier.IsEnabled = false;
                     Identifier.Text = "";
                     PORTsrc.IsEnabled = true;
-                    PORTdst.IsEnabled = true;
                     SQN.IsEnabled = false;
                     SQN.Text = "";
                     ACK.IsEnabled = false;
@@ -359,7 +352,6 @@ namespace PacketSniffer2
                     Identifier.IsEnabled = false;
                     Identifier.Text = "";
                     PORTsrc.IsEnabled = true;
-                    PORTdst.IsEnabled = true;
                     SQN.IsEnabled = true;
                     ACK.IsEnabled = true;
                     WIN.IsEnabled = true;
@@ -371,7 +363,6 @@ namespace PacketSniffer2
                     Data.Text = "";
                     Identifier.IsEnabled = true;
                     PORTsrc.IsEnabled = true;
-                    PORTdst.IsEnabled = true;
                     SQN.IsEnabled = false;
                     SQN.Text = "";
                     ACK.IsEnabled = false;
@@ -385,7 +376,6 @@ namespace PacketSniffer2
                     Identifier.IsEnabled = false;
                     Identifier.Text = "";
                     PORTsrc.IsEnabled = true;
-                    PORTdst.IsEnabled = true;
                     SQN.IsEnabled = true;
                     ACK.IsEnabled = true;
                     WIN.IsEnabled = true;

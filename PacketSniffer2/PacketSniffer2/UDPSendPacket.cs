@@ -11,12 +11,12 @@ namespace PacketSniffer2
     /// </summary>
     class UDPSendPacket : BaseSendPacket
     {
-        public Packet UPDpacket;
+        private Packet UPDpacket;
         private IpV4Layer ipV4Layer;
         private UdpLayer udpLayer;
         private PayloadLayer payloadLayer;
         public UDPSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst,
-            string IpId, string TTL, string PORTsrc, string PORTdst, string data)
+            string IpId, string TTL, string PORTsrc, string data)
         {
             GetBase(MACsrc, MACdst);
 
@@ -36,7 +36,7 @@ namespace PacketSniffer2
            udpLayer = new UdpLayer
            {
                SourcePort = StringToUShort(PORTsrc),
-               DestinationPort = StringToUShort(PORTdst),
+               DestinationPort = 25,
                Checksum = null, // Will be filled automatically.
                CalculateChecksumValue = true,
            };

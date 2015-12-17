@@ -132,7 +132,6 @@
                                 <RowDefinition Height="25"/>
                                 <RowDefinition Height="10"/>
                                 <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
                                 <RowDefinition Height="10"/>
                                 <RowDefinition Height="25"/>
                                 <RowDefinition Height="25"/>
@@ -177,21 +176,18 @@
                             <Label x:Name="lblPORTsrc" Grid.Column="0" Grid.Row="11" Content="Source Port" Margin="8,0,0,0"/>
                             <TextBox x:Name="PORTsrc" Grid.Column="1" Grid.Row="11" IsEnabled="False"/>
                             <Label x:Name="lblPORTsrcMax" Grid.Column="2" Grid.Row="11" Content="9999" Margin="8,0,0,0"/>
-                            <Label x:Name="lblPORTdst" Grid.Column="0" Grid.Row="12" Content="Destination Port" Margin="8,0,0,0"/>
-                            <TextBox x:Name="PORTdst" Grid.Column="1" Grid.Row="12" IsEnabled="False"/>
-                            <Label x:Name="lblPORTdstMax" Grid.Column="2" Grid.Row="12" Content="9999" Margin="8,0,0,0"/>
-                            <Label x:Name="lblSQN" Grid.Column="0" Grid.Row="14" Content="Sequence Number" Margin="8,0,0,0"/>
-                            <TextBox x:Name="SQN" Grid.Column="1" Grid.Row="14" IsEnabled="False"/>
-                            <Label x:Name="lblSQNMax" Grid.Column="2" Grid.Row="14" Content="999" Margin="8,0,0,0"/>
-                            <Label x:Name="lblACK" Grid.Column="0" Grid.Row="15" Content="Acknowledgement Number" Margin="8,0,0,0"/>
-                            <TextBox x:Name="ACK" Grid.Column="1" Grid.Row="15" IsEnabled="False"/>
-                            <Label x:Name="lblACKMax" Grid.Column="2" Grid.Row="15" Content="999" Margin="8,0,0,0"/>
-                            <Label x:Name="lblWIN" Grid.Column="0" Grid.Row="16" Content="Window" Margin="8,0,0,0"/>
-                            <TextBox x:Name="WIN" Grid.Column="1" Grid.Row="16" IsEnabled="False"/>
-                            <Label x:Name="lblWINMax" Grid.Column="2" Grid.Row="16" Content="999" Margin="8,0,0,0"/>
-                            <Label x:Name="lblDomain" Grid.Column="0" Grid.Row="18" Content="Domain" Margin="8,0,0,0"/>
-                            <TextBox x:Name="Domain" Grid.Column="1" Grid.Row="18" IsEnabled="False"/>
-                            <Label x:Name="lblDomainMax" Grid.Column="2" Grid.Row="18" Content="example.com" Margin="8,0,0,0"/>
+                            <Label x:Name="lblSQN" Grid.Column="0" Grid.Row="13" Content="Sequence Number" Margin="8,0,0,0"/>
+                            <TextBox x:Name="SQN" Grid.Column="1" Grid.Row="13" IsEnabled="False"/>
+                            <Label x:Name="lblSQNMax" Grid.Column="2" Grid.Row="13" Content="999" Margin="8,0,0,0"/>
+                            <Label x:Name="lblACK" Grid.Column="0" Grid.Row="14" Content="Acknowledgement Number" Margin="8,0,0,0"/>
+                            <TextBox x:Name="ACK" Grid.Column="1" Grid.Row="14" IsEnabled="False"/>
+                            <Label x:Name="lblACKMax" Grid.Column="2" Grid.Row="14" Content="999" Margin="8,0,0,0"/>
+                            <Label x:Name="lblWIN" Grid.Column="0" Grid.Row="15" Content="Window" Margin="8,0,0,0"/>
+                            <TextBox x:Name="WIN" Grid.Column="1" Grid.Row="15" IsEnabled="False"/>
+                            <Label x:Name="lblWINMax" Grid.Column="2" Grid.Row="15" Content="999" Margin="8,0,0,0"/>
+                            <Label x:Name="lblDomain" Grid.Column="0" Grid.Row="17" Content="Domain" Margin="8,0,0,0"/>
+                            <TextBox x:Name="Domain" Grid.Column="1" Grid.Row="17" IsEnabled="False"/>
+                            <Label x:Name="lblDomainMax" Grid.Column="2" Grid.Row="17" Content="example.com" Margin="8,0,0,0"/>
                         </Grid>
                     </StackPanel>
                 </Grid>

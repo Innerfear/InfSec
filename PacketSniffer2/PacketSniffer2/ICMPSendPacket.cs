@@ -10,7 +10,7 @@ namespace PacketSniffer2
     /// </summary>
     class ICMPSendPacket : BaseSendPacket
     {
-        public Packet ICMPpacket;
+        private Packet ICMPpacket;
         private IpV4Layer ipV4Layer;
         private IcmpEchoLayer icmpLayer;
         public ICMPSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst, string IpId, string TTL, string Identifier, string SQN)

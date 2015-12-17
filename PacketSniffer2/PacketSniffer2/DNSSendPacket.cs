@@ -11,12 +11,12 @@ namespace PacketSniffer2
     /// </summary>
     class DNSSendPacket : BaseSendPacket
     {
-        public Packet DNSpacket;
+        private Packet DNSpacket;
         private IpV4Layer ipV4Layer;
         private UdpLayer udpLayer;
         private DnsLayer dnsLayer;
         public DNSSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst,
-            string IpId, string TTL, string PORTsrc, string PORTdst, string Identifier, string Domain)
+            string IpId, string TTL, string PORTsrc, string Identifier, string Domain)
         {
             GetBase(MACsrc, MACdst);
 
@@ -36,7 +36,7 @@ namespace PacketSniffer2
             udpLayer = new UdpLayer
             {
                 SourcePort = StringToUShort(PORTsrc),
-                DestinationPort = StringToUShort(PORTdst),
+                DestinationPort = 53,
                 Checksum = null, // Will be filled automatically.
                 CalculateChecksumValue = true,
             };

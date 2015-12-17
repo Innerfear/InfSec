@@ -10,7 +10,7 @@ namespace PacketSniffer2
     /// </summary>
     class IPV4SendPacket : BaseSendPacket
     {
-        public Packet IPV4packet;
+        private Packet IPV4packet;
         private IpV4Layer ipV4Layer;
         private PayloadLayer payloadLayer;
         public IPV4SendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst, string IpId, string TTL, string data)

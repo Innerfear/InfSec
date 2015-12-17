@@ -11,12 +11,12 @@ namespace PacketSniffer2
     /// </summary>
     class TCPSendPacket : BaseSendPacket
     {
-        public Packet TCPpacket;
+        private Packet TCPpacket;
         private IpV4Layer ipV4Layer;
         private TcpLayer tcpLayer;
         private PayloadLayer payloadLayer;
         public TCPSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst, string IpId,
-            string TTL, string PORTsrc, string PORTdst, string SQN, string ACK, string WIN, string data)
+            string TTL, string PORTsrc, string SQN, string ACK, string WIN, string data)
         {
             GetBase(MACsrc, MACdst);
 
@@ -36,7 +36,7 @@ namespace PacketSniffer2
             tcpLayer = new TcpLayer
             {
                 SourcePort = StringToUShort(PORTsrc),
-                DestinationPort = StringToUShort(PORTdst),
+                DestinationPort = 25,
                 Checksum = null, // Will be filled automatically.
                 SequenceNumber = StringToUShort(SQN),
                 AcknowledgmentNumber = StringToUShort(ACK),
