@@ -73,6 +73,7 @@
     </ApplicationDefinition>
     <Compile Include="DNSSendPacket.cs" />
     <Compile Include="HTTPSendPacket.cs" />
+    <Compile Include="PacketAPI.cs" />
     <Compile Include="TCPSendPacket.cs" />
     <Compile Include="UDPSendPacket.cs" />
     <Page Include="MainWindow.xaml">

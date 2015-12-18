@@ -55,20 +55,92 @@
             <TabItem x:Name="Sniffing" Header="Sniffing">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="3*"/>
-                        <RowDefinition Height="6*"/>
-                        <RowDefinition Height="2*"/>
-                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <ListBox x:Name="PacketList" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="1" Grid.Row="0"/>
-                    <ListBox x:Name="DeviceListBox" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="1" Grid.Row="2" SelectionChanged="DeviceListBox_SelectionChanged"/>
-                    <StackPanel Grid.RowSpan="2" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <StackPanel x:Name="NavigationPanel_1" Grid.ColumnSpan="1" Grid.RowSpan="4" Grid.Column="0" Grid.Row="1" Background="LightBlue">
+                        <Label x:Name="lblSniffing" Content="Sniffing" Height="30" Background="CadetBlue" FontWeight="ExtraBold"/>
+                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="center">
+                            <Button x:Name="btnNothingYet" Width="80" Height="25" Margin="0,8,0,0" FontSize="10" Content="NothingYet" IsEnabled="False"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <ListBox x:Name="DeviceInfo" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="2" Grid.Row="1"/>
+                    <ListView x:Name="PacketList" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="2" Grid.Row="1" Margin="4" Background="CadetBlue" Visibility="Hidden">
+                        <ListView.View >
+                            <GridView>
+                                <GridViewColumn Header="Nr." Width="25">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Autonumber}" FontWeight="Bold" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Prot" Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Protocol}" FontWeight="Bold" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Src" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Source}" FontWeight="Bold" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Dst" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Destination}" FontWeight="Bold" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="PortNr" Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Poortnummer}" FontWeight="Bold" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Length" Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Length}" FontWeight="Bold" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Header" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Header}" FontWeight="Bold" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="TCP">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Tcp}" FontWeight="Bold" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <ListBox x:Name="DeviceListBox" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="2" Grid.Row="3" SelectionChanged="DeviceListBox_SelectionChanged"/>
+                    <StackPanel Grid.RowSpan="2" Grid.Column="4" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Button x:Name="DeviceRefresh" Height="25" Width="80" Content="Refresh" Margin="2,4,0,0" FontSize="10" Click="DeviceRefresh_Click"/>
                         <Button x:Name="StartCap" Height="25" Width="80" Content="Capture" Margin="2,8,0,0" FontSize="10" Click="StartCap_Click" />
                         <Button x:Name="StopCap" Height="25" Width="80" Content="Stop" Margin="2,8,0,0" FontSize="10" Click="StopCap_Click" />
@@ -78,41 +150,54 @@
             <TabItem x:Name="Editing" Header="Editing">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="4*"/>
-                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="10*"/>
                         <RowDefinition Height="4*"/>
-                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
+                    <StackPanel x:Name="NavigationPanel_2" Grid.ColumnSpan="1" Grid.RowSpan="4" Grid.Column="0" Grid.Row="1" Background="LightBlue">
+                        <Label x:Name="lblEditing" Content="Editing" Height="30" Background="CadetBlue" FontWeight="ExtraBold"/>
+                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="center">
+                            <Button x:Name="btnAlsoNothingYet" Width="80" Height="25" Margin="0,8,0,0" FontSize="10" Content="NothingYet" IsEnabled="False"/>
+                        </StackPanel>
+                    </StackPanel>
                 </Grid>
             </TabItem>
             <TabItem x:Name="Injecting" Header="Injecting">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="5*"/>
                         <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="6*"/>
-                        <ColumnDefinition Width="6*"/>
-                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="5*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
-                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="10*"/>
                         <RowDefinition Height="4*"/>
                         <RowDefinition Height="4*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <StackPanel x:Name="NavigationPanel_3" Grid.ColumnSpan="1" Grid.RowSpan="5" Grid.Column="0" Grid.Row="0" Background="LightBlue">
-                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left">
-                            <Label x:Name="lblInjecting" Content="Injecting" Height="25" Margin="8,8,0,0" Background="CadetBlue" FontWeight="ExtraBold"/>
-                            <Button x:Name="btnSendPacket" Width="80" Height="25" Margin="8,8,0,0" FontSize="10" Content="Send" Click="btnSendPacket_Click" IsEnabled="False"/>
+                    <StackPanel x:Name="NavigationPanel_3" Grid.ColumnSpan="1" Grid.RowSpan="4" Grid.Column="0" Grid.Row="1" Background="LightBlue">
+                        <Label x:Name="lblInjecting" Content="Injecting" Height="30" Background="CadetBlue" FontWeight="ExtraBold"/>
+                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="center">
+                            <Button x:Name="btnSendPacket" Width="80" Height="25" Margin="0,8,0,0" FontSize="10" Content="Send" Click="btnSendPacket_Click" IsEnabled="False"/>
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel x:Name="UserInput" Grid.ColumnSpan="3" Grid.RowSpan="3" Grid.Column="2" Grid.Row="1" Background="CadetBlue">
+                    <StackPanel x:Name="UserInput" Grid.ColumnSpan="3" Grid.RowSpan="4" Grid.Column="2" Grid.Row="1" Background="CadetBlue">
                         <Grid Margin="5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>

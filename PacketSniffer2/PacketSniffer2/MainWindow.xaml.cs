@@ -1,6 +1,8 @@
 ﻿using PcapDotNet.Core;
+using PcapDotNet.Packets;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,29 +13,54 @@ namespace PacketSniffer2
     /// </summary>
     public partial class MainWindow : Window
     {
-        bool boolFullScreen = true;
+        #region Variables
+        //Bool variables
+        bool bFullScreen = true;
 
-        PacketDevice miscSelectedDevice;
-        PacketCommunicator miscCommunicator;
+        bool bCapture = false;
+        bool bInject = false;
+        bool bEdit = false;
 
-        DNSSendPacket BuildDnsPacket;
-        TCPSendPacket BuildTcpPacket;
-        UDPSendPacket BuildUdpPacket;
-        ICMPSendPacket BuildIcmpPacket;
-        IPV4SendPacket BuildIpV4Packet;
-        HTTPSendPacket BuildHttpPacket;
+        //Packet variables
+        PacketDevice pSelectedDevice;
+        PacketCommunicator pCommunicator;
 
-        // Retrieve the device list from the local machine
+        DNSSendPacket pBuildDnsPacket;
+        TCPSendPacket pBuildTcpPacket;
+        UDPSendPacket pBuildUdpPacket;
+        ICMPSendPacket pBuildIcmpPacket;
+        IPV4SendPacket pBuildIpV4Packet;
+        HTTPSendPacket pBuildHttpPacket;
+
+        //Thread variables
+        Thread tCapture;
+        Thread tInject;
+        Thread tEdit;
+
+        //Misc variables
         IList<LivePacketDevice> listAllDevices = LivePacketDevice.AllLocalMachine;
+        public delegate void UpdateTextCallback(PacketAPI message);
+        public ObservableCollection<PacketAPI> ocPackets = new ObservableCollection<PacketAPI>();
+        ManualResetEvent eShutdown = new ManualResetEvent(false);
+        ManualResetEvent epause = new ManualResetEvent(true);
+        #endregion
 
+        #region Initialization
         public MainWindow()
         {
             InitializeComponent();
+
             Width = SystemParameters.WorkArea.Width;
             Height = SystemParameters.WorkArea.Height;
             Top = SystemParameters.WorkArea.Top;
             Left = SystemParameters.WorkArea.Left;
+
+            PacketList.ItemsSource = ocPackets;
         }
+        #endregion
+
+        #region Methods
+        /*
         private void StartNpfService()
         {
             Process Npf = new Process();
@@ -45,6 +72,53 @@ namespace PacketSniffer2
             NpfInfo.Arguments = "/C sc start npf";
             Npf.StartInfo = NpfInfo;
             Npf.Start();
+        }
+        */
+
+        private void PacketHandler(Packet packet)
+        {
+            var ArrivedPacket = new PacketAPI();
+
+            ArrivedPacket.Autonumber = PacketList.Items.Count;
+
+            ArrivedPacket.Protocol = packet.Ethernet.EtherType.ToString();
+            //  ArrivedPacket.Protocol = packet.DataLink.ToString();
+            ArrivedPacket.Source = packet.Ethernet.IpV4.Source.ToString();
+            ArrivedPacket.Destination = packet.Ethernet.IpV4.Destination.ToString();
+            if (packet.Ethernet.IpV4.Udp != null)
+            {
+                ArrivedPacket.Udp = packet.Ethernet.IpV4.Udp.ToString();
+            }
+            else
+            {
+                ArrivedPacket.Udp = "None";
+            }
+            if (packet.Ethernet.IpV4.Tcp != null)
+            {
+                ArrivedPacket.Poortnummer = packet.Ethernet.IpV4.Tcp.SourcePort.ToString();
+                ArrivedPacket.Header = packet.Ethernet.IpV4.Tcp.AcknowledgmentNumber.ToString();
+                ArrivedPacket.Tcp = packet.Ethernet.IpV4.Tcp.ToString();
+            }
+            else
+            {
+                ArrivedPacket.Tcp = "No details";
+                ArrivedPacket.Length = packet.Length;
+            }
+            /*
+            if (Arpfilter && ArrivedPacket.Protocol == "Arp")
+                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
+            else if (Ipv4Filter && ArrivedPacket.Protocol == "IpV4")
+                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
+            else if (Ipv6Filter && ArrivedPacket.Protocol == "IpV6")
+                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
+            else if (filternone)
+            */
+            Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
+        }
+
+        private void UpdatePacketText(PacketAPI packet)
+        {
+            ocPackets.Add(packet);
         }
 
         private void GetDevices()
@@ -70,14 +144,14 @@ namespace PacketSniffer2
         private void DevicePrint(IPacketDevice device)
         {
             // Name
-            PacketList.Items.Add(device.Name);
+            DeviceInfo.Items.Add(device.Name);
 
             // Description
             if (device.Description != null)
-                PacketList.Items.Add("     Description: " + device.Description);
+                DeviceInfo.Items.Add("     Description: " + device.Description);
 
             // Loopback Address
-            PacketList.Items.Add("     Loopback: " +
+            DeviceInfo.Items.Add("     Loopback: " +
                               (((device.Attributes & DeviceAttributes.Loopback) == DeviceAttributes.Loopback)
                                    ? "yes"
                                    : "no"));
@@ -85,16 +159,16 @@ namespace PacketSniffer2
             // IP addresses
             foreach (DeviceAddress address in device.Addresses)
             {
-                PacketList.Items.Add("     Address Family: " + address.Address.Family);
+                DeviceInfo.Items.Add("     Address Family: " + address.Address.Family);
 
                 if (address.Address != null)
-                    PacketList.Items.Add(("\tAddress: " + address.Address));
+                    DeviceInfo.Items.Add(("\tAddress: " + address.Address));
                 if (address.Netmask != null)
-                    PacketList.Items.Add(("\tNetmask: " + address.Netmask));
+                    DeviceInfo.Items.Add(("\tNetmask: " + address.Netmask));
                 if (address.Broadcast != null)
-                    PacketList.Items.Add(("\tBroadcast Address: " + address.Broadcast));
+                    DeviceInfo.Items.Add(("\tBroadcast Address: " + address.Broadcast));
                 if (address.Destination != null)
-                    PacketList.Items.Add(("\tDestination Address: " + address.Destination));
+                    DeviceInfo.Items.Add(("\tDestination Address: " + address.Destination));
             }
         }
 
@@ -107,7 +181,7 @@ namespace PacketSniffer2
                 {
                     if (DeviceListBox.SelectedItem.ToString().Contains(device.Name))
                     {
-                        miscSelectedDevice = device;
+                        pSelectedDevice = device;
                     }
                 }
                 else
@@ -116,7 +190,9 @@ namespace PacketSniffer2
                 }     
             }
         }
+        #endregion
 
+        #region XAML activated methods
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             GetDevices();
@@ -134,49 +210,61 @@ namespace PacketSniffer2
 
         private void HalfSizeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (boolFullScreen)
+            if (bFullScreen)
                 Width = SystemParameters.WorkArea.Width / 2;
-            boolFullScreen = false;
+            bFullScreen = false;
             HalfSizeButton.IsEnabled = false;
             FullSizeButton.IsEnabled = true;
         }
 
         private void FullSizeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!boolFullScreen)
+            if (!bFullScreen)
                 Width = SystemParameters.WorkArea.Width;
-            boolFullScreen = true;
+            bFullScreen = true;
             FullSizeButton.IsEnabled = false;
             HalfSizeButton.IsEnabled = true;
         }
 
         private void StartCap_Click(object sender, RoutedEventArgs e)
         {
-            PacketList.Items.Clear();
+            DeviceRefresh.IsEnabled = false;
+            StartCap.IsEnabled = false;
+            DeviceListBox.IsEnabled = false;
+            DeviceInfo.Items.Clear();
+            DeviceInfo.Visibility = Visibility.Hidden;
+            PacketList.Visibility = Visibility.Visible;
         }
 
         private void StopCap_Click(object sender, RoutedEventArgs e)
         {
-
+            DeviceRefresh.IsEnabled = true;
+            StartCap.IsEnabled = true;
+            DeviceListBox.IsEnabled = true;
         }
 
         private void DeviceRefresh_Click(object sender, RoutedEventArgs e)
         {
             DeviceListBox.Items.Clear();
+            PacketList.Items.Clear();
+            DeviceInfo.Visibility = Visibility.Visible;
+            PacketList.Visibility = Visibility.Hidden;
             GetDevices();
         }
 
         private void DeviceListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PacketList.Items.Clear();
+            DeviceInfo.Items.Clear();
+            DeviceInfo.Visibility = Visibility.Visible;
+            PacketList.Visibility = Visibility.Hidden;
             GetSelectedDevice();
-            DevicePrint(miscSelectedDevice);
+            DevicePrint(pSelectedDevice);
         }
 
         private void btnSendPacket_Click(object sender, RoutedEventArgs e)
         {
             // Open the output device
-            using (miscCommunicator = miscSelectedDevice.Open(100, PacketDeviceOpenAttributes.Promiscuous, 1000))
+            using (pCommunicator = pSelectedDevice.Open(100, PacketDeviceOpenAttributes.Promiscuous, 1000))
             {
                 int stringProtocol = ProtType.SelectedIndex;
                 switch (stringProtocol)
@@ -185,9 +273,9 @@ namespace PacketSniffer2
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
                             && TTL.Text != "" && Data.Text != "")
                         {
-                            BuildIpV4Packet = new IPV4SendPacket(MACsrc.Text, MACdst.Text,
+                            pBuildIpV4Packet = new IPV4SendPacket(MACsrc.Text, MACdst.Text,
                                 IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, Data.Text);
-                            miscCommunicator.SendPacket(BuildIpV4Packet.GetBuilder());
+                            pCommunicator.SendPacket(pBuildIpV4Packet.GetBuilder());
                         }
                         else
                         {
@@ -198,9 +286,9 @@ namespace PacketSniffer2
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
                             && TTL.Text != "" && Identifier.Text != "" && SQN.Text != "")
                         {
-                            BuildIcmpPacket = new ICMPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
+                            pBuildIcmpPacket = new ICMPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
                             IPdst.Text, IpId.Text, TTL.Text, Identifier.Text, SQN.Text);
-                            miscCommunicator.SendPacket(BuildIcmpPacket.GetBuilder());
+                            pCommunicator.SendPacket(pBuildIcmpPacket.GetBuilder());
                         }
                         else
                         {
@@ -211,9 +299,9 @@ namespace PacketSniffer2
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
                             && TTL.Text != "" && PORTsrc.Text != "" && Data.Text != "")
                         {
-                            BuildUdpPacket = new UDPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
+                            pBuildUdpPacket = new UDPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
                             IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, Data.Text);
-                            miscCommunicator.SendPacket(BuildUdpPacket.GetBuilder());
+                            pCommunicator.SendPacket(pBuildUdpPacket.GetBuilder());
                         }
                         else
                         {
@@ -224,9 +312,9 @@ namespace PacketSniffer2
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != "" 
                             && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "")
                         {
-                            BuildTcpPacket = new TCPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
+                            pBuildTcpPacket = new TCPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
                             IpId.Text, TTL.Text, PORTsrc.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text);
-                            miscCommunicator.SendPacket(BuildTcpPacket.GetBuilder());
+                            pCommunicator.SendPacket(pBuildTcpPacket.GetBuilder());
                         }
                         else
                         {
@@ -237,9 +325,9 @@ namespace PacketSniffer2
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
                             && PORTsrc.Text != "" && Identifier.Text != "" && Domain.Text != "")
                         {
-                            BuildDnsPacket = new DNSSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
+                            pBuildDnsPacket = new DNSSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
                             IpId.Text, TTL.Text, PORTsrc.Text, Identifier.Text, Domain.Text);
-                            miscCommunicator.SendPacket(BuildDnsPacket.GetBuilder());
+                            pCommunicator.SendPacket(pBuildDnsPacket.GetBuilder());
                         }
                         else
                         {
@@ -250,9 +338,9 @@ namespace PacketSniffer2
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
                             && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "" && Domain.Text != "")
                         {
-                            BuildHttpPacket = new HTTPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text,
+                            pBuildHttpPacket = new HTTPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text,
                             TTL.Text, PORTsrc.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text, Domain.Text);
-                            miscCommunicator.SendPacket(BuildHttpPacket.GetBuilder());
+                            pCommunicator.SendPacket(pBuildHttpPacket.GetBuilder());
                         }
                         else
                         {
@@ -392,5 +480,6 @@ namespace PacketSniffer2
                     break;
             }
         }
+        #endregion
     }
 }
