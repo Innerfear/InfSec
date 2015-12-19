@@ -16,6 +16,14 @@ namespace PacketSniffer2
         //Bool variables
         bool bFullScreen = true;
 
+        bool bNoneCheck = false;
+        bool bIpv4Check = false;
+        bool bIcmpCheck = false;
+        bool bUdpCheck = false;
+        bool bTcpCheck = false;
+        bool bDnsCheck = false;
+        bool bHttpCheck = false;
+
         bool bCapture = false;
         bool bInject = false;
         bool bEdit = false;
@@ -233,6 +241,53 @@ namespace PacketSniffer2
             PacketList.Visibility = Visibility.Hidden;
             GetSelectedDevice();
             DevicePrint(pSelectedDevice);
+        }
+
+        private void HandleCheckBox(bool bChecked)
+        {
+            bNoneCheck = false;
+            bIpv4Check = false;
+            bIcmpCheck = false;
+            bUdpCheck = false;
+            bTcpCheck = false;
+            bDnsCheck = false;
+            bHttpCheck = false;
+            bChecked = true;
+        }
+
+        private void rbNone_Checked(object sender, RoutedEventArgs e)
+        {
+            HandleCheckBox(bNoneCheck);
+        }
+
+        private void rbIPV4_Checked(object sender, RoutedEventArgs e)
+        {
+            HandleCheckBox(bIpv4Check);
+        }
+
+        private void rbICMP_Checked(object sender, RoutedEventArgs e)
+        {
+            HandleCheckBox(bIcmpCheck);
+        }
+
+        private void rbUDP_Checked(object sender, RoutedEventArgs e)
+        {
+            HandleCheckBox(bUdpCheck);
+        }
+
+        private void rbTCP_Checked(object sender, RoutedEventArgs e)
+        {
+            HandleCheckBox(bTcpCheck);
+        }
+
+        private void rbDNS_Checked(object sender, RoutedEventArgs e)
+        {
+            HandleCheckBox(bDnsCheck);
+        }
+
+        private void rbHTTP_Checked(object sender, RoutedEventArgs e)
+        {
+            HandleCheckBox(bHttpCheck);
         }
         #endregion
 
@@ -491,6 +546,7 @@ namespace PacketSniffer2
             HalfSizeButton.IsEnabled = true;
         }
         #endregion
+
         #endregion
     }
 }
