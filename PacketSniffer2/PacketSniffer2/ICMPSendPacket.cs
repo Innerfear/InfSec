@@ -5,9 +5,7 @@ using System;
 
 namespace PacketSniffer2
 {
-    /// <summary>
-    /// This class builds an ICMP over IPv4 over Ethernet packet.
-    /// </summary>
+    // This class builds an ICMP over IPv4 over Ethernet packet.
     class ICMPSendPacket : BaseSendPacket
     {
         private Packet ICMPpacket;
@@ -17,8 +15,7 @@ namespace PacketSniffer2
         {
             GetBase(MACsrc, MACdst);
 
-           ipV4Layer =
-           new IpV4Layer
+           ipV4Layer = new IpV4Layer
            {
                Source = new IpV4Address(IPsrc),
                CurrentDestination = new IpV4Address(IPdst),

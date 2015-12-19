@@ -7,9 +7,7 @@ using System.Text;
 
 namespace PacketSniffer2
 {
-    /// <summary>
-    /// This class builds an HTTP over TCP over IPv4 over Ethernet packet.
-    /// </summary>
+    // This class builds an HTTP over TCP over IPv4 over Ethernet packet.
     class HTTPSendPacket : BaseSendPacket
     {
         private Packet HTTPpacket;

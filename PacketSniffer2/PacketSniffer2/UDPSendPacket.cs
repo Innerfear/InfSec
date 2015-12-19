@@ -6,9 +6,7 @@ using System.Text;
 
 namespace PacketSniffer2
 {
-    /// <summary>
-    /// This class builds an UDP over IPv4 over Ethernet with payload packet.
-    /// </summary>
+    // This class builds an UDP over IPv4 over Ethernet with payload packet.
     class UDPSendPacket : BaseSendPacket
     {
         private Packet UPDpacket;

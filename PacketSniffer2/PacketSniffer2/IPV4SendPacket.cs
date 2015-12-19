@@ -5,9 +5,7 @@ using System.Text;
 
 namespace PacketSniffer2
 {
-    /// <summary>
-    /// This class builds an IPv4 over Ethernet with payload packet.
-    /// </summary>
+    // This class builds an IPv4 over Ethernet with payload packet.
     class IPV4SendPacket : BaseSendPacket
     {
         private Packet IPV4packet;

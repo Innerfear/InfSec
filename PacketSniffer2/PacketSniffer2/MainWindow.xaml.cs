@@ -8,11 +8,10 @@ using System.Windows.Controls;
 
 namespace PacketSniffer2
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    // Interaction logic for MainWindow.xaml
     public partial class MainWindow : Window
     {
+        // All variables
         #region Variables
         //Bool variables
         bool bFullScreen = true;
@@ -45,6 +44,7 @@ namespace PacketSniffer2
         ManualResetEvent epause = new ManualResetEvent(true);
         #endregion
 
+        // All initialization methods / definitions
         #region Initialization
         public MainWindow()
         {
@@ -59,7 +59,9 @@ namespace PacketSniffer2
         }
         #endregion
 
+        // All methods that don't handle initialization
         #region Methods
+        #region Not (Yet) Implemented Methods
         /*
         private void StartNpfService()
         {
@@ -74,53 +76,13 @@ namespace PacketSniffer2
             Npf.Start();
         }
         */
+        #endregion
 
-        private void PacketHandler(Packet packet)
+        #region Startup Methods
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var ArrivedPacket = new PacketAPI();
-
-            ArrivedPacket.Autonumber = PacketList.Items.Count;
-
-            ArrivedPacket.Protocol = packet.Ethernet.EtherType.ToString();
-            //  ArrivedPacket.Protocol = packet.DataLink.ToString();
-            ArrivedPacket.Source = packet.Ethernet.IpV4.Source.ToString();
-            ArrivedPacket.Destination = packet.Ethernet.IpV4.Destination.ToString();
-            if (packet.Ethernet.IpV4.Udp != null)
-            {
-                ArrivedPacket.Udp = packet.Ethernet.IpV4.Udp.ToString();
-            }
-            else
-            {
-                ArrivedPacket.Udp = "None";
-            }
-            if (packet.Ethernet.IpV4.Tcp != null)
-            {
-                ArrivedPacket.Poortnummer = packet.Ethernet.IpV4.Tcp.SourcePort.ToString();
-                ArrivedPacket.Header = packet.Ethernet.IpV4.Tcp.AcknowledgmentNumber.ToString();
-                ArrivedPacket.Tcp = packet.Ethernet.IpV4.Tcp.ToString();
-            }
-            else
-            {
-                ArrivedPacket.Tcp = "No details";
-                ArrivedPacket.Length = packet.Length;
-            }
-            /*
-            if (Arpfilter && ArrivedPacket.Protocol == "Arp")
-                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
-            else if (Ipv4Filter && ArrivedPacket.Protocol == "IpV4")
-                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
-            else if (Ipv6Filter && ArrivedPacket.Protocol == "IpV6")
-                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
-            else if (filternone)
-            */
-            Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
+            GetDevices();
         }
-
-        private void UpdatePacketText(PacketAPI packet)
-        {
-            ocPackets.Add(packet);
-        }
-
         private void GetDevices()
         {
             if (listAllDevices.Count == 0)
@@ -134,7 +96,7 @@ namespace PacketSniffer2
             {
                 LivePacketDevice device = listAllDevices[i];
                 if (device.Description != null)
-                    DeviceListBox.Items.Add((i + 1) + ". " + device.Name + " (" + device.Description+ ")");
+                    DeviceListBox.Items.Add((i + 1) + ". " + device.Name + " (" + device.Description + ")");
                 else
                     DeviceListBox.Items.Add((i + 1) + ". " + device.Name + " (No description available)");
             }
@@ -187,43 +149,56 @@ namespace PacketSniffer2
                 else
                 {
                     MessageBox.Show("Select a device and press 'capture' to start.");
-                }     
+                }
             }
         }
         #endregion
 
-        #region XAML activated methods
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        #region Sniffing Methods
+        private void PacketHandler(Packet packet)
         {
-            GetDevices();
+            var ArrivedPacket = new PacketAPI();
+
+            ArrivedPacket.Autonumber = PacketList.Items.Count;
+
+            ArrivedPacket.Protocol = packet.Ethernet.EtherType.ToString();
+            //  ArrivedPacket.Protocol = packet.DataLink.ToString();
+            ArrivedPacket.Source = packet.Ethernet.IpV4.Source.ToString();
+            ArrivedPacket.Destination = packet.Ethernet.IpV4.Destination.ToString();
+            if (packet.Ethernet.IpV4.Udp != null)
+            {
+                ArrivedPacket.Udp = packet.Ethernet.IpV4.Udp.ToString();
+            }
+            else
+            {
+                ArrivedPacket.Udp = "None";
+            }
+            if (packet.Ethernet.IpV4.Tcp != null)
+            {
+                ArrivedPacket.Poortnummer = packet.Ethernet.IpV4.Tcp.SourcePort.ToString();
+                ArrivedPacket.Header = packet.Ethernet.IpV4.Tcp.AcknowledgmentNumber.ToString();
+                ArrivedPacket.Tcp = packet.Ethernet.IpV4.Tcp.ToString();
+            }
+            else
+            {
+                ArrivedPacket.Tcp = "No details";
+                ArrivedPacket.Length = packet.Length;
+            }
+            /*
+            if (Arpfilter && ArrivedPacket.Protocol == "Arp")
+                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
+            else if (Ipv4Filter && ArrivedPacket.Protocol == "IpV4")
+                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
+            else if (Ipv6Filter && ArrivedPacket.Protocol == "IpV6")
+                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
+            else if (filternone)
+            */
+            Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
         }
 
-        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        private void UpdatePacketText(PacketAPI packet)
         {
-            Close();
-        }
-
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
-
-        private void HalfSizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (bFullScreen)
-                Width = SystemParameters.WorkArea.Width / 2;
-            bFullScreen = false;
-            HalfSizeButton.IsEnabled = false;
-            FullSizeButton.IsEnabled = true;
-        }
-
-        private void FullSizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!bFullScreen)
-                Width = SystemParameters.WorkArea.Width;
-            bFullScreen = true;
-            FullSizeButton.IsEnabled = false;
-            HalfSizeButton.IsEnabled = true;
+            ocPackets.Add(packet);
         }
 
         private void StartCap_Click(object sender, RoutedEventArgs e)
@@ -251,7 +226,6 @@ namespace PacketSniffer2
             PacketList.Visibility = Visibility.Hidden;
             GetDevices();
         }
-
         private void DeviceListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DeviceInfo.Items.Clear();
@@ -260,7 +234,13 @@ namespace PacketSniffer2
             GetSelectedDevice();
             DevicePrint(pSelectedDevice);
         }
+        #endregion
 
+        #region Editing Methods
+
+        #endregion
+
+        #region Injecting Methods
         private void btnSendPacket_Click(object sender, RoutedEventArgs e)
         {
             // Open the output device
@@ -309,7 +289,7 @@ namespace PacketSniffer2
                         }
                         break;
                     case 4:
-                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != "" 
+                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
                             && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "")
                         {
                             pBuildTcpPacket = new TCPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
@@ -349,7 +329,7 @@ namespace PacketSniffer2
                         break;
                     default:
                         MessageBox.Show("Select a protocol");
-                        break;        
+                        break;
                 }
             }
         }
@@ -480,6 +460,37 @@ namespace PacketSniffer2
                     break;
             }
         }
+        #endregion
+
+        #region Other XAML Activated Methods
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void HalfSizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (bFullScreen)
+                Width = SystemParameters.WorkArea.Width / 2;
+            bFullScreen = false;
+            HalfSizeButton.IsEnabled = false;
+            FullSizeButton.IsEnabled = true;
+        }
+
+        private void FullSizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!bFullScreen)
+                Width = SystemParameters.WorkArea.Width;
+            bFullScreen = true;
+            FullSizeButton.IsEnabled = false;
+            HalfSizeButton.IsEnabled = true;
+        }
+        #endregion
         #endregion
     }
 }

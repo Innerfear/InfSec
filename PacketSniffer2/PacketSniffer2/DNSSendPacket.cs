@@ -6,9 +6,7 @@ using System;
 
 namespace PacketSniffer2
 {
-    /// <summary>
-    /// This class builds a DNS over UDP over IPv4 over Ethernet packet.
-    /// </summary>
+    // This class builds a DNS over UDP over IPv4 over Ethernet packet.
     class DNSSendPacket : BaseSendPacket
     {
         private Packet DNSpacket;
