@@ -2,6 +2,13 @@
 {
     public class PacketAPI
     {
+        private int autonumber;
+        public int Autonumber
+        {
+            get { return autonumber; }
+            set { autonumber = value; }
+        }
+
         private string protocol;
         public string Protocol
         {
@@ -34,13 +41,7 @@
         public string Tcp
         {
             get { return tcp; }
-            set {
-                if (value == null)
-                {
-                    value = "";
-                }
-                else
-                tcp = value; }
+            set { tcp = value; }
         }
 
         private string header;
@@ -48,13 +49,6 @@
         {
             get { return header; }
             set { header = value; }
-        }
-
-        private int autonumber;
-        public int Autonumber
-        {
-            get { return autonumber; }
-            set { autonumber = value; }
         }
 
         private int length;
@@ -124,15 +118,7 @@
         public string Payload
         {
             get { return payload; }
-            set
-            {
-                if (value == null)
-                {
-                    value = "";
-                }
-                else
-                    payload = value;
-            }
+            set { payload = value; }
         }
 
         private ushort vlan;

@@ -169,39 +169,44 @@ namespace PacketSniffer2
 
             ArrivedPacket.Autonumber = PacketList.Items.Count;
 
-            ArrivedPacket.Protocol = packet.Ethernet.EtherType.ToString();
-            //  ArrivedPacket.Protocol = packet.DataLink.ToString();
+            ArrivedPacket.Protocol = packet.Ethernet.IpV4.Protocol.ToString();
+
+            if (packet.Ethernet.IpV4.Udp != null && packet.Ethernet.IpV4.Protocol.ToString() == "Udp")
+            {
+                ArrivedPacket.Protocol = packet.Ethernet.IpV4.Udp.ToString();
+            }
+            else
+            {
+                ArrivedPacket.Udp = "No UDP";
+            }
+
+            if (packet.Ethernet.IpV4.Tcp != null && packet.Ethernet.IpV4.Protocol.ToString() == "Tcp")
+            {
+                ArrivedPacket.Protocol = packet.Ethernet.IpV4.Tcp.ToString();
+            }
+            else
+            {
+                ArrivedPacket.Tcp = "No TCP";
+            }
+
             ArrivedPacket.Source = packet.Ethernet.IpV4.Source.ToString();
+
             ArrivedPacket.Destination = packet.Ethernet.IpV4.Destination.ToString();
-            if (packet.Ethernet.IpV4.Udp != null)
-            {
-                ArrivedPacket.Udp = packet.Ethernet.IpV4.Udp.ToString();
-            }
-            else
-            {
-                ArrivedPacket.Udp = "None";
-            }
-            if (packet.Ethernet.IpV4.Tcp != null)
-            {
-                ArrivedPacket.Poortnummer = packet.Ethernet.IpV4.Tcp.SourcePort.ToString();
-                ArrivedPacket.Header = packet.Ethernet.IpV4.Tcp.AcknowledgmentNumber.ToString();
-                ArrivedPacket.Tcp = packet.Ethernet.IpV4.Tcp.ToString();
-            }
-            else
-            {
-                ArrivedPacket.Tcp = "No details";
-                ArrivedPacket.Length = packet.Length;
-            }
-            /*
-            if (Arpfilter && ArrivedPacket.Protocol == "Arp")
+
+            if (bIpv4Check && ArrivedPacket.Protocol == "IPV4")
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
-            else if (Ipv4Filter && ArrivedPacket.Protocol == "IpV4")
+            else if (bIcmpCheck && ArrivedPacket.Protocol == "ICMP")
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
-            else if (Ipv6Filter && ArrivedPacket.Protocol == "IpV6")
+            else if (bUdpCheck && ArrivedPacket.Protocol == "UDP")
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
-            else if (filternone)
-            */
-            Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
+            else if (bTcpCheck && ArrivedPacket.Protocol == "TCP")
+                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
+            else if (bDnsCheck && ArrivedPacket.Protocol == "DNS")
+                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
+            else if (bHttpCheck && ArrivedPacket.Protocol == "HTTP")
+                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
+            else if (bNoneCheck)
+                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
         }
 
         private void UpdatePacketText(PacketAPI packet)
@@ -209,20 +214,27 @@ namespace PacketSniffer2
             ocPackets.Add(packet);
         }
 
-        private void StartCap_Click(object sender, RoutedEventArgs e)
+        private void btnStartCap_Click(object sender, RoutedEventArgs e)
         {
             DeviceRefresh.IsEnabled = false;
-            StartCap.IsEnabled = false;
+            btnStartCap.IsEnabled = false;
+            btnStopCap.IsEnabled = false;
             DeviceListBox.IsEnabled = false;
             DeviceInfo.Items.Clear();
             DeviceInfo.Visibility = Visibility.Hidden;
             PacketList.Visibility = Visibility.Visible;
+
+            using (pCommunicator = pSelectedDevice.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 1000))
+            {
+                pCommunicator.ReceivePackets(0, PacketHandler);
+            }
         }
 
-        private void StopCap_Click(object sender, RoutedEventArgs e)
+        private void btnStopCap_Click(object sender, RoutedEventArgs e)
         {
             DeviceRefresh.IsEnabled = true;
-            StartCap.IsEnabled = true;
+            btnStartCap.IsEnabled = true;
+            btnStopCap.IsEnabled = false;
             DeviceListBox.IsEnabled = true;
         }
 
@@ -239,6 +251,7 @@ namespace PacketSniffer2
             DeviceInfo.Items.Clear();
             DeviceInfo.Visibility = Visibility.Visible;
             PacketList.Visibility = Visibility.Hidden;
+            btnStartCap.IsEnabled = true;
             GetSelectedDevice();
             DevicePrint(pSelectedDevice);
         }

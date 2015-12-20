@@ -74,9 +74,10 @@
                     <StackPanel x:Name="NavigationPanel_1" Grid.ColumnSpan="1" Grid.RowSpan="4" Grid.Column="0" Grid.Row="1" Background="LightBlue">
                         <Label x:Name="lblSniffing" Content="Sniffing" Height="35" Background="CadetBlue" FontSize="16" FontWeight="Bold"/>
                         <StackPanel VerticalAlignment="Top">
-                            <Button x:Name="btnNothingYet" Width="80" Height="25" Margin="0,8,0,0" Content="NothingYet" IsEnabled="False"/>
+                            <Button x:Name="btnStartCap" Height="25" Width="80" Content="Capture" Margin="0,8,0,0" Click="btnStartCap_Click" IsEnabled="false"/>
+                            <Button x:Name="btnStopCap" Height="25" Width="80" Content="Stop" Margin="0,8,0,0" Click="btnStopCap_Click" IsEnabled="false"/>
                             <StackPanel Margin="0,8,0,0" Background="CadetBlue">
-                                <Label x:Name="lblFilter" DockPanel.Dock="Top" Content ="Filter settings" FontSize="14" FontWeight="Bold"/>
+                                <Label x:Name="lblFilter" DockPanel.Dock="Top" Content ="Filter settings" FontSize="14" FontWeight="Bold" HorizontalAlignment="center"/>
                                 <RadioButton x:Name="rbNone" Content="None" FontSize="12" Margin="8,0,0,0" IsChecked="True" Checked="rbNone_Checked"/>
                                 <RadioButton x:Name="rbIPV4" Content="IPV4" FontSize="12" Margin="8,0,0,0" Checked="rbIPV4_Checked"/>
                                 <RadioButton x:Name="rbICMP" Content="ICMP" FontSize="12" Margin="8,0,0,0" Checked="rbICMP_Checked"/>
@@ -153,8 +154,6 @@
                     <ListBox x:Name="DeviceListBox" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="2" Grid.Row="3" SelectionChanged="DeviceListBox_SelectionChanged"/>
                     <StackPanel Grid.RowSpan="2" Grid.Column="4" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Button x:Name="DeviceRefresh" Height="25" Width="80" Content="Refresh" Margin="2,4,0,0" Click="DeviceRefresh_Click"/>
-                        <Button x:Name="StartCap" Height="25" Width="80" Content="Capture" Margin="2,8,0,0" Click="StartCap_Click" />
-                        <Button x:Name="StopCap" Height="25" Width="80" Content="Stop" Margin="2,8,0,0" Click="StopCap_Click" />
                     </StackPanel>
                 </Grid>
             </TabItem>

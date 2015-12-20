@@ -1,35 +1,40 @@
 ﻿using PcapDotNet.Packets;
 using PcapDotNet.Packets.Ethernet;
+using PcapDotNet.Packets.IpV4;
 
 namespace PacketSniffer2
 {
     abstract class BaseSendPacket
     {
         protected EthernetLayer ethernetLayer;
+        protected IpV4Layer ipV4Layer;
         protected PacketBuilder builder;
-        /// <summary>
-        /// Will hold all layers that are needed as input for the packet builder
-        /// </summary>
 
-        public virtual void GetBase(string MACsrc, string MACdst)
+        public virtual void GetBase(string MACsrc, string MACdst, string IPsrc, string IPdst,
+            string IpId, string TTL)
         {
-            // Supposing to be on ethernet, set mac source
-            MacAddress source = new MacAddress(MACsrc);
-
-            // Set mac destination
-            MacAddress destination = new MacAddress(MACdst);
-
-            // Create the packets layers
-
             // Ethernet Layer
             ethernetLayer = new EthernetLayer
             {
-                Source = source,
-                Destination = destination,
+                Source = new MacAddress(MACsrc),
+                Destination = new MacAddress(MACdst),
                 // Set ethernet type
                 EtherType = EthernetType.None
-            // The rest of the important parameters will be set for each packet
-        };
+            };
+
+            // IpV4 Layer
+            ipV4Layer = new IpV4Layer
+            {
+                Source = new IpV4Address(IPsrc),
+                CurrentDestination = new IpV4Address(IPdst),
+                Fragmentation = IpV4Fragmentation.None,
+                HeaderChecksum = null, // Will be filled automatically.
+                Identification = StringToUShort(IpId),
+                Options = IpV4Options.None,
+                Protocol = null, // Will be filled automatically.
+                Ttl = StringToByte(TTL),
+                TypeOfService = 0,
+            };
         }
 
         public byte StringToByte(string sString)
@@ -73,20 +78,4 @@ namespace PacketSniffer2
             }
         }
     }
-
-    /*
-    class Packet : BaseSendPacket
-    {
-
-        public override void GetBase(string MACsrc, string MACdst, ...)
-        {
-            base.GetAdresses(string MACsrc, string MACdst, ...);
-        }
-
-        public override void AddLayers()
-        {
-            layers.Add(ethernetLayer, ...);
-        }
-    }
-    */
 }
