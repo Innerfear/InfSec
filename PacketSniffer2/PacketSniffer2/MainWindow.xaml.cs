@@ -236,7 +236,7 @@ namespace PacketSniffer2
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
             else if (bHttpCheck && ArrivedPacket.Http)
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
-            else if (bNoneCheck)
+            else if (bNoneCheck && ArrivedPacket.Ipv4)
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
         }
 
@@ -264,12 +264,6 @@ namespace PacketSniffer2
             }
             else
                 MessageBox.Show("Please choose a networkadapter");
-        }
-
-        private void UpdateTextListening(string packet)
-        {
-            PacketList.Items.Add(packet);
-
         }
 
         private void UpdatePacketText(PacketAPI packet)

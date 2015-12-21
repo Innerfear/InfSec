@@ -91,7 +91,7 @@
                     <ListView x:Name="PacketList" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="2" Grid.Row="1" Margin="4" Background="CadetBlue" Visibility="Hidden">
                         <ListView.View >
                             <GridView>
-                                <GridViewColumn Header="Nr.">
+                                <GridViewColumn Header="Nr." Width="40">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Autonumber}" FontWeight="Bold" />
@@ -130,6 +130,13 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Length}" FontWeight="Bold" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="IPV4">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding Ipv4}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
