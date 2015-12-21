@@ -9,7 +9,8 @@ namespace PacketSniffer2
     {
         private Packet ICMPpacket;
         private IcmpEchoLayer icmpLayer;
-        public ICMPSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst, string IpId, string TTL, string Identifier, string SQN)
+        public ICMPSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst,
+            string IpId, string TTL, string Identifier, string SQN)
         {
             GetBase(MACsrc, MACdst, IPsrc, IPdst, IpId, TTL);
 

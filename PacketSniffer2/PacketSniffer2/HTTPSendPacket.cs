@@ -12,7 +12,8 @@ namespace PacketSniffer2
         private Packet HTTPpacket;
         private TcpLayer tcpLayer;
         private HttpRequestLayer httpLayer;
-        public HTTPSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst, string IpId, string TTL,
+        public HTTPSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst,
+            string IpId, string TTL,
             string PORTsrc, string SQN, string ACK, string WIN, string Data, string Domain)
         {
             GetBase(MACsrc, MACdst, IPsrc, IPdst, IpId, TTL);

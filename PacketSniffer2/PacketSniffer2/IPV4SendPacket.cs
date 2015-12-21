@@ -9,7 +9,8 @@ namespace PacketSniffer2
     {
         private Packet IPV4packet;
         private PayloadLayer payloadLayer;
-        public IPV4SendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst, string IpId, string TTL, string data)
+        public IPV4SendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst, 
+            string IpId, string TTL, string data)
         {
             GetBase(MACsrc, MACdst, IPsrc, IPdst, IpId, TTL);
 

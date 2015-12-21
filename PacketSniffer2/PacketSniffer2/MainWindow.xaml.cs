@@ -1,10 +1,12 @@
 ﻿using PcapDotNet.Core;
 using PcapDotNet.Packets;
+using PcapDotNet.Packets.Ethernet;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace PacketSniffer2
 {
@@ -17,7 +19,6 @@ namespace PacketSniffer2
         bool bFullScreen = true;
 
         bool bNoneCheck = false;
-        bool bIpv4Check = false;
         bool bIcmpCheck = false;
         bool bUdpCheck = false;
         bool bTcpCheck = false;
@@ -49,7 +50,7 @@ namespace PacketSniffer2
         public delegate void UpdateTextCallback(PacketAPI message);
         public ObservableCollection<PacketAPI> ocPackets = new ObservableCollection<PacketAPI>();
         ManualResetEvent eShutdown = new ManualResetEvent(false);
-        ManualResetEvent epause = new ManualResetEvent(true);
+        ManualResetEvent ePause = new ManualResetEvent(true);
         #endregion
 
         // All initialization methods / definitions
@@ -169,44 +170,106 @@ namespace PacketSniffer2
 
             ArrivedPacket.Autonumber = PacketList.Items.Count;
 
-            ArrivedPacket.Protocol = packet.Ethernet.IpV4.Protocol.ToString();
+            ArrivedPacket.Protocol = packet.Ethernet.EtherType.ToString();
 
-            if (packet.Ethernet.IpV4.Udp != null && packet.Ethernet.IpV4.Protocol.ToString() == "Udp")
+            if (packet.Ethernet.EtherType == EthernetType.IpV4)
             {
-                ArrivedPacket.Protocol = packet.Ethernet.IpV4.Udp.ToString();
+                ArrivedPacket.Ipv4 = true;
+                if (packet.Ethernet.IpV4.Icmp != null && packet.Ethernet.IpV4.Protocol.ToString() == "InternetControlMessageProtocol")
+                {
+                    ArrivedPacket.Icmp = true;
+                }
+                else
+                {
+                    ArrivedPacket.Icmp = false;
+                }
+
+                if (packet.Ethernet.IpV4.Udp != null && packet.Ethernet.IpV4.Protocol.ToString() == "Udp")
+                {
+                    ArrivedPacket.Udp = true;
+                    if (packet.Ethernet.IpV4.Udp.Dns != null)
+                    {
+                        ArrivedPacket.Dns = true;
+                    }
+                    else
+                    {
+                        ArrivedPacket.Dns = false;
+                    }
+                }
+                else
+                {
+                    ArrivedPacket.Udp = false;
+                }
+
+                if (packet.Ethernet.IpV4.Tcp != null && packet.Ethernet.IpV4.Protocol.ToString() == "Tcp")
+                {
+                    ArrivedPacket.Tcp = true;
+                    if (packet.Ethernet.IpV4.Tcp.Http != null)
+                    {
+                        ArrivedPacket.Http = true;
+                    }
+                    else
+                    {
+                        ArrivedPacket.Http = false;
+                    }
+                }
+                else
+                {
+                    ArrivedPacket.Tcp = false;
+                }
             }
             else
             {
-                ArrivedPacket.Udp = "No UDP";
+                ArrivedPacket.Ipv4 = false;
             }
 
-            if (packet.Ethernet.IpV4.Tcp != null && packet.Ethernet.IpV4.Protocol.ToString() == "Tcp")
-            {
-                ArrivedPacket.Protocol = packet.Ethernet.IpV4.Tcp.ToString();
-            }
-            else
-            {
-                ArrivedPacket.Tcp = "No TCP";
-            }
+            ArrivedPacket.IpSource = packet.Ethernet.IpV4.Source.ToString();
+            ArrivedPacket.IpDestination = packet.Ethernet.IpV4.Destination.ToString();
 
-            ArrivedPacket.Source = packet.Ethernet.IpV4.Source.ToString();
-
-            ArrivedPacket.Destination = packet.Ethernet.IpV4.Destination.ToString();
-
-            if (bIpv4Check && ArrivedPacket.Protocol == "IPV4")
+            if (bIcmpCheck && ArrivedPacket.Icmp)
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
-            else if (bIcmpCheck && ArrivedPacket.Protocol == "ICMP")
+            else if (bUdpCheck && ArrivedPacket.Udp)
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
-            else if (bUdpCheck && ArrivedPacket.Protocol == "UDP")
+            else if (bTcpCheck && ArrivedPacket.Tcp)
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
-            else if (bTcpCheck && ArrivedPacket.Protocol == "TCP")
+            else if (bDnsCheck && ArrivedPacket.Dns)
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
-            else if (bDnsCheck && ArrivedPacket.Protocol == "DNS")
-                Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
-            else if (bHttpCheck && ArrivedPacket.Protocol == "HTTP")
+            else if (bHttpCheck && ArrivedPacket.Http)
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
             else if (bNoneCheck)
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
+        }
+
+        private void StartThreadAnalyze()
+        {
+            Dispatcher.Invoke((ThreadStart)delegate { pSelectedDevice.ToString(); },
+                DispatcherPriority.Normal, null);
+
+            if (pSelectedDevice.ToString() != null)
+            {
+                while (true)
+                {
+                    ePause.WaitOne(Timeout.Infinite);
+                    if (eShutdown.WaitOne(0))
+                        break;
+
+                    bCapture = true;
+                    using (PacketCommunicator communicator = pSelectedDevice.Open(65536,
+                        PacketDeviceOpenAttributes.Promiscuous, 1000))
+                    {
+                        communicator.ReceivePackets(0, PacketHandler);
+                    }
+                    bCapture = false;
+                }
+            }
+            else
+                MessageBox.Show("Please choose a networkadapter");
+        }
+
+        private void UpdateTextListening(string packet)
+        {
+            PacketList.Items.Add(packet);
+
         }
 
         private void UpdatePacketText(PacketAPI packet)
@@ -218,16 +281,15 @@ namespace PacketSniffer2
         {
             DeviceRefresh.IsEnabled = false;
             btnStartCap.IsEnabled = false;
-            btnStopCap.IsEnabled = false;
+            btnStopCap.IsEnabled = true;
             DeviceListBox.IsEnabled = false;
             DeviceInfo.Items.Clear();
             DeviceInfo.Visibility = Visibility.Hidden;
             PacketList.Visibility = Visibility.Visible;
 
-            using (pCommunicator = pSelectedDevice.Open(65536, PacketDeviceOpenAttributes.Promiscuous, 1000))
-            {
-                pCommunicator.ReceivePackets(0, PacketHandler);
-            }
+
+            tCapture = new Thread(new ThreadStart(StartThreadAnalyze));
+            tCapture.Start();
         }
 
         private void btnStopCap_Click(object sender, RoutedEventArgs e)
@@ -236,6 +298,8 @@ namespace PacketSniffer2
             btnStartCap.IsEnabled = true;
             btnStopCap.IsEnabled = false;
             DeviceListBox.IsEnabled = true;
+
+            tCapture.Abort();
         }
 
         private void DeviceRefresh_Click(object sender, RoutedEventArgs e)
@@ -256,51 +320,50 @@ namespace PacketSniffer2
             DevicePrint(pSelectedDevice);
         }
 
-        private void HandleCheckBox(bool bChecked)
+        private void CheckBoxFalse()
         {
             bNoneCheck = false;
-            bIpv4Check = false;
             bIcmpCheck = false;
             bUdpCheck = false;
             bTcpCheck = false;
             bDnsCheck = false;
             bHttpCheck = false;
-            bChecked = true;
         }
 
         private void rbNone_Checked(object sender, RoutedEventArgs e)
         {
-            HandleCheckBox(bNoneCheck);
-        }
-
-        private void rbIPV4_Checked(object sender, RoutedEventArgs e)
-        {
-            HandleCheckBox(bIpv4Check);
+            CheckBoxFalse();
+            bNoneCheck = true;
         }
 
         private void rbICMP_Checked(object sender, RoutedEventArgs e)
         {
-            HandleCheckBox(bIcmpCheck);
+            CheckBoxFalse();
+            bIcmpCheck = true;
         }
 
         private void rbUDP_Checked(object sender, RoutedEventArgs e)
         {
-            HandleCheckBox(bUdpCheck);
+            CheckBoxFalse();
+            bUdpCheck = true;
         }
 
         private void rbTCP_Checked(object sender, RoutedEventArgs e)
         {
-            HandleCheckBox(bTcpCheck);
+            CheckBoxFalse();
+            bTcpCheck = true;
         }
 
         private void rbDNS_Checked(object sender, RoutedEventArgs e)
         {
-            HandleCheckBox(bDnsCheck);
+            CheckBoxFalse();
+            bDnsCheck = true;
         }
 
         private void rbHTTP_Checked(object sender, RoutedEventArgs e)
         {
-            HandleCheckBox(bHttpCheck);
+            CheckBoxFalse();
+            bHttpCheck = true;
         }
         #endregion
 

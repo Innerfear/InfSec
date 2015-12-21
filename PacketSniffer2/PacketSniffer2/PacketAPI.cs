@@ -16,33 +16,66 @@
             set { protocol = value; }
         }
 
-        private string ip;
-        public string Ip
+        private bool ipv4;
+        public bool Ipv4
         {
-            get { return ip; }
-            set { ip = value; }
+            get { return ipv4; }
+            set { ipv4 = value; }
         }
 
-        private string source;
-        public string Source
+        private bool icmp;
+        public bool Icmp
         {
-            get { return source; }
-            set { source = value; }
+            get { return icmp; }
+            set { icmp = value; }
         }
 
-        private string destination;
-        public string Destination
+        private bool udp;
+        public bool Udp
         {
-            get { return destination; }
-            set { destination = value; }
+            get { return udp; }
+            set { udp = value; }
         }
 
-        private string tcp;
-        public string Tcp
+        private bool tcp;
+        public bool Tcp
         {
             get { return tcp; }
             set { tcp = value; }
         }
+
+        private bool dns;
+        public bool Dns
+        {
+            get { return dns; }
+            set { dns = value; }
+        }
+
+        private bool http;
+        public bool Http
+        {
+            get { return http; }
+            set { http = value; }
+        }
+
+        private string ipsource;
+        public string IpSource
+        {
+            get { return ipsource; }
+            set { ipsource = value; }
+        }
+
+        private string ipdestination;
+        public string IpDestination
+        {
+            get { return ipdestination; }
+            set { ipdestination = value; }
+        }
+
+
+
+
+
 
         private string header;
         public string Header
@@ -58,39 +91,18 @@
             set { length = value; }
         }
 
-        private string udp;
-        public string Udp
+        private string macsource;
+        public string MacSource
         {
-            get { return udp; }
-            set { udp = value; }
-        }   
-
-        private string ipaddressS;
-        public string IpaddressS
-        {
-            get { return ipaddressS; }
-            set { ipaddressS = value; }
+            get { return macsource; }
+            set { macsource = value; }
         }
 
-        private string ipaddressD;
-        public string IpaddressD
+        private string macdestination;
+        public string MacDestination
         {
-            get { return ipaddressD; }
-            set { ipaddressD = value; }
-        }
-
-        private string macaddressS;
-        public string MacaddressS
-        {
-            get { return macaddressS; }
-            set { macaddressS = value; }
-        }
-
-        private string macaddresD;
-        public string MacaddressD
-        {
-            get { return macaddresD; }
-            set { macaddresD = value; }
+            get { return macdestination; }
+            set { macdestination = value; }
         }
 
         private int ttl;
@@ -107,11 +119,11 @@
             set { npackets = value; }
         }
 
-        private string poortnummer;
-        public string Poortnummer
+        private string portnumber;
+        public string Portnumber
         {
-            get { return poortnummer; }
-            set { poortnummer = value; }
+            get { return portnumber; }
+            set { portnumber = value; }
         }
 
         private string payload;
@@ -140,20 +152,6 @@
         {
             get { return icmpSequence; }
             set { icmpSequence = value; }
-        }
-
-        private byte[] arpSH;
-        public byte[] ArpSH
-        {
-            get { return arpSH; }
-            set { arpSH = value; }
-        }
-
-        private byte[] arpDH;
-        public byte[] ArpDH
-        {
-            get { return arpDH; }
-            set { arpDH = value; }
         }
 
     }

@@ -11,8 +11,8 @@ namespace PacketSniffer2
         private Packet TCPpacket;
         private TcpLayer tcpLayer;
         private PayloadLayer payloadLayer;
-        public TCPSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst, string IpId,
-            string TTL, string PORTsrc, string SQN, string ACK, string WIN, string data)
+        public TCPSendPacket(string MACsrc, string MACdst, string IPsrc, string IPdst, 
+            string IpId, string TTL, string PORTsrc, string SQN, string ACK, string WIN, string data)
         {
             GetBase(MACsrc, MACdst, IPsrc, IPdst, IpId, TTL);
 
