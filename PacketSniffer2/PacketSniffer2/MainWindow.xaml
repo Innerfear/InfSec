@@ -46,14 +46,17 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal" Margin="0,0,10,-10" Grid.ColumnSpan="5" Grid.RowSpan="2" Panel.ZIndex="5">
-            <Button x:Name="ExitButton" Width="16" Content="X" Margin="0,0,1,0" Height="16" FontSize="8" Click="ExitButton_Click"/>
-            <Button x:Name="MinimizeButton" Width="16" Content="_" Margin="0,0,1,0" Height="16" FontSize="8" Click="MinimizeButton_Click"/>
-            <Button x:Name="HalfSizeButton" Width="16" Content="[" Margin="0,0,1,0" Height="16" FontSize="8" Click="HalfSizeButton_Click"/>
-            <Button x:Name="FullSizeButton" Width="16" Content="[]" Margin="0,0,1,0" Height="16" FontSize="8" Click="FullSizeButton_Click"/>
+        <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal" Margin="0,0,10,-20" Grid.ColumnSpan="5" Grid.RowSpan="2" Panel.ZIndex="5">
+            <Button x:Name="ExitButton" Width="30" Content="X" Margin="0,0,1,0" Height="24" FontSize="12" Click="ExitButton_Click" VerticalAlignment="center" FontWeight="ExtraBold"/>
+            <Button x:Name="MinimizeButton" Width="30" Content="_" Margin="0,0,1,0" Height="24" FontSize="12" Click="MinimizeButton_Click" VerticalAlignment="center" FontWeight="ExtraBold"/>
+            <Button x:Name="HalfSizeButton" Width="30" Content="[" Margin="0,0,1,0" Height="24" FontSize="12" Click="HalfSizeButton_Click" VerticalAlignment="center" FontWeight="ExtraBold"/>
+            <Button x:Name="FullSizeButton" Width="30" Content="[]" Margin="0,0,1,0" Height="24" FontSize="12" Click="FullSizeButton_Click" VerticalAlignment="center" FontWeight="ExtraBold"/>
         </StackPanel>
         <TabControl x:Name="Tabs" Grid.RowSpan="2" Grid.Column="1" Grid.Row="1" Background="white">
-            <TabItem x:Name="Sniffing" Header="Sniffing">
+            <TabItem x:Name="Sniffing" Height="30">
+                <TabItem.Header>
+                    <Label Content="Sniffing"/>
+                </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5*"/>
@@ -88,13 +91,13 @@
                         </StackPanel>
                     </StackPanel>
                     <ListBox x:Name="DeviceInfo" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="2" Grid.Row="1"/>
-                    <ListView x:Name="PacketList" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="2" Grid.Row="1" Margin="4" Background="CadetBlue" Visibility="Hidden">
+                    <ListView x:Name="PacketList" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="2" Grid.Row="1" Margin="4" Background="CadetBlue" Visibility="Hidden" SelectionChanged="PacketList_SelectionChanged">
                         <ListView.View >
                             <GridView>
-                                <GridViewColumn Header="Nr." Width="40">
+                                <GridViewColumn Header="Timestamp">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Autonumber}" FontWeight="Bold" />
+                                            <TextBlock Text="{Binding Timestamp}" FontWeight="Bold" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -178,14 +181,16 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <ListBox x:Name="DeviceListBox" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="2" Grid.Row="3" SelectionChanged="DeviceListBox_SelectionChanged"/>
-                    <StackPanel Grid.RowSpan="2" Grid.Column="4" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Button x:Name="DeviceRefresh" Height="25" Width="80" Content="Refresh" Margin="2,4,0,0" Click="DeviceRefresh_Click"/>
-                    </StackPanel>
+                    <ListBox x:Name="PacketInfo" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="3" Visibility="Hidden"/>
+                    <ListBox x:Name="DeviceListBox" SelectionChanged="DeviceListBox_SelectionChanged" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="3"/>
+                    <Button x:Name="DeviceRefresh" Height="25" Width="80" Content="Refresh" Margin="2,4,0,0" Click="DeviceRefresh_Click"  Grid.Column="4" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="Editing" Header="Editing">
-                <Grid>
+            <TabItem x:Name="Editing" Height="30">
+                    <TabItem.Header>
+                    <Label Content="Editing"/>
+                    </TabItem.Header>
+                    <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5*"/>
                         <ColumnDefinition Width="1*"/>
@@ -210,8 +215,11 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="Injecting" Header="Injecting">
-                <Grid>
+            <TabItem x:Name="Injecting" Height="30">
+                    <TabItem.Header>
+                    <Label Content="Injecting"/>
+                    </TabItem.Header>
+                    <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5*"/>
                         <ColumnDefinition Width="1*"/>

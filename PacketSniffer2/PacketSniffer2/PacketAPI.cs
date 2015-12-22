@@ -1,12 +1,14 @@
-﻿namespace PacketSniffer2
+﻿using System;
+
+namespace PacketSniffer2
 {
     public class PacketAPI
     {
-        private int autonumber;
-        public int Autonumber
+        private string timestamp;
+        public string Timestamp
         {
-            get { return autonumber; }
-            set { autonumber = value; }
+            get { return timestamp; }
+            set { timestamp = value; }
         }
 
         private string protocol;
@@ -72,25 +74,6 @@
             set { ipdestination = value; }
         }
 
-
-
-
-
-
-        private string header;
-        public string Header
-        {
-            get { return header; }
-            set { header = value; }
-        }
-
-        private int length;
-        public int Length
-        {
-            get { return length; }
-            set { length = value; }
-        }
-
         private string macsource;
         public string MacSource
         {
@@ -105,6 +88,13 @@
             set { macdestination = value; }
         }
 
+        private int length;
+        public int Length
+        {
+            get { return length; }
+            set { length = value; }
+        }
+
         private int ttl;
         public int Ttl
         {
@@ -112,47 +102,46 @@
             set { ttl = value; }
         }
 
-        private int npackets;
-        public int Npackets
+        private ushort portSource;
+        public ushort PortSource
         {
-            get { return npackets; }
-            set { npackets = value; }
+            get { return portSource; }
+            set { portSource = value; }
         }
 
-        private string portnumber;
-        public string Portnumber
+        private ushort portDestination;
+        public ushort PortDestination
         {
-            get { return portnumber; }
-            set { portnumber = value; }
+            get { return portDestination; }
+            set { portDestination = value; }
         }
 
-        private string payload;
-        public string Payload
+        private ushort id;
+        public ushort Id
         {
-            get { return payload; }
-            set { payload = value; }
+            get { return id; }
+            set { id = value; }
         }
 
-        private ushort vlan;
-        public ushort Vlan
+        private ushort sqn;
+        public ushort Sqn
         {
-            get { return vlan; }
-            set { vlan = value; }
+            get { return sqn; }
+            set { sqn = value; }
         }
 
-        private ushort icmpIdentifier;
-        public ushort IcmpIdentifier
+        private ushort ack;
+        public ushort Ack
         {
-            get { return icmpIdentifier; }
-            set { icmpIdentifier = value; }
+            get { return ack; }
+            set { ack = value; }
         }
 
-        private ushort icmpSequence;
-        public ushort IcmpSequence
+        private ushort win;
+        public ushort Win
         {
-            get { return icmpSequence; }
-            set { icmpSequence = value; }
+            get { return win; }
+            set { win = value; }
         }
-
     }
 }

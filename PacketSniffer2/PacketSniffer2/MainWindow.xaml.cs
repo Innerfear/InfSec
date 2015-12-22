@@ -26,10 +26,10 @@ namespace PacketSniffer2
         bool bHttpCheck = false;
 
         bool bCapture = false;
-        bool bInject = false;
         bool bEdit = false;
 
         //Packet variables
+        PacketAPI pInfoPacket;
         PacketDevice pSelectedDevice;
         PacketCommunicator pCommunicator;
 
@@ -42,7 +42,6 @@ namespace PacketSniffer2
 
         //Thread variables
         Thread tCapture;
-        Thread tInject;
         Thread tEdit;
 
         //Misc variables
@@ -70,22 +69,6 @@ namespace PacketSniffer2
 
         // All methods that don't handle initialization
         #region Methods
-        #region Not (Yet) Implemented Methods
-        /*
-        private void StartNpfService()
-        {
-            Process Npf = new Process();
-            var NpfInfo = new ProcessStartInfo();
-            NpfInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            NpfInfo.WorkingDirectory = @"C:\Windows\System32";
-            NpfInfo.FileName = @"C:\Windows\System32\cmd.exe";
-            NpfInfo.Verb = "runas";
-            NpfInfo.Arguments = "/C sc start npf";
-            Npf.StartInfo = NpfInfo;
-            Npf.Start();
-        }
-        */
-        #endregion
 
         #region Startup Methods
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -168,9 +151,15 @@ namespace PacketSniffer2
         {
             var ArrivedPacket = new PacketAPI();
 
-            ArrivedPacket.Autonumber = PacketList.Items.Count;
-
+            ArrivedPacket.Timestamp = packet.Timestamp.ToString();
             ArrivedPacket.Protocol = packet.Ethernet.EtherType.ToString();
+            ArrivedPacket.MacSource = packet.Ethernet.Source.ToString();
+            ArrivedPacket.MacDestination = packet.Ethernet.Destination.ToString();
+            ArrivedPacket.IpSource = packet.Ethernet.IpV4.Source.ToString();
+            ArrivedPacket.IpDestination = packet.Ethernet.IpV4.Destination.ToString();
+            ArrivedPacket.Length = packet.Length;
+            ArrivedPacket.Ttl = packet.Ethernet.IpV4.Ttl;
+            ArrivedPacket.Id = packet.Ethernet.IpV4.Identification;
 
             if (packet.Ethernet.EtherType == EthernetType.IpV4)
             {
@@ -187,7 +176,10 @@ namespace PacketSniffer2
                 if (packet.Ethernet.IpV4.Udp != null && packet.Ethernet.IpV4.Protocol.ToString() == "Udp")
                 {
                     ArrivedPacket.Udp = true;
-                    if (packet.Ethernet.IpV4.Udp.Dns != null)
+                    ArrivedPacket.PortSource = packet.Ethernet.IpV4.Udp.SourcePort;
+                    ArrivedPacket.PortDestination = packet.Ethernet.IpV4.Udp.DestinationPort;
+                    if (ArrivedPacket.PortDestination == 53 || ArrivedPacket.PortDestination > 1023 
+                        || ArrivedPacket.PortSource == 53 || ArrivedPacket.PortSource > 1023)
                     {
                         ArrivedPacket.Dns = true;
                     }
@@ -204,7 +196,9 @@ namespace PacketSniffer2
                 if (packet.Ethernet.IpV4.Tcp != null && packet.Ethernet.IpV4.Protocol.ToString() == "Tcp")
                 {
                     ArrivedPacket.Tcp = true;
-                    if (packet.Ethernet.IpV4.Tcp.Http != null)
+                    ArrivedPacket.PortSource = packet.Ethernet.IpV4.Tcp.SourcePort;
+                    ArrivedPacket.PortDestination = packet.Ethernet.IpV4.Tcp.DestinationPort;
+                    if (ArrivedPacket.PortDestination == 80 || ArrivedPacket.PortSource == 80)
                     {
                         ArrivedPacket.Http = true;
                     }
@@ -222,9 +216,6 @@ namespace PacketSniffer2
             {
                 ArrivedPacket.Ipv4 = false;
             }
-
-            ArrivedPacket.IpSource = packet.Ethernet.IpV4.Source.ToString();
-            ArrivedPacket.IpDestination = packet.Ethernet.IpV4.Destination.ToString();
 
             if (bIcmpCheck && ArrivedPacket.Icmp)
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
@@ -249,9 +240,9 @@ namespace PacketSniffer2
             {
                 while (true)
                 {
-                    ePause.WaitOne(Timeout.Infinite);
-                    if (eShutdown.WaitOne(0))
-                        break;
+                    ePause.WaitOne(Timeout.Infinite);   // 
+                    if (eShutdown.WaitOne(0))           // wrs redundant
+                        break;                          //
 
                     bCapture = true;
                     using (PacketCommunicator communicator = pSelectedDevice.Open(65536,
@@ -278,9 +269,10 @@ namespace PacketSniffer2
             btnStopCap.IsEnabled = true;
             DeviceListBox.IsEnabled = false;
             DeviceInfo.Items.Clear();
+            DeviceListBox.Visibility = Visibility.Hidden;
+            PacketInfo.Visibility = Visibility.Visible;
             DeviceInfo.Visibility = Visibility.Hidden;
             PacketList.Visibility = Visibility.Visible;
-
 
             tCapture = new Thread(new ThreadStart(StartThreadAnalyze));
             tCapture.Start();
@@ -302,6 +294,8 @@ namespace PacketSniffer2
             PacketList.Items.Clear();
             DeviceInfo.Visibility = Visibility.Visible;
             PacketList.Visibility = Visibility.Hidden;
+            DeviceListBox.Visibility = Visibility.Visible;
+            PacketInfo.Visibility = Visibility.Hidden;
             GetDevices();
         }
         private void DeviceListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -309,6 +303,8 @@ namespace PacketSniffer2
             DeviceInfo.Items.Clear();
             DeviceInfo.Visibility = Visibility.Visible;
             PacketList.Visibility = Visibility.Hidden;
+            DeviceListBox.Visibility = Visibility.Visible;
+            PacketInfo.Visibility = Visibility.Hidden;
             btnStartCap.IsEnabled = true;
             GetSelectedDevice();
             DevicePrint(pSelectedDevice);
@@ -358,6 +354,34 @@ namespace PacketSniffer2
         {
             CheckBoxFalse();
             bHttpCheck = true;
+        }
+
+        private void PacketList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            PacketInfo.Items.Clear();
+            pInfoPacket = new PacketAPI();
+            pInfoPacket = (PacketAPI)PacketList.SelectedItems[0];
+
+            PacketInfo.Items.Add("Time Of Arrival: " + pInfoPacket.Timestamp);
+
+            if (pInfoPacket.Http)
+                PacketInfo.Items.Add("Protocol encapsulation: IPV4 / TCP / HTTP");
+            else if (pInfoPacket.Dns)
+                PacketInfo.Items.Add("Protocol encapsulation: IPV4 / UDP / DNS");
+            else if (pInfoPacket.Tcp)
+                PacketInfo.Items.Add("Protocol encapsulation: IPV4 / TCP");
+            else if (pInfoPacket.Udp)
+                PacketInfo.Items.Add("Protocol encapsulation: IPV4 / UDP");
+            else if (pInfoPacket.Icmp)
+                PacketInfo.Items.Add("Protocol encapsulation: IPV4 / ICMP");
+            else
+                PacketInfo.Items.Add("Protocol encapsulation: IPV4");
+
+            PacketInfo.Items.Add("MAC Source: " + pInfoPacket.MacSource + "\tMAC Destination: " + pInfoPacket.MacDestination);
+            PacketInfo.Items.Add("IP Source: " + pInfoPacket.IpSource + "\t\tIP Destination: " + pInfoPacket.IpDestination);
+            PacketInfo.Items.Add("Length: " + pInfoPacket.Length + "\t\t\tTTL: " + pInfoPacket.Ttl + "\t\t\tID: " + pInfoPacket.Id);
+            PacketInfo.Items.Add("Source Port: " + pInfoPacket.PortSource + "\t\t\tDestination Port: " + pInfoPacket.PortDestination);
+            PacketInfo.Items.Add("SQN: " + pInfoPacket.Sqn + "\t\t\t\tACK: " + pInfoPacket.Ack + "\t\t\t\tWindow: " + pInfoPacket.Win);
         }
         #endregion
 
@@ -517,7 +541,7 @@ namespace PacketSniffer2
                     Identifier.IsEnabled = true;
                     PORTsrc.IsEnabled = false;
                     PORTsrc.Text = "";
-                    SQN.IsEnabled = false;
+                    SQN.IsEnabled = true;
                     SQN.Text = "";
                     ACK.IsEnabled = false;
                     ACK.Text = "";
@@ -590,6 +614,9 @@ namespace PacketSniffer2
         #region Other XAML Activated Methods
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
+            if (bCapture)
+            tCapture.Abort();
+
             Close();
         }
 
