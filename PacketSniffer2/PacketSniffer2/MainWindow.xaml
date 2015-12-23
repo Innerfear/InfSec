@@ -7,7 +7,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Title="PacketSniffer V2"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded" Height="650" Width="1000">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -15,280 +15,282 @@
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="5"/>
+            <RowDefinition Height="8"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <TabControl x:Name="Tabs" Grid.RowSpan="2" Grid.Column="1" Grid.Row="1">
-            <TabItem x:Name="Sniffing" Height="30">
+            <TabItem x:Name="Sniffing" Width="80" BorderBrush="DodgerBlue" BorderThickness="2" Margin="3,0,-3,0">
                 <TabItem.Header>
-                    <Label Content="Sniffing"/>
+                    <Label Content="Sniffing" HorizontalAlignment="Center"/>
                 </TabItem.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="9*"/>
-                        <ColumnDefinition Width="9*"/>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="10*"/>
-                        <RowDefinition Height="10*"/>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="1*"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel x:Name="NavigationPanel_1" Grid.ColumnSpan="1" Grid.RowSpan="4" Grid.Column="0" Grid.Row="1">
-                        <Label x:Name="lblSniffing" Content="Sniffing" Height="35" FontSize="16" FontWeight="Bold"/>
-                        <StackPanel VerticalAlignment="Top">
-                            <Button x:Name="btnStartCap" Height="25" Width="80" Content="Capture" Margin="0,8,0,0" Click="btnStartCap_Click" IsEnabled="false"/>
-                            <Button x:Name="btnStopCap" Height="25" Width="80" Content="Stop" Margin="0,8,0,0" Click="btnStopCap_Click" IsEnabled="false"/>
-                            <StackPanel Margin="0,8,0,0">
-                                <Label x:Name="lblFilter" DockPanel.Dock="Top" Content ="Filter settings" FontSize="14" FontWeight="Bold" HorizontalAlignment="center"/>
-                                <RadioButton x:Name="rbNone" Content="None" FontSize="12" Margin="8,0,0,0" IsChecked="True" Checked="rbNone_Checked"/>
-                                <RadioButton x:Name="rbICMP" Content="ICMP" FontSize="12" Margin="8,0,0,0" Checked="rbICMP_Checked"/>
-                                <RadioButton x:Name="rbUDP" Content="UDP" FontSize="12" Margin="8,0,0,0" Checked="rbUDP_Checked"/>
-                                <RadioButton x:Name="rbTCP" Content="TCP" FontSize="12" Margin="8,0,0,0" Checked="rbTCP_Checked"/>
-                                <RadioButton x:Name="rbDNS" Content="DNS" FontSize="12" Margin="8,0,0,0" Checked="rbDNS_Checked"/>
-                                <RadioButton x:Name="rbHTTP" Content="HTTP" FontSize="12" Margin="8,0,0,8" Checked="rbHTTP_Checked"/>
+                <Border BorderBrush="DodgerBlue" BorderThickness="2">
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition MinWidth="120"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="9*"/>
+                            <ColumnDefinition Width="9*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="4*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel x:Name="NavigationPanel_1" Grid.ColumnSpan="1" Grid.RowSpan="6" Grid.Column="0" Grid.Row="0" Margin="4" Background="DodgerBlue">
+                            <Label x:Name="lblSniffing" Content="  Sniffing" Height="35" FontSize="16" FontWeight="Bold"/>
+                            <StackPanel VerticalAlignment="Top">
+                                <Button x:Name="btnStartCap" Height="25" Width="80" Content="Capture" Margin="0,8,0,0" Click="btnStartCap_Click" IsEnabled="false"/>
+                                <Button x:Name="btnStopCap" Height="25" Width="80" Content="Stop" Margin="0,8,0,0" Click="btnStopCap_Click" IsEnabled="false"/>
+                                <StackPanel Margin="0,8,0,0">
+                                    <Label x:Name="lblFilter" DockPanel.Dock="Top" Content ="Filter settings" FontSize="14" FontWeight="Bold" HorizontalAlignment="center"/>
+                                    <RadioButton x:Name="rbIPV4" Content="IPV4" FontSize="12" Margin="8,4,0,0" IsChecked="True" Checked="rbIPV4_Checked"/>
+                                    <RadioButton x:Name="rbICMP" Content="ICMP" FontSize="12" Margin="8,4,0,0" Checked="rbICMP_Checked"/>
+                                    <RadioButton x:Name="rbUDP" Content="UDP" FontSize="12" Margin="8,4,0,0" Checked="rbUDP_Checked"/>
+                                    <RadioButton x:Name="rbTCP" Content="TCP" FontSize="12" Margin="8,4,0,0" Checked="rbTCP_Checked"/>
+                                    <RadioButton x:Name="rbDNS" Content="DNS" FontSize="12" Margin="8,4,0,0" Checked="rbDNS_Checked"/>
+                                    <RadioButton x:Name="rbHTTP" Content="HTTP" FontSize="12" Margin="8,4,0,8" Checked="rbHTTP_Checked"/>
+                                </StackPanel>
                             </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                    <ListBox x:Name="DeviceInfo" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="2" Grid.Row="1"/>
-                    <ListView x:Name="PacketList" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="2" Grid.Row="1" Margin="4" Visibility="Hidden" SelectionChanged="PacketList_SelectionChanged">
-                        <ListView.View >
-                            <GridView>
-                                <GridViewColumn Header="Timestamp">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Timestamp}" FontWeight="Bold" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Prot">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Protocol}" FontWeight="Bold" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Source">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding IpSource}" FontWeight="Bold" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Destination">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding IpDestination}" FontWeight="Bold" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="PortNr">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Portnumber}" FontWeight="Bold" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Length">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Length}" FontWeight="Bold" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="IPV4">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding Ipv4}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="ICMP">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding Icmp}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="UDP">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding Udp}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="TCP">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding Tcp}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="DNS">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding Dns}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="HTTP">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding Http}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <ListBox x:Name="PacketInfo" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="3" Visibility="Hidden"/>
-                    <ListBox x:Name="DeviceListBox" SelectionChanged="DeviceListBox_SelectionChanged" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="3"/>
-                    <Button x:Name="DeviceRefresh" Height="25" Width="80" Content="Refresh" Margin="2,4,0,0" Click="DeviceRefresh_Click"  Grid.Column="4" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                </Grid>
+                        <ListBox x:Name="DeviceInfo" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="2" Grid.Row="0" Margin="4" BorderBrush="DodgerBlue" BorderThickness="1"/>
+                        <ListView x:Name="PacketList" Grid.ColumnSpan="3" Grid.RowSpan="2" Grid.Column="2" Grid.Row="0" Margin="4" BorderBrush="DodgerBlue" BorderThickness="1" Visibility="Hidden" SelectionChanged="PacketList_SelectionChanged">
+                            <ListView.View >
+                                <GridView>
+                                    <GridViewColumn Header="Timestamp">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Timestamp}" FontWeight="Bold" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Prot">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Protocol}" FontWeight="Bold" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Source">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding IpSource}" FontWeight="Bold" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Destination">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding IpDestination}" FontWeight="Bold" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="PortNr">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Portnumber}" FontWeight="Bold" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Length">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Length}" FontWeight="Bold" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="IPV4">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding Ipv4}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="ICMP">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding Icmp}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="UDP">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding Udp}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="TCP">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding Tcp}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="DNS">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding Dns}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="HTTP">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding Http}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <ListBox x:Name="PacketInfo" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="2" Margin="4" BorderBrush="DodgerBlue" BorderThickness="1" Visibility="Hidden"/>
+                        <ListBox x:Name="DeviceListBox" SelectionChanged="DeviceListBox_SelectionChanged" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="2" Margin="4" BorderBrush="DodgerBlue" BorderThickness="1"/>
+                        <Button x:Name="DeviceRefresh" Height="25" Width="80" Content="Refresh" Margin="2,4,0,0" Click="DeviceRefresh_Click"  Grid.Column="4" Grid.Row="2"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    </Grid>
+                </Border>
             </TabItem>
-            <TabItem x:Name="Editing" Height="30">
-                    <TabItem.Header>
-                    <Label Content="Editing"/>
-                    </TabItem.Header>
-                    <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="9*"/>
-                        <ColumnDefinition Width="9*"/>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="10*"/>
-                        <RowDefinition Height="10*"/>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="1*"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel x:Name="NavigationPanel_2" Grid.ColumnSpan="1" Grid.RowSpan="4" Grid.Column="0" Grid.Row="1">
-                        <Label x:Name="lblEditing" Content="Editing" Height="35" FontSize="16" FontWeight="Bold"/>
-                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="center">
-                            <Button x:Name="btnAlsoNothingYet" Width="80" Height="25" Margin="0,8,0,0" Content="NothingYet" IsEnabled="False"/>
+            <TabItem x:Name="Editing" Width="80" BorderBrush="DodgerBlue" BorderThickness="2" Margin="13,0,-13,0">
+                <TabItem.Header>
+                    <Label Content="Editing" HorizontalAlignment="Center"/>
+                </TabItem.Header>
+                <Border BorderBrush="DodgerBlue" BorderThickness="2">
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition MinWidth="120"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="9*"/>
+                            <ColumnDefinition Width="9*"/>
+                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel x:Name="NavigationPanel_2" Grid.ColumnSpan="1" Grid.RowSpan="6" Grid.Column="0" Grid.Row="0" Margin="4"  Background="DodgerBlue">
+                            <Label x:Name="lblEditing" Content="  Editing" Height="35" FontSize="16" FontWeight="Bold"/>
+                            <StackPanel VerticalAlignment="Top" HorizontalAlignment="center">
+                                <Button x:Name="btnAlsoNothingYet" Width="80" Height="25" Margin="0,8,0,0" Content="NothingYet" IsEnabled="False"/>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </Grid>
+                    </Grid>
+                </Border>
             </TabItem>
-            <TabItem x:Name="Injecting" Height="30">
-                    <TabItem.Header>
-                    <Label Content="Injecting"/>
-                    </TabItem.Header>
-                    <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="9*"/>
-                        <ColumnDefinition Width="9*"/>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="10*"/>
-                        <RowDefinition Height="10*"/>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="1*"/>
-                    </Grid.RowDefinitions>
-                    <StackPanel x:Name="NavigationPanel_3" Grid.ColumnSpan="1" Grid.RowSpan="4" Grid.Column="0" Grid.Row="1">
-                        <Label x:Name="lblInjecting" Content="Injecting" Height="35" FontSize="16" FontWeight="Bold"/>
-                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="center">
-                            <Button x:Name="btnSendPacket" Width="80" Height="25" Margin="0,8,0,0" Content="Send" Click="btnSendPacket_Click" IsEnabled="False"/>
+            <TabItem x:Name="Injecting" Width="80" BorderBrush="DodgerBlue" BorderThickness="2" Margin="23,0,-23,0">
+                <TabItem.Header>
+                    <Label Content="Injecting" HorizontalAlignment="Center"/>
+                </TabItem.Header>
+                <Border BorderBrush="DodgerBlue" BorderThickness="2">
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition MinWidth="120"/>
+                            <ColumnDefinition Width="9*"/>
+                            <ColumnDefinition Width="9*"/>
+                            <ColumnDefinition Width="5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="4*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel x:Name="NavigationPanel_3" Grid.ColumnSpan="1" Grid.RowSpan="6" Grid.Column="0" Grid.Row="0" Margin="4" Background="DodgerBlue">
+                            <Label x:Name="lblInjecting" Content="  Injecting" Height="35" FontSize="16" FontWeight="Bold"/>
+                            <StackPanel VerticalAlignment="Top" HorizontalAlignment="center">
+                                <Button x:Name="btnSendPacket" Width="80" Height="25" Margin="0,8,0,0" Content="Send" Click="btnSendPacket_Click" IsEnabled="False"/>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                    <StackPanel x:Name="UserInput" Grid.ColumnSpan="3" Grid.RowSpan="4" Grid.Column="2" Grid.Row="1">
-                        <Grid Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="170"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="110"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="10"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="10"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="10"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="10"/>
-                                <RowDefinition Height="25"/>
-                            </Grid.RowDefinitions>
-                            <Label x:Name="lblProtType" Grid.Column="0" Grid.Row="0" Content="Protocol Type" Margin="8,0,0,0"/>
-                            <ComboBox x:Name="ProtType" Grid.Column="1" Grid.Row="0" SelectionChanged="ProtType_SelectionChanged">
-                                <ComboBoxItem x:Name="ProtNone" Content="None" IsSelected="true"/>
-                                <ComboBoxItem x:Name="ProtIPV4" Content="IPV4"/>
-                                <ComboBoxItem x:Name="ProtICMP" Content="ICMP"/>
-                                <ComboBoxItem x:Name="ProtUDP" Content="UDP"/>
-                                <ComboBoxItem x:Name="ProtTCP" Content="TCP"/>
-                                <ComboBoxItem x:Name="ProtDNS" Content="DNS"/>
-                                <ComboBoxItem x:Name="ProtHTTP" Content="HTTP"/>
-                            </ComboBox>
-                            <Label x:Name="lblMACsrc" Grid.Column="0" Grid.Row="1" Content="Source MAC Address" Margin="8,0,0,0"/>
-                            <TextBox x:Name="MACsrc" Grid.Column="1" Grid.Row="1" IsEnabled="False"/>
-                            <Label x:Name="lblMACsrcMax" Grid.Column="2" Grid.Row="1" Content="FF:FF:FF:FF:FF:FF" Margin="8,0,0,0"/>
-                            <Label x:Name="lblMACdst" Grid.Column="0" Grid.Row="2" Content="Destination MAC Address" Margin="8,0,0,0"/>
-                            <TextBox x:Name="MACdst" Grid.Column="1" Grid.Row="2" IsEnabled="False"/>
-                            <Label x:Name="lblMACdstMAx" Grid.Column="2" Grid.Row="2" Content="FF:FF:FF:FF:FF:FF" Margin="8,0,0,0"/>
-                            <Label x:Name="lblIPsrc" Grid.Column="0" Grid.Row="3" Content="Source IP Address" Margin="8,0,0,0"/>
-                            <TextBox x:Name="IPsrc" Grid.Column="1" Grid.Row="3" IsEnabled="False"/>
-                            <Label x:Name="lblIPsrcMAx" Grid.Column="2" Grid.Row="3" Content="255.255.255.255" Margin="8,0,0,0"/>
-                            <Label x:Name="lblIPdst" Grid.Column="0" Grid.Row="4" Content="Destination IP Address" Margin="8,0,0,0"/>
-                            <TextBox x:Name="IPdst" Grid.Column="1" Grid.Row="4" IsEnabled="False"/>
-                            <Label x:Name="lblIPdstMax" Grid.Column="2" Grid.Row="4" Content="255.255.255.1" Margin="8,0,0,0"/>
-                            <Label x:Name="lblIpId" Grid.Column="0" Grid.Row="6" Content="Identification" Margin="8,0,0,0"/>
-                            <TextBox x:Name="IpId" Grid.Column="1" Grid.Row="6" IsEnabled="False"/>
-                            <Label x:Name="lblIpIdMax" Grid.Column="2" Grid.Row="6" Content="255" Margin="8,0,0,0"/>
-                            <Label x:Name="lblTTL" Grid.Column="0" Grid.Row="7" Content="Time To Live (TTL)" Margin="8,0,0,0"/>
-                            <TextBox x:Name="TTL" Grid.Column="1" Grid.Row="7" IsEnabled="False"/>
-                            <Label x:Name="lblTTLMax" Grid.Column="2" Grid.Row="7" Content="255" Margin="8,0,0,0"/>
-                            <Label x:Name="lblData" Grid.Column="0" Grid.Row="8" Content="Data" Margin="8,0,0,0"/>
-                            <TextBox x:Name="Data" Grid.Column="1" Grid.Row="8" IsEnabled="False"/>
-                            <Label x:Name="lblDataMax" Grid.Column="2" Grid.Row="8" Content="20 characters" Margin="8,0,0,0"/>
-                            <Label x:Name="lblIdentifier" Grid.Column="0" Grid.Row="9" Content="Identifier" Margin="8,0,0,0"/>
-                            <TextBox x:Name="Identifier" Grid.Column="1" Grid.Row="9" IsEnabled="False"/>
-                            <Label x:Name="lblIdentifierMax" Grid.Column="2" Grid.Row="9" Content="999" Margin="8,0,0,0"/>
-                            <Label x:Name="lblPORTsrc" Grid.Column="0" Grid.Row="11" Content="Source Port" Margin="8,0,0,0"/>
-                            <TextBox x:Name="PORTsrc" Grid.Column="1" Grid.Row="11" IsEnabled="False"/>
-                            <Label x:Name="lblPORTsrcMax" Grid.Column="2" Grid.Row="11" Content="9999" Margin="8,0,0,0"/>
-                            <Label x:Name="lblSQN" Grid.Column="0" Grid.Row="13" Content="Sequence Number" Margin="8,0,0,0"/>
-                            <TextBox x:Name="SQN" Grid.Column="1" Grid.Row="13" IsEnabled="False"/>
-                            <Label x:Name="lblSQNMax" Grid.Column="2" Grid.Row="13" Content="999" Margin="8,0,0,0"/>
-                            <Label x:Name="lblACK" Grid.Column="0" Grid.Row="14" Content="Acknowledgement Number" Margin="8,0,0,0"/>
-                            <TextBox x:Name="ACK" Grid.Column="1" Grid.Row="14" IsEnabled="False"/>
-                            <Label x:Name="lblACKMax" Grid.Column="2" Grid.Row="14" Content="999" Margin="8,0,0,0"/>
-                            <Label x:Name="lblWIN" Grid.Column="0" Grid.Row="15" Content="Window" Margin="8,0,0,0"/>
-                            <TextBox x:Name="WIN" Grid.Column="1" Grid.Row="15" IsEnabled="False"/>
-                            <Label x:Name="lblWINMax" Grid.Column="2" Grid.Row="15" Content="999" Margin="8,0,0,0"/>
-                            <Label x:Name="lblDomain" Grid.Column="0" Grid.Row="17" Content="Domain" Margin="8,0,0,0"/>
-                            <TextBox x:Name="Domain" Grid.Column="1" Grid.Row="17" IsEnabled="False"/>
-                            <Label x:Name="lblDomainMax" Grid.Column="2" Grid.Row="17" Content="example.com" Margin="8,0,0,0"/>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
+                        <StackPanel x:Name="UserInput" Grid.ColumnSpan="3" Grid.RowSpan="4" Grid.Column="1" Grid.Row="0" Margin="4">
+                            <Border BorderBrush="DodgerBlue" BorderThickness="1">
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="170"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="120"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="10"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="10"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="10"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="10"/>
+                                        <RowDefinition Height="30"/>
+                                    </Grid.RowDefinitions>
+                                    <Label x:Name="lblProtType" Grid.Column="0" Grid.Row="0" Content="Protocol Type" Margin="8,0,0,0"/>
+                                    <ComboBox x:Name="ProtType" Grid.Column="1" Grid.Row="0" SelectionChanged="ProtType_SelectionChanged" Width="200" HorizontalAlignment="Left" Margin="0,-2,0,1">
+                                        <ComboBoxItem x:Name="ProtNone" Content="None" IsSelected="true"/>
+                                        <ComboBoxItem x:Name="ProtIPV4" Content="IPV4"/>
+                                        <ComboBoxItem x:Name="ProtICMP" Content="ICMP"/>
+                                        <ComboBoxItem x:Name="ProtUDP" Content="UDP"/>
+                                        <ComboBoxItem x:Name="ProtTCP" Content="TCP"/>
+                                        <ComboBoxItem x:Name="ProtDNS" Content="DNS"/>
+                                        <ComboBoxItem x:Name="ProtHTTP" Content="HTTP"/>
+                                    </ComboBox>
+                                    <Label x:Name="lblMACsrc" Grid.Column="0" Grid.Row="1" Content="Source MAC Address" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="MACsrc" Grid.Column="1" Grid.Row="1" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <Label x:Name="lblMACsrcMax" Grid.Column="2" Grid.Row="1" Content="FF:FF:FF:FF:FF:FF" Margin="8,0,0,0"/>
+                                    <Label x:Name="lblMACdst" Grid.Column="0" Grid.Row="2" Content="Destination MAC Address" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="MACdst" Grid.Column="1" Grid.Row="2" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <Label x:Name="lblMACdstMAx" Grid.Column="2" Grid.Row="2" Content="FF:FF:FF:FF:FF:FF" Margin="8,0,0,0"/>
+                                    <Label x:Name="lblIPsrc" Grid.Column="0" Grid.Row="3" Content="Source IP Address" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="IPsrc" Grid.Column="1" Grid.Row="3" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <Label x:Name="lblIPsrcMAx" Grid.Column="2" Grid.Row="3" Content="255.255.255.255" Margin="8,0,0,0"/>
+                                    <Label x:Name="lblIPdst" Grid.Column="0" Grid.Row="4" Content="Destination IP Address" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="IPdst" Grid.Column="1" Grid.Row="4" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,9" Grid.RowSpan="2"/>
+                                    <Label x:Name="lblIPdstMax" Grid.Column="2" Grid.Row="4" Content="255.255.255.1" Margin="8,0,0,0"/>
+                                    <Label x:Name="lblIpId" Grid.Column="0" Grid.Row="6" Content="Identification" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="IpId" Grid.Column="1" Grid.Row="6" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <Label x:Name="lblIpIdMax" Grid.Column="2" Grid.Row="6" Content="255" Margin="8,0,0,0"/>
+                                    <Label x:Name="lblTTL" Grid.Column="0" Grid.Row="7" Content="Time To Live (TTL)" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="TTL" Grid.Column="1" Grid.Row="7" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <Label x:Name="lblTTLMax" Grid.Column="2" Grid.Row="7" Content="255" Margin="8,0,0,0"/>
+                                    <Label x:Name="lblData" Grid.Column="0" Grid.Row="8" Content="Data" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="Data" Grid.Column="1" Grid.Row="8" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <Label x:Name="lblDataMax" Grid.Column="2" Grid.Row="8" Content="20 characters" Margin="8,0,0,0"/>
+                                    <Label x:Name="lblIdentifier" Grid.Column="0" Grid.Row="9" Content="Identifier" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="Identifier" Grid.Column="1" Grid.Row="9" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,9" Grid.RowSpan="2"/>
+                                    <Label x:Name="lblIdentifierMax" Grid.Column="2" Grid.Row="9" Content="999" Margin="8,0,0,0"/>
+                                    <Label x:Name="lblPORTsrc" Grid.Column="0" Grid.Row="11" Content="Source Port" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="PORTsrc" Grid.Column="1" Grid.Row="11" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,9" Grid.RowSpan="2"/>
+                                    <Label x:Name="lblPORTsrcMax" Grid.Column="2" Grid.Row="11" Content="9999" Margin="8,0,0,0"/>
+                                    <Label x:Name="lblSQN" Grid.Column="0" Grid.Row="13" Content="Sequence Number" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="SQN" Grid.Column="1" Grid.Row="13" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <Label x:Name="lblSQNMax" Grid.Column="2" Grid.Row="13" Content="999" Margin="8,0,0,0"/>
+                                    <Label x:Name="lblACK" Grid.Column="0" Grid.Row="14" Content="Acknowledgement Number" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="ACK" Grid.Column="1" Grid.Row="14" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <Label x:Name="lblACKMax" Grid.Column="2" Grid.Row="14" Content="999" Margin="8,0,0,0"/>
+                                    <Label x:Name="lblWIN" Grid.Column="0" Grid.Row="15" Content="Window" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="WIN" Grid.Column="1" Grid.Row="15" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,9" Grid.RowSpan="2"/>
+                                    <Label x:Name="lblWINMax" Grid.Column="2" Grid.Row="15" Content="999" Margin="8,0,0,0"/>
+                                    <Label x:Name="lblDomain" Grid.Column="0" Grid.Row="17" Content="Domain" Margin="8,0,0,0"/>
+                                    <TextBox x:Name="Domain" Grid.Column="1" Grid.Row="17" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,-1"/>
+                                    <Label x:Name="lblDomainMax" Grid.Column="2" Grid.Row="17" Content="example.com" Margin="8,0,0,0"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Border>
             </TabItem>
         </TabControl>
     </Grid>

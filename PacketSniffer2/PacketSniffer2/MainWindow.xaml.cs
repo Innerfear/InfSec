@@ -19,7 +19,7 @@ namespace PacketSniffer2
         //Bool variables
         bool bFullScreen = true;
 
-        bool bNoneCheck = false;
+        bool bIPV4Check = false;
         bool bIcmpCheck = false;
         bool bUdpCheck = false;
         bool bTcpCheck = false;
@@ -229,7 +229,7 @@ namespace PacketSniffer2
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
             else if (bHttpCheck && ArrivedPacket.Http)
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
-            else if (bNoneCheck && ArrivedPacket.Ipv4)
+            else if (bIPV4Check && ArrivedPacket.Ipv4)
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
         }
 
@@ -314,7 +314,7 @@ namespace PacketSniffer2
 
         private void CheckBoxFalse()
         {
-            bNoneCheck = false;
+            bIPV4Check = false;
             bIcmpCheck = false;
             bUdpCheck = false;
             bTcpCheck = false;
@@ -322,10 +322,10 @@ namespace PacketSniffer2
             bHttpCheck = false;
         }
 
-        private void rbNone_Checked(object sender, RoutedEventArgs e)
+        private void rbIPV4_Checked(object sender, RoutedEventArgs e)
         {
             CheckBoxFalse();
-            bNoneCheck = true;
+            bIPV4Check = true;
         }
 
         private void rbICMP_Checked(object sender, RoutedEventArgs e)
@@ -383,7 +383,6 @@ namespace PacketSniffer2
             PacketInfo.Items.Add("IP Source: " + pInfoPacket.IpSource + "\t\tIP Destination: " + pInfoPacket.IpDestination);
             PacketInfo.Items.Add("Length: " + pInfoPacket.Length + "\t\t\tTTL: " + pInfoPacket.Ttl + "\t\t\tID: " + pInfoPacket.Id);
             PacketInfo.Items.Add("Source Port: " + pInfoPacket.PortSource + "\t\t\tDestination Port: " + pInfoPacket.PortDestination);
-            PacketInfo.Items.Add("SQN: " + pInfoPacket.Sqn + "\t\t\t\tACK: " + pInfoPacket.Ack + "\t\t\t\tWindow: " + pInfoPacket.Win);
         }
         #endregion
 
