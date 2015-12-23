@@ -1,4 +1,5 @@
-﻿using PcapDotNet.Core;
+﻿using MahApps.Metro.Controls;
+using PcapDotNet.Core;
 using PcapDotNet.Packets;
 using PcapDotNet.Packets.Ethernet;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Windows.Threading;
 namespace PacketSniffer2
 {
     // Interaction logic for MainWindow.xaml
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         // All variables
         #region Variables
@@ -65,6 +66,7 @@ namespace PacketSniffer2
 
             PacketList.ItemsSource = ocPackets;
         }
+
         #endregion
 
         // All methods that don't handle initialization
@@ -608,39 +610,6 @@ namespace PacketSniffer2
                     btnSendPacket.IsEnabled = true;
                     break;
             }
-        }
-        #endregion
-
-        #region Other XAML Activated Methods
-        private void ExitButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (bCapture)
-            tCapture.Abort();
-
-            Close();
-        }
-
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
-
-        private void HalfSizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (bFullScreen)
-                Width = SystemParameters.WorkArea.Width / 2;
-            bFullScreen = false;
-            HalfSizeButton.IsEnabled = false;
-            FullSizeButton.IsEnabled = true;
-        }
-
-        private void FullSizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!bFullScreen)
-                Width = SystemParameters.WorkArea.Width;
-            bFullScreen = true;
-            FullSizeButton.IsEnabled = false;
-            HalfSizeButton.IsEnabled = true;
         }
         #endregion
 
