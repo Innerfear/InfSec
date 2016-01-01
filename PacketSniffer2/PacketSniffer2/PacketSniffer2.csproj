@@ -94,7 +94,6 @@
     </Compile>
     <Compile Include="BaseSendPacket.cs" />
     <Compile Include="ICMPSendPacket.cs" />
-    <Compile Include="IPV4SendPacket.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

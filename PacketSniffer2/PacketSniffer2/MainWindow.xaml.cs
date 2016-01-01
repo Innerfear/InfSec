@@ -17,8 +17,6 @@ namespace PacketSniffer2
         // All variables
         #region Variables
         //Bool variables
-        bool bFullScreen = true;
-
         bool bIPV4Check = false;
         bool bIcmpCheck = false;
         bool bUdpCheck = false;
@@ -26,8 +24,10 @@ namespace PacketSniffer2
         bool bDnsCheck = false;
         bool bHttpCheck = false;
 
-        bool bCapture = false;
-        bool bEdit = false;
+        bool bRefreshed = false;
+
+        //bool bCapture = false;
+        //bool bEdit = false;
 
         //Packet variables
         PacketAPI pInfoPacket;
@@ -38,15 +38,14 @@ namespace PacketSniffer2
         TCPSendPacket pBuildTcpPacket;
         UDPSendPacket pBuildUdpPacket;
         ICMPSendPacket pBuildIcmpPacket;
-        IPV4SendPacket pBuildIpV4Packet;
         HTTPSendPacket pBuildHttpPacket;
 
         //Thread variables
         Thread tCapture;
-        Thread tEdit;
+        //Thread tEdit;
 
         //Misc variables
-        IList<LivePacketDevice> listAllDevices = LivePacketDevice.AllLocalMachine;
+        IList<LivePacketDevice> listAllDevices;
         public delegate void UpdateTextCallback(PacketAPI message);
         public ObservableCollection<PacketAPI> ocPackets = new ObservableCollection<PacketAPI>();
         ManualResetEvent eShutdown = new ManualResetEvent(false);
@@ -63,8 +62,6 @@ namespace PacketSniffer2
             Height = SystemParameters.WorkArea.Height;
             Top = SystemParameters.WorkArea.Top;
             Left = SystemParameters.WorkArea.Left;
-
-            PacketList.ItemsSource = ocPackets;
         }
 
         #endregion
@@ -79,6 +76,8 @@ namespace PacketSniffer2
         }
         private void GetDevices()
         {
+            listAllDevices = LivePacketDevice.AllLocalMachine;
+
             if (listAllDevices.Count == 0)
             {
                 DeviceListBox.Items.Add("No interfaces found! Make sure WinPcap is installed.");
@@ -138,6 +137,7 @@ namespace PacketSniffer2
                     if (DeviceListBox.SelectedItem.ToString().Contains(device.Name))
                     {
                         pSelectedDevice = device;
+                        PacketList.ItemsSource = ocPackets;
                     }
                 }
                 else
@@ -246,13 +246,13 @@ namespace PacketSniffer2
                     if (eShutdown.WaitOne(0))           // wrs redundant
                         break;                          //
 
-                    bCapture = true;
+                    //bCapture = true;
                     using (PacketCommunicator communicator = pSelectedDevice.Open(65536,
                         PacketDeviceOpenAttributes.Promiscuous, 1000))
                     {
                         communicator.ReceivePackets(0, PacketHandler);
                     }
-                    bCapture = false;
+                    //bCapture = false;
                 }
             }
             else
@@ -292,7 +292,9 @@ namespace PacketSniffer2
 
         private void DeviceRefresh_Click(object sender, RoutedEventArgs e)
         {
+            bRefreshed = true;
             DeviceListBox.Items.Clear();
+            PacketList.ItemsSource = null;
             PacketList.Items.Clear();
             DeviceInfo.Visibility = Visibility.Visible;
             PacketList.Visibility = Visibility.Hidden;
@@ -308,8 +310,12 @@ namespace PacketSniffer2
             DeviceListBox.Visibility = Visibility.Visible;
             PacketInfo.Visibility = Visibility.Hidden;
             btnStartCap.IsEnabled = true;
-            GetSelectedDevice();
-            DevicePrint(pSelectedDevice);
+            if (!bRefreshed)
+            {
+                GetSelectedDevice();
+                DevicePrint(pSelectedDevice);
+            }
+            bRefreshed = false;
         }
 
         private void CheckBoxFalse()
@@ -377,7 +383,7 @@ namespace PacketSniffer2
             else if (pInfoPacket.Icmp)
                 PacketInfo.Items.Add("Protocol encapsulation: IPV4 / ICMP");
             else
-                PacketInfo.Items.Add("Protocol encapsulation: IPV4");
+                PacketInfo.Items.Add("Protocol encapsulation: IPV4 / Unknown");
 
             PacketInfo.Items.Add("MAC Source: " + pInfoPacket.MacSource + "\tMAC Destination: " + pInfoPacket.MacDestination);
             PacketInfo.Items.Add("IP Source: " + pInfoPacket.IpSource + "\t\tIP Destination: " + pInfoPacket.IpDestination);
@@ -401,19 +407,6 @@ namespace PacketSniffer2
                 {
                     case 1:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
-                            && TTL.Text != "" && Data.Text != "")
-                        {
-                            pBuildIpV4Packet = new IPV4SendPacket(MACsrc.Text, MACdst.Text,
-                                IPsrc.Text, IPdst.Text, IpId.Text, TTL.Text, Data.Text);
-                            pCommunicator.SendPacket(pBuildIpV4Packet.GetBuilder());
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please fill in all required (open) fields");
-                        }
-                        break;
-                    case 2:
-                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
                             && TTL.Text != "" && Identifier.Text != "" && SQN.Text != "")
                         {
                             pBuildIcmpPacket = new ICMPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
@@ -425,7 +418,7 @@ namespace PacketSniffer2
                             MessageBox.Show("Please fill in all required (open) fields");
                         }
                         break;
-                    case 3:
+                    case 2:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
                             && TTL.Text != "" && PORTsrc.Text != "" && Data.Text != "")
                         {
@@ -438,7 +431,7 @@ namespace PacketSniffer2
                             MessageBox.Show("Please fill in all required (open) fields");
                         }
                         break;
-                    case 4:
+                    case 3:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
                             && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "")
                         {
@@ -451,7 +444,7 @@ namespace PacketSniffer2
                             MessageBox.Show("Please fill in all required (open) fields");
                         }
                         break;
-                    case 5:
+                    case 4:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
                             && PORTsrc.Text != "" && Identifier.Text != "" && Domain.Text != "")
                         {
@@ -464,7 +457,7 @@ namespace PacketSniffer2
                             MessageBox.Show("Please fill in all required (open) fields");
                         }
                         break;
-                    case 6:
+                    case 5:
                         if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
                             && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "" && Domain.Text != "")
                         {
@@ -522,12 +515,12 @@ namespace PacketSniffer2
                     }
                     break;
                 case 1:
-                    Data.IsEnabled = true;
-                    Identifier.IsEnabled = false;
-                    Identifier.Text = "";
+                    Data.IsEnabled = false;
+                    Data.Text = "";
+                    Identifier.IsEnabled = true;
                     PORTsrc.IsEnabled = false;
                     PORTsrc.Text = "";
-                    SQN.IsEnabled = false;
+                    SQN.IsEnabled = true;
                     SQN.Text = "";
                     ACK.IsEnabled = false;
                     ACK.Text = "";
@@ -537,12 +530,11 @@ namespace PacketSniffer2
                     Domain.Text = "";
                     goto case 100;
                 case 2:
-                    Data.IsEnabled = false;
-                    Data.Text = "";
-                    Identifier.IsEnabled = true;
-                    PORTsrc.IsEnabled = false;
-                    PORTsrc.Text = "";
-                    SQN.IsEnabled = true;
+                    Data.IsEnabled = true;
+                    Identifier.IsEnabled = false;
+                    Identifier.Text = "";
+                    PORTsrc.IsEnabled = true;
+                    SQN.IsEnabled = false;
                     SQN.Text = "";
                     ACK.IsEnabled = false;
                     ACK.Text = "";
@@ -556,27 +548,13 @@ namespace PacketSniffer2
                     Identifier.IsEnabled = false;
                     Identifier.Text = "";
                     PORTsrc.IsEnabled = true;
-                    SQN.IsEnabled = false;
-                    SQN.Text = "";
-                    ACK.IsEnabled = false;
-                    ACK.Text = "";
-                    WIN.IsEnabled = false;
-                    WIN.Text = "";
-                    Domain.IsEnabled = false;
-                    Domain.Text = "";
-                    goto case 100;
-                case 4:
-                    Data.IsEnabled = true;
-                    Identifier.IsEnabled = false;
-                    Identifier.Text = "";
-                    PORTsrc.IsEnabled = true;
                     SQN.IsEnabled = true;
                     ACK.IsEnabled = true;
                     WIN.IsEnabled = true;
                     Domain.IsEnabled = false;
                     Domain.Text = "";
                     goto case 100;
-                case 5:
+                case 4:
                     Data.IsEnabled = false;
                     Data.Text = "";
                     Identifier.IsEnabled = true;
@@ -589,7 +567,7 @@ namespace PacketSniffer2
                     WIN.Text = "";
                     Domain.IsEnabled = true;
                     goto case 100;
-                case 6:
+                case 5:
                     Data.IsEnabled = true;
                     Identifier.IsEnabled = false;
                     Identifier.Text = "";

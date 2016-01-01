@@ -89,10 +89,17 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="PortNr">
+                                    <GridViewColumn Header="Port src">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Portnumber}" FontWeight="Bold" />
+                                                <TextBlock Text="{Binding PortSource}" FontWeight="Bold" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Port dst">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding PortDestination}" FontWeight="Bold" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -150,7 +157,7 @@
                         </ListView>
                         <ListBox x:Name="PacketInfo" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="2" Margin="4" BorderBrush="DodgerBlue" BorderThickness="1" Visibility="Hidden"/>
                         <ListBox x:Name="DeviceListBox" SelectionChanged="DeviceListBox_SelectionChanged" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="2" Margin="4" BorderBrush="DodgerBlue" BorderThickness="1"/>
-                        <Button x:Name="DeviceRefresh" Height="25" Width="80" Content="Refresh" Margin="2,4,0,0" Click="DeviceRefresh_Click"  Grid.Column="4" Grid.Row="2"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Button x:Name="DeviceRefresh" Width="80" Content="Refresh" Margin="2,4,0,49" Click="DeviceRefresh_Click"  Grid.Column="4" Grid.Row="2"  HorizontalAlignment="Left"/>
                     </Grid>
                 </Border>
             </TabItem>
@@ -240,7 +247,6 @@
                                     <Label x:Name="lblProtType" Grid.Column="0" Grid.Row="0" Content="Protocol Type" Margin="8,0,0,0"/>
                                     <ComboBox x:Name="ProtType" Grid.Column="1" Grid.Row="0" SelectionChanged="ProtType_SelectionChanged" Width="200" HorizontalAlignment="Left" Margin="0,-2,0,1">
                                         <ComboBoxItem x:Name="ProtNone" Content="None" IsSelected="true"/>
-                                        <ComboBoxItem x:Name="ProtIPV4" Content="IPV4"/>
                                         <ComboBoxItem x:Name="ProtICMP" Content="ICMP"/>
                                         <ComboBoxItem x:Name="ProtUDP" Content="UDP"/>
                                         <ComboBoxItem x:Name="ProtTCP" Content="TCP"/>
@@ -248,43 +254,43 @@
                                         <ComboBoxItem x:Name="ProtHTTP" Content="HTTP"/>
                                     </ComboBox>
                                     <Label x:Name="lblMACsrc" Grid.Column="0" Grid.Row="1" Content="Source MAC Address" Margin="8,0,0,0"/>
-                                    <TextBox x:Name="MACsrc" Grid.Column="1" Grid.Row="1" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <TextBox x:Name="MACsrc" Grid.Column="1" Grid.Row="1" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
                                     <Label x:Name="lblMACsrcMax" Grid.Column="2" Grid.Row="1" Content="FF:FF:FF:FF:FF:FF" Margin="8,0,0,0"/>
                                     <Label x:Name="lblMACdst" Grid.Column="0" Grid.Row="2" Content="Destination MAC Address" Margin="8,0,0,0"/>
-                                    <TextBox x:Name="MACdst" Grid.Column="1" Grid.Row="2" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <TextBox x:Name="MACdst" Grid.Column="1" Grid.Row="2" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
                                     <Label x:Name="lblMACdstMAx" Grid.Column="2" Grid.Row="2" Content="FF:FF:FF:FF:FF:FF" Margin="8,0,0,0"/>
                                     <Label x:Name="lblIPsrc" Grid.Column="0" Grid.Row="3" Content="Source IP Address" Margin="8,0,0,0"/>
-                                    <TextBox x:Name="IPsrc" Grid.Column="1" Grid.Row="3" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <TextBox x:Name="IPsrc" Grid.Column="1" Grid.Row="3" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
                                     <Label x:Name="lblIPsrcMAx" Grid.Column="2" Grid.Row="3" Content="255.255.255.255" Margin="8,0,0,0"/>
                                     <Label x:Name="lblIPdst" Grid.Column="0" Grid.Row="4" Content="Destination IP Address" Margin="8,0,0,0"/>
-                                    <TextBox x:Name="IPdst" Grid.Column="1" Grid.Row="4" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,9" Grid.RowSpan="2"/>
+                                    <TextBox x:Name="IPdst" Grid.Column="1" Grid.Row="4" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
                                     <Label x:Name="lblIPdstMax" Grid.Column="2" Grid.Row="4" Content="255.255.255.1" Margin="8,0,0,0"/>
                                     <Label x:Name="lblIpId" Grid.Column="0" Grid.Row="6" Content="Identification" Margin="8,0,0,0"/>
-                                    <TextBox x:Name="IpId" Grid.Column="1" Grid.Row="6" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <TextBox x:Name="IpId" Grid.Column="1" Grid.Row="6" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
                                     <Label x:Name="lblIpIdMax" Grid.Column="2" Grid.Row="6" Content="255" Margin="8,0,0,0"/>
                                     <Label x:Name="lblTTL" Grid.Column="0" Grid.Row="7" Content="Time To Live (TTL)" Margin="8,0,0,0"/>
-                                    <TextBox x:Name="TTL" Grid.Column="1" Grid.Row="7" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <TextBox x:Name="TTL" Grid.Column="1" Grid.Row="7" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
                                     <Label x:Name="lblTTLMax" Grid.Column="2" Grid.Row="7" Content="255" Margin="8,0,0,0"/>
                                     <Label x:Name="lblData" Grid.Column="0" Grid.Row="8" Content="Data" Margin="8,0,0,0"/>
-                                    <TextBox x:Name="Data" Grid.Column="1" Grid.Row="8" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <TextBox x:Name="Data" Grid.Column="1" Grid.Row="8" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
                                     <Label x:Name="lblDataMax" Grid.Column="2" Grid.Row="8" Content="20 characters" Margin="8,0,0,0"/>
                                     <Label x:Name="lblIdentifier" Grid.Column="0" Grid.Row="9" Content="Identifier" Margin="8,0,0,0"/>
-                                    <TextBox x:Name="Identifier" Grid.Column="1" Grid.Row="9" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,9" Grid.RowSpan="2"/>
+                                    <TextBox x:Name="Identifier" Grid.Column="1" Grid.Row="9" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
                                     <Label x:Name="lblIdentifierMax" Grid.Column="2" Grid.Row="9" Content="999" Margin="8,0,0,0"/>
                                     <Label x:Name="lblPORTsrc" Grid.Column="0" Grid.Row="11" Content="Source Port" Margin="8,0,0,0"/>
-                                    <TextBox x:Name="PORTsrc" Grid.Column="1" Grid.Row="11" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,9" Grid.RowSpan="2"/>
+                                    <TextBox x:Name="PORTsrc" Grid.Column="1" Grid.Row="11" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
                                     <Label x:Name="lblPORTsrcMax" Grid.Column="2" Grid.Row="11" Content="9999" Margin="8,0,0,0"/>
                                     <Label x:Name="lblSQN" Grid.Column="0" Grid.Row="13" Content="Sequence Number" Margin="8,0,0,0"/>
-                                    <TextBox x:Name="SQN" Grid.Column="1" Grid.Row="13" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <TextBox x:Name="SQN" Grid.Column="1" Grid.Row="13" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
                                     <Label x:Name="lblSQNMax" Grid.Column="2" Grid.Row="13" Content="999" Margin="8,0,0,0"/>
                                     <Label x:Name="lblACK" Grid.Column="0" Grid.Row="14" Content="Acknowledgement Number" Margin="8,0,0,0"/>
-                                    <TextBox x:Name="ACK" Grid.Column="1" Grid.Row="14" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,24" Grid.RowSpan="2"/>
+                                    <TextBox x:Name="ACK" Grid.Column="1" Grid.Row="14" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
                                     <Label x:Name="lblACKMax" Grid.Column="2" Grid.Row="14" Content="999" Margin="8,0,0,0"/>
                                     <Label x:Name="lblWIN" Grid.Column="0" Grid.Row="15" Content="Window" Margin="8,0,0,0"/>
-                                    <TextBox x:Name="WIN" Grid.Column="1" Grid.Row="15" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,9" Grid.RowSpan="2"/>
+                                    <TextBox x:Name="WIN" Grid.Column="1" Grid.Row="15" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
                                     <Label x:Name="lblWINMax" Grid.Column="2" Grid.Row="15" Content="999" Margin="8,0,0,0"/>
                                     <Label x:Name="lblDomain" Grid.Column="0" Grid.Row="17" Content="Domain" Margin="8,0,0,0"/>
-                                    <TextBox x:Name="Domain" Grid.Column="1" Grid.Row="17" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,0,0,-1"/>
+                                    <TextBox x:Name="Domain" Grid.Column="1" Grid.Row="17" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
                                     <Label x:Name="lblDomainMax" Grid.Column="2" Grid.Row="17" Content="example.com" Margin="8,0,0,0"/>
                                 </Grid>
                             </Border>
