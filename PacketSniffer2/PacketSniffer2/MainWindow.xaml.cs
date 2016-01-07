@@ -74,6 +74,12 @@ namespace PacketSniffer2
         {
             GetDevices();
         }
+
+        private void MetroWindow_Closed(object sender, System.EventArgs e)
+        {
+            tCapture.Abort();
+        }
+        
         private void GetDevices()
         {
             listAllDevices = LivePacketDevice.AllLocalMachine;
@@ -154,7 +160,6 @@ namespace PacketSniffer2
             var ArrivedPacket = new PacketAPI();
 
             ArrivedPacket.Timestamp = packet.Timestamp.ToString();
-            ArrivedPacket.Protocol = packet.Ethernet.EtherType.ToString();
             ArrivedPacket.MacSource = packet.Ethernet.Source.ToString();
             ArrivedPacket.MacDestination = packet.Ethernet.Destination.ToString();
             ArrivedPacket.IpSource = packet.Ethernet.IpV4.Source.ToString();
@@ -166,9 +171,11 @@ namespace PacketSniffer2
             if (packet.Ethernet.EtherType == EthernetType.IpV4)
             {
                 ArrivedPacket.Ipv4 = true;
+                ArrivedPacket.Protocol = "IPV4";
                 if (packet.Ethernet.IpV4.Icmp != null && packet.Ethernet.IpV4.Protocol.ToString() == "InternetControlMessageProtocol")
                 {
                     ArrivedPacket.Icmp = true;
+                    ArrivedPacket.Protocol = "ICMP";
                 }
                 else
                 {
@@ -178,12 +185,14 @@ namespace PacketSniffer2
                 if (packet.Ethernet.IpV4.Udp != null && packet.Ethernet.IpV4.Protocol.ToString() == "Udp")
                 {
                     ArrivedPacket.Udp = true;
+                    ArrivedPacket.Protocol = "UDP";
                     ArrivedPacket.PortSource = packet.Ethernet.IpV4.Udp.SourcePort;
                     ArrivedPacket.PortDestination = packet.Ethernet.IpV4.Udp.DestinationPort;
                     if (ArrivedPacket.PortDestination == 53 || ArrivedPacket.PortDestination > 1023 
                         || ArrivedPacket.PortSource == 53 || ArrivedPacket.PortSource > 1023)
                     {
                         ArrivedPacket.Dns = true;
+                        ArrivedPacket.Protocol = "DNS";
                     }
                     else
                     {
@@ -198,11 +207,13 @@ namespace PacketSniffer2
                 if (packet.Ethernet.IpV4.Tcp != null && packet.Ethernet.IpV4.Protocol.ToString() == "Tcp")
                 {
                     ArrivedPacket.Tcp = true;
+                    ArrivedPacket.Protocol = "TCP";
                     ArrivedPacket.PortSource = packet.Ethernet.IpV4.Tcp.SourcePort;
                     ArrivedPacket.PortDestination = packet.Ethernet.IpV4.Tcp.DestinationPort;
                     if (ArrivedPacket.PortDestination == 80 || ArrivedPacket.PortSource == 80)
                     {
                         ArrivedPacket.Http = true;
+                        ArrivedPacket.Protocol = "HTTP";
                     }
                     else
                     {
@@ -278,6 +289,39 @@ namespace PacketSniffer2
 
             tCapture = new Thread(new ThreadStart(StartThreadAnalyze));
             tCapture.Start();
+        }
+
+        private void btnStartEdit_Click(object sender, RoutedEventArgs e)
+        {
+            PacketAPI editablePacket = (PacketAPI)PacketList.SelectedItem;
+
+            switch (editablePacket.Protocol)
+            {
+                case "ICMP":
+                    ProtType.SelectedIndex = 1;
+                    break;
+                case "UDP":
+                    ProtType.SelectedIndex = 2;
+                    break;
+                case "TCP":
+                    ProtType.SelectedIndex = 3;
+                    break;
+                case "DNS":
+                    ProtType.SelectedIndex = 4;
+                    break;
+                case "HTTP":
+                    ProtType.SelectedIndex = 5;
+                    break;
+            }
+
+            MACsrc.Text = editablePacket.MacSource;
+            MACdst.Text = editablePacket.MacDestination;
+            IPsrc.Text = editablePacket.IpSource;
+            IPdst.Text = editablePacket.IpDestination;
+            IpId.Text = editablePacket.Id.ToString();
+            TTL.Text = editablePacket.Ttl.ToString();
+            PORTsrc.Text = editablePacket.PortSource.ToString();
+
         }
 
         private void btnStopCap_Click(object sender, RoutedEventArgs e)
@@ -367,6 +411,7 @@ namespace PacketSniffer2
         private void PacketList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PacketInfo.Items.Clear();
+            btnStartEdit.IsEnabled = true;
             pInfoPacket = new PacketAPI();
             pInfoPacket = (PacketAPI)PacketList.SelectedItems[0];
 
@@ -391,11 +436,11 @@ namespace PacketSniffer2
             PacketInfo.Items.Add("Source Port: " + pInfoPacket.PortSource + "\t\t\tDestination Port: " + pInfoPacket.PortDestination);
         }
         #endregion
-
+        /*
         #region Editing Methods
 
         #endregion
-
+        */
         #region Injecting Methods
         private void btnSendPacket_Click(object sender, RoutedEventArgs e)
         {

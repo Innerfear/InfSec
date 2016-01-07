@@ -7,7 +7,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Title="PacketSniffer V2"
-        Loaded="Window_Loaded" Height="650" Width="1000">
+        Loaded="Window_Loaded" Height="650" Width="1000" Closed="MetroWindow_Closed">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -45,6 +45,7 @@
                             <Label x:Name="lblSniffing" Content="  Sniffing" Height="35" FontSize="16" FontWeight="Bold"/>
                             <StackPanel VerticalAlignment="Top">
                                 <Button x:Name="btnStartCap" Height="25" Width="80" Content="Capture" Margin="0,8,0,0" Click="btnStartCap_Click" IsEnabled="false"/>
+                                <Button x:Name="btnStartEdit" Height="25" Width="80" Content="Edit" Margin="0,8,0,0" Click="btnStartEdit_Click" IsEnabled="false"/>
                                 <Button x:Name="btnStopCap" Height="25" Width="80" Content="Stop" Margin="0,8,0,0" Click="btnStopCap_Click" IsEnabled="false"/>
                                 <StackPanel Margin="0,8,0,0">
                                     <Label x:Name="lblFilter" DockPanel.Dock="Top" Content ="Filter settings" FontSize="14" FontWeight="Bold" HorizontalAlignment="center"/>
@@ -158,37 +159,6 @@
                         <ListBox x:Name="PacketInfo" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="2" Margin="4" BorderBrush="DodgerBlue" BorderThickness="1" Visibility="Hidden"/>
                         <ListBox x:Name="DeviceListBox" SelectionChanged="DeviceListBox_SelectionChanged" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="2" Margin="4" BorderBrush="DodgerBlue" BorderThickness="1"/>
                         <Button x:Name="DeviceRefresh" Width="80" Content="Refresh" Margin="2,4,0,49" Click="DeviceRefresh_Click"  Grid.Column="4" Grid.Row="2"  HorizontalAlignment="Left"/>
-                    </Grid>
-                </Border>
-            </TabItem>
-            <TabItem x:Name="Editing" Width="80" BorderBrush="DodgerBlue" BorderThickness="2" Margin="13,0,-13,0">
-                <TabItem.Header>
-                    <Label Content="Editing" HorizontalAlignment="Center"/>
-                </TabItem.Header>
-                <Border BorderBrush="DodgerBlue" BorderThickness="2">
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="120"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="9*"/>
-                            <ColumnDefinition Width="9*"/>
-                            <ColumnDefinition Width="5*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="10*"/>
-                            <RowDefinition Height="10*"/>
-                            <RowDefinition Height="4*"/>
-                            <RowDefinition Height="4*"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
-                        <StackPanel x:Name="NavigationPanel_2" Grid.ColumnSpan="1" Grid.RowSpan="6" Grid.Column="0" Grid.Row="0" Margin="4"  Background="DodgerBlue">
-                            <Label x:Name="lblEditing" Content="  Editing" Height="35" FontSize="16" FontWeight="Bold"/>
-                            <StackPanel VerticalAlignment="Top" HorizontalAlignment="center">
-                                <Button x:Name="btnAlsoNothingYet" Width="80" Height="25" Margin="0,8,0,0" Content="NothingYet" IsEnabled="False"/>
-                            </StackPanel>
-                        </StackPanel>
                     </Grid>
                 </Border>
             </TabItem>
