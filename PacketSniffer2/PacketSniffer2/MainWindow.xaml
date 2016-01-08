@@ -114,42 +114,42 @@
                                     <GridViewColumn Header="IPV4">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <CheckBox IsChecked="{Binding Ipv4}"/>
+                                                <CheckBox IsHitTestVisible="False" Focusable="False" IsChecked="{Binding Ipv4}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
                                     <GridViewColumn Header="ICMP">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <CheckBox IsChecked="{Binding Icmp}"/>
+                                                <CheckBox IsHitTestVisible="False" Focusable="False" IsChecked="{Binding Icmp}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
                                     <GridViewColumn Header="UDP">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <CheckBox IsChecked="{Binding Udp}"/>
+                                                <CheckBox IsHitTestVisible="False" Focusable="False" IsChecked="{Binding Udp}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
                                     <GridViewColumn Header="TCP">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <CheckBox IsChecked="{Binding Tcp}"/>
+                                                <CheckBox IsHitTestVisible="False" Focusable="False" IsChecked="{Binding Tcp}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
                                     <GridViewColumn Header="DNS">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <CheckBox IsChecked="{Binding Dns}"/>
+                                                <CheckBox IsHitTestVisible="False" Focusable="False" IsChecked="{Binding Dns}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
                                     <GridViewColumn Header="HTTP">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <CheckBox IsChecked="{Binding Http}"/>
+                                                <CheckBox IsHitTestVisible="False" Focusable="False" IsChecked="{Binding Http}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -184,6 +184,8 @@
                             <Label x:Name="lblInjecting" Content="  Injecting" Height="35" FontSize="16" FontWeight="Bold"/>
                             <StackPanel VerticalAlignment="Top" HorizontalAlignment="center">
                                 <Button x:Name="btnSendPacket" Width="80" Height="25" Margin="0,8,0,0" Content="Send" Click="btnSendPacket_Click" IsEnabled="False"/>
+                                <Label x:Name="lblXTimes" Margin="0,15,0,0" Content="Number of Packets"/>
+                                    <TextBox x:Name="xTimes" Width="50" Height="25" Margin="0,8,0,0" Text="1" TextAlignment="Center"/>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel x:Name="UserInput" Grid.ColumnSpan="3" Grid.RowSpan="4" Grid.Column="1" Grid.Row="0" Margin="4">
@@ -225,43 +227,43 @@
                                     </ComboBox>
                                     <Label x:Name="lblMACsrc" Grid.Column="0" Grid.Row="1" Content="Source MAC Address" Margin="8,0,0,0"/>
                                     <TextBox x:Name="MACsrc" Grid.Column="1" Grid.Row="1" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
-                                    <Label x:Name="lblMACsrcMax" Grid.Column="2" Grid.Row="1" Content="FF:FF:FF:FF:FF:FF" Margin="8,0,0,0"/>
+                                    <!--<Label x:Name="lblMACsrcMax" Grid.Column="2" Grid.Row="1" Content="FF:FF:FF:FF:FF:FF" Margin="8,0,0,0"/>-->
                                     <Label x:Name="lblMACdst" Grid.Column="0" Grid.Row="2" Content="Destination MAC Address" Margin="8,0,0,0"/>
                                     <TextBox x:Name="MACdst" Grid.Column="1" Grid.Row="2" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
-                                    <Label x:Name="lblMACdstMAx" Grid.Column="2" Grid.Row="2" Content="FF:FF:FF:FF:FF:FF" Margin="8,0,0,0"/>
+                                    <!--<Label x:Name="lblMACdstMAx" Grid.Column="2" Grid.Row="2" Content="FF:FF:FF:FF:FF:FF" Margin="8,0,0,0"/>-->
                                     <Label x:Name="lblIPsrc" Grid.Column="0" Grid.Row="3" Content="Source IP Address" Margin="8,0,0,0"/>
                                     <TextBox x:Name="IPsrc" Grid.Column="1" Grid.Row="3" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
-                                    <Label x:Name="lblIPsrcMAx" Grid.Column="2" Grid.Row="3" Content="255.255.255.255" Margin="8,0,0,0"/>
+                                    <!--<Label x:Name="lblIPsrcMAx" Grid.Column="2" Grid.Row="3" Content="255.255.255.255" Margin="8,0,0,0"/>-->
                                     <Label x:Name="lblIPdst" Grid.Column="0" Grid.Row="4" Content="Destination IP Address" Margin="8,0,0,0"/>
                                     <TextBox x:Name="IPdst" Grid.Column="1" Grid.Row="4" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
-                                    <Label x:Name="lblIPdstMax" Grid.Column="2" Grid.Row="4" Content="255.255.255.1" Margin="8,0,0,0"/>
+                                    <!--<Label x:Name="lblIPdstMax" Grid.Column="2" Grid.Row="4" Content="255.255.255.1" Margin="8,0,0,0"/>-->
                                     <Label x:Name="lblIpId" Grid.Column="0" Grid.Row="6" Content="Identification" Margin="8,0,0,0"/>
                                     <TextBox x:Name="IpId" Grid.Column="1" Grid.Row="6" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
-                                    <Label x:Name="lblIpIdMax" Grid.Column="2" Grid.Row="6" Content="255" Margin="8,0,0,0"/>
+                                    <!--<Label x:Name="lblIpIdMax" Grid.Column="2" Grid.Row="6" Content="255" Margin="8,0,0,0"/>-->
                                     <Label x:Name="lblTTL" Grid.Column="0" Grid.Row="7" Content="Time To Live (TTL)" Margin="8,0,0,0"/>
                                     <TextBox x:Name="TTL" Grid.Column="1" Grid.Row="7" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
-                                    <Label x:Name="lblTTLMax" Grid.Column="2" Grid.Row="7" Content="255" Margin="8,0,0,0"/>
+                                    <!--<Label x:Name="lblTTLMax" Grid.Column="2" Grid.Row="7" Content="255" Margin="8,0,0,0"/>-->
                                     <Label x:Name="lblData" Grid.Column="0" Grid.Row="8" Content="Data" Margin="8,0,0,0"/>
                                     <TextBox x:Name="Data" Grid.Column="1" Grid.Row="8" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
-                                    <Label x:Name="lblDataMax" Grid.Column="2" Grid.Row="8" Content="20 characters" Margin="8,0,0,0"/>
+                                    <!--<Label x:Name="lblDataMax" Grid.Column="2" Grid.Row="8" Content="20 characters" Margin="8,0,0,0"/>-->
                                     <Label x:Name="lblIdentifier" Grid.Column="0" Grid.Row="9" Content="Identifier" Margin="8,0,0,0"/>
                                     <TextBox x:Name="Identifier" Grid.Column="1" Grid.Row="9" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
-                                    <Label x:Name="lblIdentifierMax" Grid.Column="2" Grid.Row="9" Content="999" Margin="8,0,0,0"/>
+                                    <!--<Label x:Name="lblIdentifierMax" Grid.Column="2" Grid.Row="9" Content="999" Margin="8,0,0,0"/>-->
                                     <Label x:Name="lblPORTsrc" Grid.Column="0" Grid.Row="11" Content="Source Port" Margin="8,0,0,0"/>
                                     <TextBox x:Name="PORTsrc" Grid.Column="1" Grid.Row="11" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
-                                    <Label x:Name="lblPORTsrcMax" Grid.Column="2" Grid.Row="11" Content="9999" Margin="8,0,0,0"/>
+                                    <!--<Label x:Name="lblPORTsrcMax" Grid.Column="2" Grid.Row="11" Content="9999" Margin="8,0,0,0"/>-->
                                     <Label x:Name="lblSQN" Grid.Column="0" Grid.Row="13" Content="Sequence Number" Margin="8,0,0,0"/>
                                     <TextBox x:Name="SQN" Grid.Column="1" Grid.Row="13" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
-                                    <Label x:Name="lblSQNMax" Grid.Column="2" Grid.Row="13" Content="999" Margin="8,0,0,0"/>
+                                    <!--<Label x:Name="lblSQNMax" Grid.Column="2" Grid.Row="13" Content="999" Margin="8,0,0,0"/>-->
                                     <Label x:Name="lblACK" Grid.Column="0" Grid.Row="14" Content="Acknowledgement Number" Margin="8,0,0,0"/>
                                     <TextBox x:Name="ACK" Grid.Column="1" Grid.Row="14" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
-                                    <Label x:Name="lblACKMax" Grid.Column="2" Grid.Row="14" Content="999" Margin="8,0,0,0"/>
+                                    <!--<Label x:Name="lblACKMax" Grid.Column="2" Grid.Row="14" Content="999" Margin="8,0,0,0"/>-->
                                     <Label x:Name="lblWIN" Grid.Column="0" Grid.Row="15" Content="Window" Margin="8,0,0,0"/>
                                     <TextBox x:Name="WIN" Grid.Column="1" Grid.Row="15" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
-                                    <Label x:Name="lblWINMax" Grid.Column="2" Grid.Row="15" Content="999" Margin="8,0,0,0"/>
+                                    <!--<Label x:Name="lblWINMax" Grid.Column="2" Grid.Row="15" Content="999" Margin="8,0,0,0"/>-->
                                     <Label x:Name="lblDomain" Grid.Column="0" Grid.Row="17" Content="Domain" Margin="8,0,0,0"/>
                                     <TextBox x:Name="Domain" Grid.Column="1" Grid.Row="17" IsEnabled="False" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,2,0,2"/>
-                                    <Label x:Name="lblDomainMax" Grid.Column="2" Grid.Row="17" Content="example.com" Margin="8,0,0,0"/>
+                                    <!--<Label x:Name="lblDomainMax" Grid.Column="2" Grid.Row="17" Content="example.com" Margin="8,0,0,0"/>-->
                                 </Grid>
                             </Border>
                         </StackPanel>

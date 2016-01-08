@@ -2,6 +2,7 @@
 using PcapDotNet.Core;
 using PcapDotNet.Packets;
 using PcapDotNet.Packets.Ethernet;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -444,80 +445,84 @@ namespace PacketSniffer2
         #region Injecting Methods
         private void btnSendPacket_Click(object sender, RoutedEventArgs e)
         {
-            // Open the output device
-            using (pCommunicator = pSelectedDevice.Open(100, PacketDeviceOpenAttributes.Promiscuous, 1000))
+
+            for (int i = 0; i <= Convert.ToInt16(xTimes.Text.ToString()); i++)
             {
-                int stringProtocol = ProtType.SelectedIndex;
-                switch (stringProtocol)
+                // Open the output device
+                using (pCommunicator = pSelectedDevice.Open(100, PacketDeviceOpenAttributes.Promiscuous, 1000))
                 {
-                    case 1:
-                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
-                            && TTL.Text != "" && Identifier.Text != "" && SQN.Text != "")
-                        {
-                            pBuildIcmpPacket = new ICMPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
-                            IPdst.Text, IpId.Text, TTL.Text, Identifier.Text, SQN.Text);
-                            pCommunicator.SendPacket(pBuildIcmpPacket.GetBuilder());
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please fill in all required (open) fields");
-                        }
-                        break;
-                    case 2:
-                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
-                            && TTL.Text != "" && PORTsrc.Text != "" && Data.Text != "")
-                        {
-                            pBuildUdpPacket = new UDPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
-                            IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, Data.Text);
-                            pCommunicator.SendPacket(pBuildUdpPacket.GetBuilder());
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please fill in all required (open) fields");
-                        }
-                        break;
-                    case 3:
-                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
-                            && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "")
-                        {
-                            pBuildTcpPacket = new TCPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
-                            IpId.Text, TTL.Text, PORTsrc.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text);
-                            pCommunicator.SendPacket(pBuildTcpPacket.GetBuilder());
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please fill in all required (open) fields");
-                        }
-                        break;
-                    case 4:
-                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
-                            && PORTsrc.Text != "" && Identifier.Text != "" && Domain.Text != "")
-                        {
-                            pBuildDnsPacket = new DNSSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
-                            IpId.Text, TTL.Text, PORTsrc.Text, Identifier.Text, Domain.Text);
-                            pCommunicator.SendPacket(pBuildDnsPacket.GetBuilder());
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please fill in all required (open) fields");
-                        }
-                        break;
-                    case 5:
-                        if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
-                            && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "" && Domain.Text != "")
-                        {
-                            pBuildHttpPacket = new HTTPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text,
-                            TTL.Text, PORTsrc.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text, Domain.Text);
-                            pCommunicator.SendPacket(pBuildHttpPacket.GetBuilder());
-                        }
-                        else
-                        {
-                            MessageBox.Show("Please fill in all required (open) fields");
-                        }
-                        break;
-                    default:
-                        MessageBox.Show("Select a protocol");
-                        break;
+                    int stringProtocol = ProtType.SelectedIndex;
+                    switch (stringProtocol)
+                    {
+                        case 1:
+                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
+                                && TTL.Text != "" && Identifier.Text != "" && SQN.Text != "")
+                            {
+                                pBuildIcmpPacket = new ICMPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
+                                IPdst.Text, IpId.Text, TTL.Text, Identifier.Text, SQN.Text);
+                                pCommunicator.SendPacket(pBuildIcmpPacket.GetBuilder());
+                            }
+                            else
+                            {
+                                MessageBox.Show("Please fill in all required (open) fields");
+                            }
+                            break;
+                        case 2:
+                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
+                                && TTL.Text != "" && PORTsrc.Text != "" && Data.Text != "")
+                            {
+                                pBuildUdpPacket = new UDPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
+                                IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, Data.Text);
+                                pCommunicator.SendPacket(pBuildUdpPacket.GetBuilder());
+                            }
+                            else
+                            {
+                                MessageBox.Show("Please fill in all required (open) fields");
+                            }
+                            break;
+                        case 3:
+                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
+                                && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "")
+                            {
+                                pBuildTcpPacket = new TCPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
+                                IpId.Text, TTL.Text, PORTsrc.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text);
+                                pCommunicator.SendPacket(pBuildTcpPacket.GetBuilder());
+                            }
+                            else
+                            {
+                                MessageBox.Show("Please fill in all required (open) fields");
+                            }
+                            break;
+                        case 4:
+                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
+                                && PORTsrc.Text != "" && Identifier.Text != "" && Domain.Text != "")
+                            {
+                                pBuildDnsPacket = new DNSSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
+                                IpId.Text, TTL.Text, PORTsrc.Text, Identifier.Text, Domain.Text);
+                                pCommunicator.SendPacket(pBuildDnsPacket.GetBuilder());
+                            }
+                            else
+                            {
+                                MessageBox.Show("Please fill in all required (open) fields");
+                            }
+                            break;
+                        case 5:
+                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
+                                && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "" && Domain.Text != "")
+                            {
+                                pBuildHttpPacket = new HTTPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text,
+                                TTL.Text, PORTsrc.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text, Domain.Text);
+                                pCommunicator.SendPacket(pBuildHttpPacket.GetBuilder());
+                            }
+                            else
+                            {
+                                MessageBox.Show("Please fill in all required (open) fields");
+                            }
+                            break;
+                        default:
+                            MessageBox.Show("Select a protocol");
+                            break;
+                    }
                 }
             }
         }
