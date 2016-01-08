@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PacketSniffer2
+﻿namespace PacketSniffer2
 {
     public class PacketAPI
     {

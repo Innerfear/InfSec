@@ -55,6 +55,8 @@ namespace PacketSniffer2
 
         // All initialization methods / definitions
         #region Initialization
+
+        //Set screensize to maximum + Initialize
         public MainWindow()
         {
             InitializeComponent();
@@ -65,33 +67,32 @@ namespace PacketSniffer2
             Left = SystemParameters.WorkArea.Left;
         }
 
-        #endregion
-
-        // All methods that don't handle initialization
-        #region Methods
-
-        #region Startup Methods
+        //When the window is loaded, do method GetDevices()
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             GetDevices();
         }
 
+        //When exiting, Close the thread
         private void MetroWindow_Closed(object sender, System.EventArgs e)
         {
             tCapture.Abort();
         }
-        
+
+        //Get all networkadaptors
         private void GetDevices()
         {
+            //Find all networkadaptors on local machine
             listAllDevices = LivePacketDevice.AllLocalMachine;
 
+            //If no devices our found, tell user
             if (listAllDevices.Count == 0)
             {
                 DeviceListBox.Items.Add("No interfaces found! Make sure WinPcap is installed.");
                 return;
             }
 
-            // Print the list
+            // Print the list of networkadaptors
             for (int i = 0; i != listAllDevices.Count; ++i)
             {
                 LivePacketDevice device = listAllDevices[i];
@@ -134,13 +135,16 @@ namespace PacketSniffer2
             }
         }
 
+        //Get the adaptor the user wants to use
         private void GetSelectedDevice()
         {
             for (int i = 0; i != listAllDevices.Count; ++i)
             {
+                //Get devicelist
                 LivePacketDevice device = listAllDevices[i];
                 if (DeviceListBox.SelectedItem.ToString() != null)
                 {
+                    //Check if name of device is in the devicelist
                     if (DeviceListBox.SelectedItem.ToString().Contains(device.Name))
                     {
                         pSelectedDevice = device;
@@ -149,17 +153,25 @@ namespace PacketSniffer2
                 }
                 else
                 {
+                    //Tell user if he did'nt pick a device
                     MessageBox.Show("Select a device and press 'capture' to start.");
                 }
             }
         }
         #endregion
 
+        // All methods that don't handle initialization
+        #region Methods
+
         #region Sniffing Methods
+
+        //Create a virtual packet from the original packet
         private void PacketHandler(Packet packet)
         {
+            //Create virtual packet
             var ArrivedPacket = new PacketAPI();
 
+            //Bind original packet data to virtual packet
             ArrivedPacket.Timestamp = packet.Timestamp.ToString();
             ArrivedPacket.MacSource = packet.Ethernet.Source.ToString();
             ArrivedPacket.MacDestination = packet.Ethernet.Destination.ToString();
@@ -169,11 +181,14 @@ namespace PacketSniffer2
             ArrivedPacket.Ttl = packet.Ethernet.IpV4.Ttl;
             ArrivedPacket.Id = packet.Ethernet.IpV4.Identification;
 
+            //Find out what protocol the original packet is using and bind as well
+            //(This part is not optimal yet)
             if (packet.Ethernet.EtherType == EthernetType.IpV4)
             {
                 ArrivedPacket.Ipv4 = true;
                 ArrivedPacket.Protocol = "IPV4";
-                if (packet.Ethernet.IpV4.Icmp != null && packet.Ethernet.IpV4.Protocol.ToString() == "InternetControlMessageProtocol")
+                if (packet.Ethernet.IpV4.Icmp != null && packet.Ethernet.IpV4.Protocol.ToString()
+                    == "InternetControlMessageProtocol")
                 {
                     ArrivedPacket.Icmp = true;
                     ArrivedPacket.Protocol = "ICMP";
@@ -183,7 +198,8 @@ namespace PacketSniffer2
                     ArrivedPacket.Icmp = false;
                 }
 
-                if (packet.Ethernet.IpV4.Udp != null && packet.Ethernet.IpV4.Protocol.ToString() == "Udp")
+                if (packet.Ethernet.IpV4.Udp != null && packet.Ethernet.IpV4.Protocol.ToString()
+                    == "Udp")
                 {
                     ArrivedPacket.Udp = true;
                     ArrivedPacket.Protocol = "UDP";
@@ -205,7 +221,8 @@ namespace PacketSniffer2
                     ArrivedPacket.Udp = false;
                 }
 
-                if (packet.Ethernet.IpV4.Tcp != null && packet.Ethernet.IpV4.Protocol.ToString() == "Tcp")
+                if (packet.Ethernet.IpV4.Tcp != null && packet.Ethernet.IpV4.Protocol.ToString()
+                    == "Tcp")
                 {
                     ArrivedPacket.Tcp = true;
                     ArrivedPacket.Protocol = "TCP";
@@ -231,6 +248,7 @@ namespace PacketSniffer2
                 ArrivedPacket.Ipv4 = false;
             }
 
+            //Check the filter to see which packets are allowed to be shown
             if (bIcmpCheck && ArrivedPacket.Icmp)
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
             else if (bUdpCheck && ArrivedPacket.Udp)
@@ -245,20 +263,24 @@ namespace PacketSniffer2
                 Dispatcher.Invoke(new UpdateTextCallback(UpdatePacketText), ArrivedPacket);
         }
 
+        //Start the analyze thread that will handle incoming packets
         private void StartThreadAnalyze()
         {
+            //Pass the selected device on to the new thread
             Dispatcher.Invoke((ThreadStart)delegate { pSelectedDevice.ToString(); },
                 DispatcherPriority.Normal, null);
-
+ 
             if (pSelectedDevice.ToString() != null)
             {
                 while (true)
                 {
-                    ePause.WaitOne(Timeout.Infinite);   // 
-                    if (eShutdown.WaitOne(0))           // wrs redundant
-                        break;                          //
+                    ePause.WaitOne(Timeout.Infinite);
+                    if (eShutdown.WaitOne(0)) 
+                        break;        
 
                     //bCapture = true;
+
+                    //Start capturing with selected device
                     using (PacketCommunicator communicator = pSelectedDevice.Open(65536,
                         PacketDeviceOpenAttributes.Promiscuous, 1000))
                     {
@@ -271,31 +293,43 @@ namespace PacketSniffer2
                 MessageBox.Show("Please choose a networkadapter");
         }
 
+        //Add arrived packets to the Observable Collection and update in the list
         private void UpdatePacketText(PacketAPI packet)
         {
             ocPackets.Add(packet);
         }
 
+        //Capture button is pressed
         private void btnStartCap_Click(object sender, RoutedEventArgs e)
         {
+            // Enable/disable all buttons required
             DeviceRefresh.IsEnabled = false;
             btnStartCap.IsEnabled = false;
             btnStopCap.IsEnabled = true;
             DeviceListBox.IsEnabled = false;
+
+            //Remove device info (We dont need that anymore)
             DeviceInfo.Items.Clear();
+
+            //Show the right lists
             DeviceListBox.Visibility = Visibility.Hidden;
             PacketInfo.Visibility = Visibility.Visible;
             DeviceInfo.Visibility = Visibility.Hidden;
             PacketList.Visibility = Visibility.Visible;
 
+            //Start thread
             tCapture = new Thread(new ThreadStart(StartThreadAnalyze));
             tCapture.Start();
         }
 
+        //Edit button is pressed
         private void btnStartEdit_Click(object sender, RoutedEventArgs e)
         {
+            //Create a virtual packet from an existing virtual 
+            //packet and fill in the fields at the editing tab
             PacketAPI editablePacket = (PacketAPI)PacketList.SelectedItem;
 
+            //Could be defined better - ran out of time to finish this method
             switch (editablePacket.Protocol)
             {
                 case "ICMP":
@@ -325,16 +359,20 @@ namespace PacketSniffer2
 
         }
 
+        //Stop button is pressed
         private void btnStopCap_Click(object sender, RoutedEventArgs e)
         {
+            //Enable/disable all buttons required
             DeviceRefresh.IsEnabled = true;
             btnStartCap.IsEnabled = true;
             btnStopCap.IsEnabled = false;
             DeviceListBox.IsEnabled = true;
 
+            //Stop the capture thread as well
             tCapture.Abort();
         }
 
+        //Refresh button is pressed - currently bugged, still needs a fix
         private void DeviceRefresh_Click(object sender, RoutedEventArgs e)
         {
             bRefreshed = true;
@@ -347,6 +385,8 @@ namespace PacketSniffer2
             PacketInfo.Visibility = Visibility.Hidden;
             GetDevices();
         }
+
+        //Selection changed @ devicelist
         private void DeviceListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DeviceInfo.Items.Clear();
@@ -363,6 +403,7 @@ namespace PacketSniffer2
             bRefreshed = false;
         }
 
+        //Checking checkboxes for filter settings
         private void CheckBoxFalse()
         {
             bIPV4Check = false;
@@ -373,49 +414,60 @@ namespace PacketSniffer2
             bHttpCheck = false;
         }
 
+        //IPV4 checkbox is checked (default)
         private void rbIPV4_Checked(object sender, RoutedEventArgs e)
         {
             CheckBoxFalse();
             bIPV4Check = true;
         }
 
+        //ICMP checkbox is checked
         private void rbICMP_Checked(object sender, RoutedEventArgs e)
         {
             CheckBoxFalse();
             bIcmpCheck = true;
         }
 
+        //UDP checkbox is checked
         private void rbUDP_Checked(object sender, RoutedEventArgs e)
         {
             CheckBoxFalse();
             bUdpCheck = true;
         }
 
+        //TCP checkbox is checked
         private void rbTCP_Checked(object sender, RoutedEventArgs e)
         {
             CheckBoxFalse();
             bTcpCheck = true;
         }
 
+        //DNS checkbox is checked
         private void rbDNS_Checked(object sender, RoutedEventArgs e)
         {
             CheckBoxFalse();
             bDnsCheck = true;
         }
 
+        //HTTP checkbox is checked
         private void rbHTTP_Checked(object sender, RoutedEventArgs e)
         {
             CheckBoxFalse();
             bHttpCheck = true;
         }
 
+        //Selection changed @ packetlist
         private void PacketList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //Remove packetinfo (if there is any)
             PacketInfo.Items.Clear();
             btnStartEdit.IsEnabled = true;
+
+            //Create virtual packet from existing virtual packet
             pInfoPacket = new PacketAPI();
             pInfoPacket = (PacketAPI)PacketList.SelectedItems[0];
 
+            //Show more details about the currently selected packet
             PacketInfo.Items.Add("Time Of Arrival: " + pInfoPacket.Timestamp);
 
             if (pInfoPacket.Http)
@@ -437,26 +489,26 @@ namespace PacketSniffer2
             PacketInfo.Items.Add("Source Port: " + pInfoPacket.PortSource + "\t\t\tDestination Port: " + pInfoPacket.PortDestination);
         }
         #endregion
-        /*
-        #region Editing Methods
 
-        #endregion
-        */
         #region Injecting Methods
+
+        //Send button is pressed
         private void btnSendPacket_Click(object sender, RoutedEventArgs e)
         {
-
-            for (int i = 0; i <= Convert.ToInt16(xTimes.Text.ToString()); i++)
+            //Loop that defines how many times the packet should be resent
+            for (int i = 1; i <= Convert.ToInt16(xTimes.Text.ToString()); i++)
             {
                 // Open the output device
                 using (pCommunicator = pSelectedDevice.Open(100, PacketDeviceOpenAttributes.Promiscuous, 1000))
                 {
+                    //Get the protocoltype and go through the switchcase in order to build the right packet
                     int stringProtocol = ProtType.SelectedIndex;
                     switch (stringProtocol)
                     {
+                        //If its an ICMP packet do this
                         case 1:
-                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
-                                && TTL.Text != "" && Identifier.Text != "" && SQN.Text != "")
+                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" 
+                                && IpId.Text != "" && TTL.Text != "" && Identifier.Text != "" && SQN.Text != "")
                             {
                                 pBuildIcmpPacket = new ICMPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
                                 IPdst.Text, IpId.Text, TTL.Text, Identifier.Text, SQN.Text);
@@ -467,9 +519,11 @@ namespace PacketSniffer2
                                 MessageBox.Show("Please fill in all required (open) fields");
                             }
                             break;
+
+                        //If its a UDP packet do this
                         case 2:
-                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != ""
-                                && TTL.Text != "" && PORTsrc.Text != "" && Data.Text != "")
+                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" 
+                                && IpId.Text != "" && TTL.Text != "" && PORTsrc.Text != "" && Data.Text != "")
                             {
                                 pBuildUdpPacket = new UDPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text,
                                 IPdst.Text, IpId.Text, TTL.Text, PORTsrc.Text, Data.Text);
@@ -480,9 +534,12 @@ namespace PacketSniffer2
                                 MessageBox.Show("Please fill in all required (open) fields");
                             }
                             break;
+
+                        //If its a TCP packet do this
                         case 3:
-                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
-                                && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "")
+                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" 
+                                && IpId.Text != "" && TTL.Text != "" && PORTsrc.Text != "" && SQN.Text != "" 
+                                && ACK.Text != "" && WIN.Text != "" && Data.Text != "")
                             {
                                 pBuildTcpPacket = new TCPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
                                 IpId.Text, TTL.Text, PORTsrc.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text);
@@ -493,9 +550,12 @@ namespace PacketSniffer2
                                 MessageBox.Show("Please fill in all required (open) fields");
                             }
                             break;
+
+                        //If its a DNS packet do this
                         case 4:
-                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
-                                && PORTsrc.Text != "" && Identifier.Text != "" && Domain.Text != "")
+                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != ""
+                                && IpId.Text != "" && TTL.Text != "" && PORTsrc.Text != "" && Identifier.Text != "" 
+                                && Domain.Text != "")
                             {
                                 pBuildDnsPacket = new DNSSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text,
                                 IpId.Text, TTL.Text, PORTsrc.Text, Identifier.Text, Domain.Text);
@@ -506,12 +566,15 @@ namespace PacketSniffer2
                                 MessageBox.Show("Please fill in all required (open) fields");
                             }
                             break;
+
+                        //If its an HTTP packet do this
                         case 5:
-                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" && IpId.Text != "" && TTL.Text != ""
-                                && PORTsrc.Text != "" && SQN.Text != "" && ACK.Text != "" && WIN.Text != "" && Data.Text != "" && Domain.Text != "")
+                            if (MACsrc.Text != "" && MACdst.Text != "" && IPsrc.Text != "" && IPdst.Text != "" 
+                                && IpId.Text != "" && TTL.Text != "" && PORTsrc.Text != "" && SQN.Text != "" 
+                                && ACK.Text != "" && WIN.Text != "" && Data.Text != "" && Domain.Text != "")
                             {
-                                pBuildHttpPacket = new HTTPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, IpId.Text,
-                                TTL.Text, PORTsrc.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text, Domain.Text);
+                                pBuildHttpPacket = new HTTPSendPacket(MACsrc.Text, MACdst.Text, IPsrc.Text, IPdst.Text, 
+                                IpId.Text, TTL.Text, PORTsrc.Text, SQN.Text, ACK.Text, WIN.Text, Data.Text, Domain.Text);
                                 pCommunicator.SendPacket(pBuildHttpPacket.GetBuilder());
                             }
                             else
@@ -519,6 +582,8 @@ namespace PacketSniffer2
                                 MessageBox.Show("Please fill in all required (open) fields");
                             }
                             break;
+
+                        //If no protocol was selected, let the user know
                         default:
                             MessageBox.Show("Select a protocol");
                             break;
@@ -527,11 +592,14 @@ namespace PacketSniffer2
             }
         }
 
+        //When Protocol type in combobox is changed, 
+        //adjust fields so the user can fill in the right data
         private void ProtType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int stringProtocol = ProtType.SelectedIndex;
             switch (stringProtocol)
             {
+                //There is no protocol
                 case 0:
                     if (MACsrc != null)
                     {
@@ -564,6 +632,8 @@ namespace PacketSniffer2
                         Domain.Text = "";
                     }
                     break;
+
+                //Protocol = ICMP
                 case 1:
                     Data.IsEnabled = false;
                     Data.Text = "";
@@ -579,6 +649,8 @@ namespace PacketSniffer2
                     Domain.IsEnabled = false;
                     Domain.Text = "";
                     goto case 100;
+
+                //Protocol = UDP
                 case 2:
                     Data.IsEnabled = true;
                     Identifier.IsEnabled = false;
@@ -593,6 +665,8 @@ namespace PacketSniffer2
                     Domain.IsEnabled = false;
                     Domain.Text = "";
                     goto case 100;
+
+                //Protocol = TCP
                 case 3:
                     Data.IsEnabled = true;
                     Identifier.IsEnabled = false;
@@ -604,6 +678,8 @@ namespace PacketSniffer2
                     Domain.IsEnabled = false;
                     Domain.Text = "";
                     goto case 100;
+
+                //Protocol = DNS
                 case 4:
                     Data.IsEnabled = false;
                     Data.Text = "";
@@ -617,6 +693,8 @@ namespace PacketSniffer2
                     WIN.Text = "";
                     Domain.IsEnabled = true;
                     goto case 100;
+
+                //Protocol = HTTP
                 case 5:
                     Data.IsEnabled = true;
                     Identifier.IsEnabled = false;
@@ -627,6 +705,8 @@ namespace PacketSniffer2
                     WIN.IsEnabled = true;
                     Domain.IsEnabled = true;
                     goto case 100;
+
+                //These fields are the default fields for each protocol
                 case 100:
                     MACsrc.IsEnabled = true;
                     MACdst.IsEnabled = true;

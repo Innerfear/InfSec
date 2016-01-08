@@ -6,10 +6,12 @@ namespace PacketSniffer2
 {
     abstract class BaseSendPacket
     {
+        //Define layers
         protected EthernetLayer ethernetLayer;
         protected IpV4Layer ipV4Layer;
         protected PacketBuilder builder;
 
+        //Create a base packet to use as parent for the other classes
         public virtual void GetBase(string MACsrc, string MACdst, string IPsrc, string IPdst,
             string IpId, string TTL)
         {
@@ -37,6 +39,7 @@ namespace PacketSniffer2
             };
         }
 
+        //Method for string to byte casting (for Injecting)
         public byte StringToByte(string sString)
         {
             byte newByte;
@@ -51,6 +54,7 @@ namespace PacketSniffer2
             }
         }
 
+        //Method for string to int casting (for Injecting)
         public int StringToInt(string sString)
         {
             int newInt;
@@ -64,6 +68,8 @@ namespace PacketSniffer2
                 return newInt = 1;
             }
         }
+
+        //Method for string to UShort casting (for Injecting)
         public ushort StringToUShort (string sString)
         {
             ushort newUShort;

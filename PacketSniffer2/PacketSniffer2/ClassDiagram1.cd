@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PacketSniffer2.App">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PacketSniffer2.BaseSendPacket">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAgEgABAAAAAAAIIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BaseSendPacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PacketSniffer2.DNSSendPacket">
+    <Position X="5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAACAACAA=</HashCode>
+      <FileName>DNSSendPacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PacketSniffer2.HTTPSendPacket">
+    <Position X="7.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAACAAAAAAAAAAAAAIAAAAAAAAAAAABA=</HashCode>
+      <FileName>HTTPSendPacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PacketSniffer2.ICMPSendPacket">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAARAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICMPSendPacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PacketSniffer2.MainWindow" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="PacketSniffer2.MainWindow.UpdateTextCallback" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>MainWindow.xaml.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>SABCIowAASEAgBIBAICIAIgCECBQoAACQAAQgAAAQck=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PacketSniffer2.PacketAPI">
+    <Position X="15.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAEiQAABAAAAQAAAQkADAEJAAgTAQAAGwAAAggABIsA=</HashCode>
+      <FileName>PacketAPI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PacketSniffer2.TCPSendPacket">
+    <Position X="9.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAQAAAAIAAAAAAAAAAABAA=</HashCode>
+      <FileName>TCPSendPacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PacketSniffer2.UDPSendPacket">
+    <Position X="2.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABIAAAAAAAAAAADAA=</HashCode>
+      <FileName>UDPSendPacket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PacketSniffer2.Properties.Resources">
+    <Position X="12" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PacketSniffer2.Properties.Settings">
+    <Position X="12" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
